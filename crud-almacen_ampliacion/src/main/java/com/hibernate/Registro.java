@@ -1,278 +1,218 @@
 package com.hibernate;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
-import java.awt.Color;
 import javax.swing.JLabel;
-import javax.swing.JOptionPane;
-
 import java.awt.Font;
+import javax.swing.JTextField;
+
+import com.hibernate.dao.OfertaDAO;
+
+import javax.swing.JButton;
+import javax.swing.JOptionPane;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.text.SimpleDateFormat;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
-import javax.swing.JTextField;
-import javax.swing.SwingUtilities;
-
-
-
-import javax.swing.JPasswordField;
-import javax.swing.JButton;
-import java.awt.event.ActionListener;
-import java.awt.event.ActionEvent;
-
+import com.hibernate.model.Usuario;
+import com.hibernate.dao.UsuarioDAO;
 public class Registro {
 
-	private JFrame frameRegistro;
-	private JTextField textFieldNombre;
-	private JTextField textFieldCorreoElectronico;
-	private JTextField textFieldTelefono;
-	private JTextField textFieldLocalizacion;
-	private JTextField textFieldFechaNacimiento;
-	private JTextField textFieldFechaInicio;
+    private JFrame frameRegistro;
+    private JTextField textFieldNombre;
+    private JTextField textFieldCorreoElectronico;
+    private JTextField textFieldTelefono;
+    private JTextField textFieldLocalizacion;
+    private JTextField textFieldFechaNacimiento;
+    private JTextField textFieldFechaInicio;
+    private boolean registrado = false; // Variable para controlar el estado de registro
+    static UsuarioDAO usuarioDao= new UsuarioDAO();
+    public static void main(String[] args) {
+        EventQueue.invokeLater(new Runnable() {
+            public void run() {
+                try {
+                    Registro window = new Registro();
+                    window.frameRegistro.setVisible(true);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        });
+    }
 
-	/**
-	 * Launch the application.
-	 */
+    public Registro() {
+        initialize();
+    }
 
-	
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					Registro window = new Registro();
-					window.frameRegistro.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+    private void initialize() {
+        frameRegistro = new JFrame();
+        frameRegistro.setBounds(100, 100, 450, 500);
+        frameRegistro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frameRegistro.getContentPane().setLayout(null);
 
-	/**
-	 * Create the application.
-	 */
-	
-	public Registro() {
-		initialize();
-	}
+        JLabel lblRegistro = new JLabel("Registro de Usuario");
+        lblRegistro.setFont(new Font("Tahoma", Font.BOLD, 16));
+        lblRegistro.setBounds(131, 27, 183, 14);
+        frameRegistro.getContentPane().add(lblRegistro);
 
-	/**
-	 * Initialize the contents of the frame.
-	 */
-	private void initialize() {
-		frameRegistro = new JFrame();
-		frameRegistro.getContentPane().setBackground(new Color(255, 255, 204));
-		frameRegistro.setBounds(100, 100, 631, 543);
-		frameRegistro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frameRegistro.getContentPane().setLayout(null);
+        textFieldNombre = new JTextField();
+        textFieldNombre.setBounds(223, 139, 164, 20);
+        frameRegistro.getContentPane().add(textFieldNombre);
+        textFieldNombre.setColumns(10);
 
-		JLabel lblBienvenida = new JLabel("Bienvenido al rincón de los Sabores");
-		lblBienvenida.setFont(new Font("Tahoma", Font.BOLD, 20));
-		lblBienvenida.setBounds(122, 27, 410, 31);
-		frameRegistro.getContentPane().add(lblBienvenida);
+        textFieldCorreoElectronico = new JTextField();
+        textFieldCorreoElectronico.setBounds(223, 170, 164, 20);
+        frameRegistro.getContentPane().add(textFieldCorreoElectronico);
+        textFieldCorreoElectronico.setColumns(10);
 
-		JLabel lblRegistro = new JLabel("REGISTRO");
-		lblRegistro.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lblRegistro.setBounds(223, 69, 174, 42);
-		frameRegistro.getContentPane().add(lblRegistro);
+        textFieldTelefono = new JTextField();
+        textFieldTelefono.setBounds(223, 201, 164, 20);
+        frameRegistro.getContentPane().add(textFieldTelefono);
+        textFieldTelefono.setColumns(10);
 
-		textFieldNombre = new JTextField();
-		textFieldNombre.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-			}
-		});
-		textFieldNombre.setBounds(293, 135, 191, 20);
-		frameRegistro.getContentPane().add(textFieldNombre);
-		textFieldNombre.setColumns(10);
+        textFieldLocalizacion = new JTextField();
+        textFieldLocalizacion.setBounds(223, 232, 164, 20);
+        frameRegistro.getContentPane().add(textFieldLocalizacion);
+        textFieldLocalizacion.setColumns(10);
 
-		textFieldCorreoElectronico = new JTextField();
-		textFieldCorreoElectronico.setBounds(293, 166, 191, 20);
-		frameRegistro.getContentPane().add(textFieldCorreoElectronico);
-		textFieldCorreoElectronico.setColumns(10);
+        textFieldFechaNacimiento = new JTextField();
+        textFieldFechaNacimiento.setBounds(223, 263, 164, 20);
+        frameRegistro.getContentPane().add(textFieldFechaNacimiento);
+        textFieldFechaNacimiento.setColumns(10);
 
-		textFieldTelefono = new JTextField();
-		textFieldTelefono.setBounds(293, 197, 191, 20);
-		frameRegistro.getContentPane().add(textFieldTelefono);
-		textFieldTelefono.setColumns(10);
+        textFieldFechaInicio = new JTextField();
+        textFieldFechaInicio.setBounds(223, 294, 164, 20);
+        frameRegistro.getContentPane().add(textFieldFechaInicio);
+        textFieldFechaInicio.setColumns(10);
 
-		textFieldLocalizacion = new JTextField();
-		textFieldLocalizacion.setBounds(293, 228, 191, 20);
-		frameRegistro.getContentPane().add(textFieldLocalizacion);
-		textFieldLocalizacion.setColumns(10);
+        JLabel lblNombre = new JLabel("Nombre:");
+        lblNombre.setBounds(70, 142, 71, 14);
+        frameRegistro.getContentPane().add(lblNombre);
 
-		textFieldFechaNacimiento = new JTextField();
-		textFieldFechaNacimiento.setBounds(293, 259, 191, 20);
-		frameRegistro.getContentPane().add(textFieldFechaNacimiento);
-		textFieldFechaNacimiento.setColumns(10);
+        JLabel lblCorreoElectrnico = new JLabel("Correo Electrónico:");
+        lblCorreoElectrnico.setBounds(70, 173, 124, 14);
+        frameRegistro.getContentPane().add(lblCorreoElectrnico);
 
-		textFieldFechaInicio = new JTextField();
-		textFieldFechaInicio.setBounds(293, 290, 191, 20);
-		frameRegistro.getContentPane().add(textFieldFechaInicio);
-		textFieldFechaInicio.setColumns(10);
+        JLabel lblTelfono = new JLabel("Teléfono:");
+        lblTelfono.setBounds(70, 204, 71, 14);
+        frameRegistro.getContentPane().add(lblTelfono);
 
-		JLabel lblNombre = new JLabel("Nombre Usuario");
-		lblNombre.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblNombre.setBounds(83, 141, 200, 14);
-		frameRegistro.getContentPane().add(lblNombre);
+        JLabel lblLocalizacin = new JLabel("Localización:");
+        lblLocalizacin.setBounds(70, 235, 82, 14);
+        frameRegistro.getContentPane().add(lblLocalizacin);
 
-		JLabel lblCorreo = new JLabel("Correo Electronico");
-		lblCorreo.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblCorreo.setBounds(83, 172, 183, 14);
-		frameRegistro.getContentPane().add(lblCorreo);
+        JLabel lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
+        lblFechaNacimiento.setBounds(70, 266, 124, 14);
+        frameRegistro.getContentPane().add(lblFechaNacimiento);
 
-		JLabel lblTelefono = new JLabel("Telefono");
-		lblTelefono.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblTelefono.setBounds(83, 203, 200, 14);
-		frameRegistro.getContentPane().add(lblTelefono);
+        JLabel lblFechaInicio = new JLabel("Fecha de Inicio:");
+        lblFechaInicio.setBounds(70, 297, 98, 14);
+        frameRegistro.getContentPane().add(lblFechaInicio);
 
-		JLabel lblLocalizacion = new JLabel("Localización");
-		lblLocalizacion.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblLocalizacion.setBounds(83, 234, 200, 14);
-		frameRegistro.getContentPane().add(lblLocalizacion);
+        textFieldNombre.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusGained(FocusEvent e) {
+                textFieldNombre.setText("");
+            }
+        });
 
-		JLabel lblFechaNacimiento = new JLabel("Fecha Nacimiento");
-		lblFechaNacimiento.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblFechaNacimiento.setBounds(83, 265, 183, 14);
-		frameRegistro.getContentPane().add(lblFechaNacimiento);
+        textFieldCorreoElectronico.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                String correo = textFieldCorreoElectronico.getText();
+                String regex = "^(.+)@(.+)$";
+                Pattern pattern = Pattern.compile(regex);
+                Matcher matcher = pattern.matcher(correo);
+                if (!matcher.matches()) {
+                    JOptionPane.showMessageDialog(null, "Correo electrónico inválido");
+                    textFieldCorreoElectronico.setText("Error");
+                }
+            }
 
-		JLabel lblFechaIncorporacion = new JLabel("Fecha Incorporacion");
-		lblFechaIncorporacion.setFont(new Font("Tahoma", Font.BOLD, 14));
-		lblFechaIncorporacion.setBounds(83, 296, 200, 14);
-		frameRegistro.getContentPane().add(lblFechaIncorporacion);
+            @Override
+            public void focusGained(FocusEvent e) {
+                textFieldCorreoElectronico.setText("");
+            }
+        });
 
-		textFieldLocalizacion.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
-				Matcher mat = pat.matcher(textFieldLocalizacion.getText());
-				if (!mat.matches()) {
-					textFieldLocalizacion.setText("Error");
-				}
-			}
+        textFieldFechaNacimiento.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                String fecha = textFieldFechaNacimiento.getText();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                try {
+                    LocalDate.parse(fecha, formatter);
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(null, "Fecha de nacimiento inválida");
+                    textFieldFechaNacimiento.setText("Error");
+                }
+            }
 
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldLocalizacion.setText("");
-			}
-		});
+            @Override
+            public void focusGained(FocusEvent e) {
+                textFieldFechaNacimiento.setText("");
+            }
+        });
 
-		textFieldNombre.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
-				Matcher mat = pat.matcher(textFieldNombre.getText());
-				if (!mat.matches()) {
-					textFieldNombre.setText("Error");
-				}
-			}
+        textFieldFechaInicio.addFocusListener(new FocusAdapter() {
+            @Override
+            public void focusLost(FocusEvent e) {
+                String fecha = textFieldFechaInicio.getText();
+                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+                try {
+                    LocalDate.parse(fecha, formatter);
+                } catch (DateTimeParseException ex) {
+                    JOptionPane.showMessageDialog(null, "Fecha de inicio inválida");
+                    textFieldFechaInicio.setText("Error");
+                }
+            }
 
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldNombre.setText("");
-			}
-		});
+            @Override
+            public void focusGained(FocusEvent e) {
+                textFieldFechaInicio.setText("");
+            }
+        });
 
-		textFieldTelefono.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				Pattern pat = Pattern.compile("^[67]\\d{8}$");
-				Matcher mat = pat.matcher(textFieldTelefono.getText());
-				if (!mat.matches()) {
-					
-					textFieldTelefono.setText("Error");
-				}
+        JButton btnEntrar = new JButton("Entrar");
+        btnEntrar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    if (registrado) {
+                        // Si el usuario ya está registrado, mostrar un mensaje o realizar acciones para actualizar el perfil
+                        JOptionPane.showMessageDialog(null, "El perfil ya está registrado");
+                        // Realizar las acciones necesarias para actualizar el perfil
+                    } else {
+                        // Realizar el registro del usuario
+                    	 UsuarioDAO usuarioDao= new UsuarioDAO();
+                        String nombre = textFieldNombre.getText();
+                        String correo = textFieldCorreoElectronico.getText();
+                        String telefono = textFieldTelefono.getText();
+                        String localizacion = textFieldLocalizacion.getText();
+                        String fechaNacimiento = textFieldFechaNacimiento.getText();
+                        String fechaInicio = textFieldFechaInicio.getText();
+                       Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento,fechaInicio);
+                        usuarioDao.insertUsuario(usuario);
+                        
 
-			}
+                       
+                        registrado = true;
 
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldTelefono.setText("");
-			}
-		});
-
-		
-		textFieldCorreoElectronico.addFocusListener(new FocusAdapter() {
-			@Override
-			public void focusLost(FocusEvent e) {
-				Pattern pat = Pattern.compile("^\\w+@\\w+\\.[a-z]{2,3}$");
-				Matcher mat = pat.matcher(textFieldCorreoElectronico.getText());
-				if (!mat.matches()) {
-					textFieldCorreoElectronico.setText("Error");
-				}
-			}
-
-			@Override
-			public void focusGained(FocusEvent e) {
-				textFieldCorreoElectronico.setText("");
-			}
-		});
-
-		JButton btnEntrar = new JButton("Entrar");
-		btnEntrar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				 try {	
-				    	String fechaNacimiento = textFieldFechaNacimiento.getText();
-						SimpleDateFormat formatoNacimiento = new SimpleDateFormat("dd/MM/yyyy");
-						
-						String fechaIncorporacion = textFieldFechaInicio.getText();
-						SimpleDateFormat formatoIncorporacion = new SimpleDateFormat("dd/MM/yyyy");
-						
-						if (fechaNacimiento.equals("")) {
-							
-
-						} else {
-							LocalDate comprobarFechaNacimiento = LocalDate.parse(fechaNacimiento,
-									DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-							
-							LocalDate comprobarFechaIncorporacion = LocalDate.parse(fechaIncorporacion,DateTimeFormatter.ofPattern("dd/MM/yyyy"));
-							
-							Period edad = Period.between(comprobarFechaNacimiento, comprobarFechaIncorporacion);
-							
-							if (edad.getYears() < 18) {
-								JOptionPane.showMessageDialog(null, "El usuario es menor de edad");
-							
-						}else if (textFieldNombre.getText().isEmpty() || textFieldFechaNacimiento.getText().isEmpty() ||
-								textFieldCorreoElectronico.getText().isEmpty() ||  textFieldTelefono.getText().isEmpty() ||  textFieldLocalizacion.getText().isEmpty()
-										|| textFieldFechaInicio.getText().isEmpty()) {
-									JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
-									
-							} else if (textFieldNombre.getText().equals("Error") || textFieldFechaNacimiento.getText().equals("Error") 
-									|| textFieldCorreoElectronico.getText().equals("Error") || textFieldTelefono.getText().equals("Error")
-									|| textFieldLocalizacion.getText().equals("Error") || textFieldFechaInicio.getText().equals("Error"))
-									 {
-								    JOptionPane.showMessageDialog(null, "Hay datos erróneos");
-							}
-						
-						else {
-								
-								 
-					    	  	 
-					    	  
-					    	      JOptionPane.showMessageDialog(null, "Perfil creado correctamente !!!");
-					    	
-					    	    
-					    	        
-							}
-						}
-						 
-				    }catch(DateTimeParseException error ) {
-				    	JOptionPane.showMessageDialog(null, "Fechas mal introducidas");
-				    }catch(NullPointerException error2) {
-				    	JOptionPane.showMessageDialog(null, "Departamento está vacío");
-				    }
-			}
-		});
-		btnEntrar.setBounds(223, 383, 164, 23);
-		frameRegistro.getContentPane().add(btnEntrar);
-
-	}
+                        
+                        JOptionPane.showMessageDialog(null, "Registro exitoso");
+                    }
+                } catch (Exception ex) {
+                    ex.printStackTrace();
+                }
+            }
+        });
+        btnEntrar.setBounds(166, 360, 89, 23);
+        frameRegistro.getContentPane().add(btnEntrar);
+    }
 }
+
