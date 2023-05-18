@@ -76,14 +76,46 @@ public class App {
 	private JTextField txtPrecio;
 	private JTextField txtStock;
 	static  LocalDate ultimaFechaEjecucion;
+	private JComboBox comboBoxSeleccionarCategoria;
+	private JLabel lblTitulo;
+	private JLabel lblNombre;
+	private JLabel lblCategoria;
+	private JLabel lblPrecio;
+	private JLabel lblStock;
+	private JLabel lblMostrarDatos;
+	private JLabel lblSeleccionarPeriodoDe;
+	private JLabel lblSeleccionarCategoria;
+	private JComboBox comboBoxEscogerCategoria;
+	private JComboBox comboBoxSeleccionarTiempo;
+	private JRadioButton rdbtnMostrarTodos;
+	private JRadioButton rdbtnMostrarProductosCategoria;
+	private JRadioButton rdbtnMostrarProductosSinUnidades;
+	private JRadioButton rdbtnMostrarProductosCaducados;
+	private JButton btnGuardar ;
+	private JButton btnActualizar ;
+	private JButton btnBorrar; 
+	private JScrollPane scrollPaneProductos;
+	private JTextField textFieldNombre;
+	private JTextField textFieldCorreo;
+	private JTextField textFieldTelefono;
+	private JTextField textFieldLocalizacion;
+	private JTextField textFieldFechaNac;
+	private JTextField textFieldFechaInicio;
+	
+	private JButton btnEntrar ;
+	private JLabel lblNombreUsuario;
+	private JLabel lblCorreoElectrnico;
+	private JLabel lblTelfono;
+	private JLabel lblLocalizacin;
+	private JLabel lblFechaInicio;
+	private JLabel lblFechaNacimiento;
+	private JButton btnRegistrarse;
+	private JButton btnActualizarUsuario;
+	
 
 	ButtonGroup g1 = new ButtonGroup();
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
+	private boolean registrado = false; // Variable para controlar el estado de registro
+    static UsuarioDAO usuarioDao= new UsuarioDAO();
 	
 	 static double ComprobarOferta (Producto producto)
 	 {
@@ -629,6 +661,16 @@ public class App {
 	 * 
 	 * @param args
 	 */
+	
+	public void registrarUsuario () {
+		
+		
+		
+		
+	}
+	
+	
+	
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -651,6 +693,7 @@ public class App {
 	 */
 	public App() {
 		
+		
 		ultimaFechaEjecucion = obtenerUltimaFechaEjecucion();
              
 	        LocalDate fechaActual = LocalDate.now();
@@ -670,13 +713,13 @@ public class App {
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-
-		JComboBox comboBoxSeleccionarCategoria = new JComboBox();
+	 JComboBox comboBoxSeleccionarCategoria = new JComboBox();
+		
 		comboBoxSeleccionarCategoria.setVisible(false);
 		frameAlmacen = new JFrame();
 		frameAlmacen.getContentPane().setBackground(new Color(51, 204, 204));
 		frameAlmacen.setBackground(new Color(50, 204, 204));
-		frameAlmacen.setBounds(100, 100, 1664, 788);
+		frameAlmacen.setBounds(100, 100, 900, 788);
 		frameAlmacen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameAlmacen.getContentPane().setLayout(null);
 
@@ -686,6 +729,82 @@ public class App {
 		lblTitulo.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 25));
 		lblTitulo.setBounds(492, 11, 403, 31);
 		frameAlmacen.getContentPane().add(lblTitulo);
+		
+		textFieldNombre = new JTextField();
+		textFieldNombre.setColumns(10);
+		textFieldNombre.setBounds(615, 123, 164, 20);
+		frameAlmacen.getContentPane().add(textFieldNombre);
+		
+		textFieldCorreo = new JTextField();
+		textFieldCorreo.setColumns(10);
+		textFieldCorreo.setBounds(615, 154, 164, 20);
+		frameAlmacen.getContentPane().add(textFieldCorreo);
+		
+		textFieldTelefono = new JTextField();
+		textFieldTelefono.setColumns(10);
+		textFieldTelefono.setBounds(615, 185, 164, 20);
+		frameAlmacen.getContentPane().add(textFieldTelefono);
+		
+		textFieldLocalizacion = new JTextField();
+		textFieldLocalizacion.setColumns(10);
+		textFieldLocalizacion.setBounds(615, 219, 164, 20);
+		frameAlmacen.getContentPane().add(textFieldLocalizacion);
+		
+		textFieldFechaNac = new JTextField();
+		textFieldFechaNac.setColumns(10);
+		textFieldFechaNac.setBounds(615, 247, 164, 20);
+		frameAlmacen.getContentPane().add(textFieldFechaNac);
+		
+		textFieldFechaInicio = new JTextField();
+		textFieldFechaInicio.setColumns(10);
+		textFieldFechaInicio.setBounds(615, 281, 164, 20);
+		frameAlmacen.getContentPane().add(textFieldFechaInicio);
+		
+		JLabel lblNombreUsuario = new JLabel("Nombre:");
+		lblNombreUsuario.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblNombreUsuario.setBounds(375, 129, 71, 14);
+		frameAlmacen.getContentPane().add(lblNombreUsuario);
+		
+		JLabel lblCorreoElectrnico = new JLabel("Correo Electrónico:");
+		lblCorreoElectrnico.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblCorreoElectrnico.setBounds(375, 160, 185, 14);
+		frameAlmacen.getContentPane().add(lblCorreoElectrnico);
+		
+		JLabel lblTelfono = new JLabel("Teléfono:");
+		lblTelfono.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblTelfono.setBounds(375, 191, 154, 14);
+		frameAlmacen.getContentPane().add(lblTelfono);
+		
+		JLabel lblLocalizacin = new JLabel("Localización:");
+		lblLocalizacin.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblLocalizacin.setBounds(375, 222, 154, 14);
+		frameAlmacen.getContentPane().add(lblLocalizacin);
+		
+		JLabel lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
+		lblFechaNacimiento.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblFechaNacimiento.setBounds(375, 253, 185, 14);
+		frameAlmacen.getContentPane().add(lblFechaNacimiento);
+		
+		JLabel lblFechaInicio = new JLabel("Fecha de Inicio:");
+		lblFechaInicio.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblFechaInicio.setBounds(375, 284, 185, 17);
+		frameAlmacen.getContentPane().add(lblFechaInicio);
+		
+		JButton btnRegistrarse = new JButton("Registrarse");
+		btnRegistrarse.setBackground(new Color(255, 228, 196));
+		btnRegistrarse.setBounds(375, 347, 154, 25);
+		frameAlmacen.getContentPane().add(btnRegistrarse);
+		
+		JButton btnActualizarUsuario = new JButton("Actualizar usuario");
+		btnActualizarUsuario.setBackground(new Color(255, 228, 196));
+		btnActualizarUsuario.setBounds(615, 347, 176, 25);
+		frameAlmacen.getContentPane().add(btnActualizarUsuario);
+		
+		JButton btnEntrar = new JButton("Entrar");
+		btnEntrar.setBackground(new Color(255, 228, 196));
+		btnEntrar.setBounds(492, 445, 176, 25);
+		frameAlmacen.getContentPane().add(btnEntrar);
+		
 
 		DefaultTableModel modelTabla = new DefaultTableModel() {
 
@@ -781,52 +900,6 @@ public class App {
 		frameAlmacen.getContentPane().add(txtStock);
 		txtStock.setColumns(10);
 		txtStock.setVisible(false);
-		DefaultTableModel modelPedidos = new DefaultTableModel() {
-			
-			@Override
-			/**
-			 * Este metodo sirve para que las celdas de la tabla no sean editables
-			 * 
-			 * @param filas:    este parametro son las filas de la tabla
-			 * @param columnas: las columnas de la tabla
-			 * @return: false, asi no se pueden editar las celdas
-			 */
-			public boolean isCellEditable(int filas, int columnas) {
-				return false;
-			}
-		};
-        //Añadir las columnas a la tabla Productos
-		
-		modelPedidos.addColumn("Pedido");
-		modelPedidos.addColumn("Nombre Proveedor");
-		modelPedidos.addColumn("Producto");
-		modelPedidos.addColumn("Precio");
-		modelPedidos.addColumn("Cantidad");
-		
-
-		
-		tablePedidos = new JTable(modelPedidos);
-		tablePedidos.setVisible(false);
-		tablePedidos.setBounds(26, 251, 489, -159);
-		frameAlmacen.getContentPane().add(tablePedidos);
-		
-		
-		
-		JScrollPane scrollPanePedidos = new JScrollPane(tablePedidos);
-		scrollPanePedidos.setBounds(808, 100, 619, 220);
-		frameAlmacen.getContentPane().add(scrollPanePedidos);
-		scrollPanePedidos.setVisible(false);
-		
-				
-		ImageIcon imagenGuardar4 = new ImageIcon(App.class.getResource("/imagenes/guardar.png"));
-		Image imagenRedimensionada4 = imagenGuardar4.getImage().getScaledInstance(LONGITUD_BTN_GUARDAR,
-				ALTURA_BTN_GUARDAR, java.awt.Image.SCALE_SMOOTH);
-		ImageIcon imagenActualizarPedido = new ImageIcon(App.class.getResource("/imagenes/actualizar.png"));
-		Image imagenRedimensionada6 = imagenActualizarPedido.getImage().getScaledInstance(LONGITUD_BTN_ACTUALIZAR,
-				ALTURA_BTN_ACTUALIZAR, java.awt.Image.SCALE_SMOOTH);
-		ImageIcon imagenBorrar2 = new ImageIcon(App.class.getResource("/imagenes/borrar.png"));
-		Image imagenRedimensionada5 = imagenBorrar2.getImage().getScaledInstance(LONGITUD_BTN_BORRAR, ALTURA_BTN_BORRAR,
-				java.awt.Image.SCALE_SMOOTH);
 
 	
 		JComboBox comboBoxSeleccionarTiempo = new JComboBox();
@@ -1431,80 +1504,220 @@ public class App {
 		lblRegistro_1.setBounds(497, 43, 256, 54);
 		frameAlmacen.getContentPane().add(lblRegistro_1);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(615, 123, 164, 20);
-		frameAlmacen.getContentPane().add(textField);
+		 textFieldNombre.addFocusListener(new FocusAdapter() {
+	        	@Override
+	        	public void focusLost(FocusEvent e) {
+	        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
+					Matcher mat = pat.matcher(textFieldNombre.getText());
+					if (!mat.matches()) {
+						textFieldNombre.setText("Error");
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(615, 154, 164, 20);
-		frameAlmacen.getContentPane().add(textField_1);
-		
-		textField_2 = new JTextField();
-		textField_2.setColumns(10);
-		textField_2.setBounds(615, 185, 164, 20);
-		frameAlmacen.getContentPane().add(textField_2);
-		
-		textField_3 = new JTextField();
-		textField_3.setColumns(10);
-		textField_3.setBounds(615, 219, 164, 20);
-		frameAlmacen.getContentPane().add(textField_3);
-		
-		textField_4 = new JTextField();
-		textField_4.setColumns(10);
-		textField_4.setBounds(615, 247, 164, 20);
-		frameAlmacen.getContentPane().add(textField_4);
-		
-		textField_5 = new JTextField();
-		textField_5.setColumns(10);
-		textField_5.setBounds(615, 281, 164, 20);
-		frameAlmacen.getContentPane().add(textField_5);
-		
-		JLabel lblNombre_1 = new JLabel("Nombre:");
-		lblNombre_1.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblNombre_1.setBounds(375, 129, 71, 14);
-		frameAlmacen.getContentPane().add(lblNombre_1);
-		
-		JLabel lblCorreoElectrnico_1 = new JLabel("Correo Electrónico:");
-		lblCorreoElectrnico_1.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblCorreoElectrnico_1.setBounds(375, 160, 185, 14);
-		frameAlmacen.getContentPane().add(lblCorreoElectrnico_1);
-		
-		JLabel lblTelfono_1 = new JLabel("Teléfono:");
-		lblTelfono_1.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblTelfono_1.setBounds(375, 191, 154, 14);
-		frameAlmacen.getContentPane().add(lblTelfono_1);
-		
-		JLabel lblLocalizacin_1 = new JLabel("Localización:");
-		lblLocalizacin_1.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblLocalizacin_1.setBounds(375, 222, 154, 14);
-		frameAlmacen.getContentPane().add(lblLocalizacin_1);
-		
-		JLabel lblFechaNacimiento_1 = new JLabel("Fecha de Nacimiento:");
-		lblFechaNacimiento_1.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblFechaNacimiento_1.setBounds(375, 253, 185, 14);
-		frameAlmacen.getContentPane().add(lblFechaNacimiento_1);
-		
-		JLabel lblFechaInicio_1 = new JLabel("Fecha de Inicio:");
-		lblFechaInicio_1.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblFechaInicio_1.setBounds(375, 284, 185, 17);
-		frameAlmacen.getContentPane().add(lblFechaInicio_1);
-		
-		JButton btnEntrar_2 = new JButton("Registrarse");
-		btnEntrar_2.setBackground(new Color(176, 224, 230));
-		btnEntrar_2.setBounds(375, 347, 154, 25);
-		frameAlmacen.getContentPane().add(btnEntrar_2);
-		
-		JButton btnActualizarUsuario_1 = new JButton("Actualizar usuario");
-		btnActualizarUsuario_1.setBackground(new Color(176, 224, 230));
-		btnActualizarUsuario_1.setBounds(615, 347, 176, 25);
-		frameAlmacen.getContentPane().add(btnActualizarUsuario_1);
-		
-		JButton btnEntrar_1_1 = new JButton("Entrar");
-		btnEntrar_1_1.setBackground(new Color(176, 224, 230));
-		btnEntrar_1_1.setBounds(492, 445, 176, 25);
-		frameAlmacen.getContentPane().add(btnEntrar_1_1);
+					}
+	        	}
+	        	
+	        	
+	        });
+
+	        textFieldNombre.addFocusListener(new FocusAdapter() {
+	        	
+	        	
+	            @Override
+	            public void focusGained(FocusEvent e) {
+	                textFieldNombre.setText("");
+	            }
+	        });
+
+	        textFieldCorreo.addFocusListener(new FocusAdapter() {
+	            @Override
+	            public void focusLost(FocusEvent e) {
+	                String correo = textFieldCorreo.getText();
+	                String regex = "^\\w+@\\w+\\.[a-z]{2,3}$";
+	                Pattern pattern = Pattern.compile(regex);
+	                Matcher matcher = pattern.matcher(correo);
+	                if (!matcher.matches()) {
+	               
+	                	textFieldCorreo.setText("Error");
+	                }
+	            }
+
+	            @Override
+	            public void focusGained(FocusEvent e) {
+	            	textFieldCorreo.setText("");
+	            }
+	        });
+	        
+	        
+	        
+	        textFieldTelefono.addFocusListener(new FocusAdapter() {
+	        	@Override
+	        	public void focusLost(FocusEvent e) {
+	        		Pattern pat = Pattern.compile("^[67]\\d{8}$");
+					Matcher mat = pat.matcher(textFieldTelefono.getText());
+					if (!mat.matches()) {
+						textFieldTelefono.setText("Error");
+					
+	        	}
+	        		
+	        	}
+	        
+	        
+
+	        @Override
+	        public void focusGained(FocusEvent e) {
+	        	textFieldTelefono.setText("");
+	        }
+	    });
+	        
+	        textFieldLocalizacion.addFocusListener(new FocusAdapter() {
+	        	@Override
+	        	public void focusLost(FocusEvent e) {
+	        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
+					Matcher mat = pat.matcher(textFieldLocalizacion.getText());
+					if (!mat.matches()) {
+						textFieldLocalizacion.setText("Error");
+					
+	        	}
+	        		
+	        	}
+	        
+	        
+
+	        @Override
+	        public void focusGained(FocusEvent e) {
+	        	textFieldLocalizacion.setText("");
+	        }
+	    });
+
+	        textFieldFechaNac.addFocusListener(new FocusAdapter() {
+	            @Override
+	            public void focusLost(FocusEvent e) {
+	                String fecha = textFieldFechaNac.getText();
+	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	                try {
+	                    LocalDate.parse(fecha, formatter);
+	                } catch (DateTimeParseException ex) {
+	                 
+	                	textFieldFechaNac.setText("Error");
+	                }
+	            }
+
+	            @Override
+	            public void focusGained(FocusEvent e) {
+	            	textFieldFechaNac.setText("");
+	            }
+	        });
+
+	        textFieldFechaInicio.addFocusListener(new FocusAdapter() {
+	            @Override
+	            public void focusLost(FocusEvent e) {
+	                String fecha = textFieldFechaInicio.getText();
+	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	                try {
+	                    LocalDate.parse(fecha, formatter);
+	                } catch (DateTimeParseException ex) {
+	                  
+	                    textFieldFechaInicio.setText("Error");
+	                }
+	            }
+
+	            @Override
+	            public void focusGained(FocusEvent e) {
+	                textFieldFechaInicio.setText("");
+	            }
+	        });
+
+	       
+	        btnEntrar.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	            	
+	            	 
+	                 
+	                try {
+	                	
+	                	String nombre = textFieldNombre.getText();
+	                    String correo = textFieldCorreo.getText();
+	                    String telefono = textFieldTelefono.getText();
+	                    String localizacion = textFieldLocalizacion.getText();
+	                    String fechaNacimiento = textFieldFechaNac.getText();
+	                    String fechaInicio = textFieldFechaInicio.getText();
+	                    
+	                    if (registrado) {
+	                        // Si el usuario ya está registrado, mostrar un mensaje o realizar acciones para actualizar el perfil
+	                        JOptionPane.showMessageDialog(null, "El perfil ya está registrado");
+	                        // Realizar las acciones necesarias para actualizar el perfil
+	                    } else if (nombre.equals("Error")|| correo.equals("Error") || telefono.equals("Error") || localizacion.equals("Error")
+	                    		|| fechaNacimiento.equals("Error")|| fechaInicio.equals("Error")){
+	                    	JOptionPane.showMessageDialog(null, "Hay datos erróneos");
+	                
+	                    }else {
+	                    
+	                        // Realizar el registro del usuario
+	                    	 UsuarioDAO usuarioDao= new UsuarioDAO();
+	                       
+	                       Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento,fechaInicio);
+	                       if(usuarioDao.selectAllUsuarios().isEmpty())
+	                       {
+	                        usuarioDao.insertUsuario(usuario);
+	                        JOptionPane.showMessageDialog(null, "Registro exitoso");
+	                       }
+	                       else
+	                       {
+	                    	   JOptionPane.showMessageDialog(null, "Ya hay un usuario creado ");
+	                       }
+	                       
+	                        registrado = true;
+
+	                       frameAlmacen.setVisible(true);
+	                     tableProductos.setVisible(true);
+	                     tablePedidos.setVisible(true);
+	                   txtId.setVisible(true);
+	                    	  txtNombre.setVisible(true);
+	                    	  txtPrecio.setVisible(true);
+	                    	  txtStock.setVisible(true);
+	                    	 
+	                    	comboBoxSeleccionarCategoria.setVisible(true);
+	                    	 lblTitulo.setVisible(true);
+	                    	  lblNombre.setVisible(true);
+	                    	lblCategoria.setVisible(true);
+	                    	  lblPrecio.setVisible(true);
+	                    	 lblStock.setVisible(true);
+	                    	  lblMostrarDatos.setVisible(true);
+	                    	  lblSeleccionarPeriodoDe.setVisible(true);
+	                    	  lblSeleccionarCategoria.setVisible(true);
+	                    	  comboBoxEscogerCategoria.setVisible(true);
+	                    	  comboBoxSeleccionarTiempo.setVisible(true);
+	                    	  rdbtnMostrarTodos.setVisible(true);
+	                    	  rdbtnMostrarProductosCategoria.setVisible(true);
+	                    	  rdbtnMostrarProductosSinUnidades.setVisible(true);
+	                    	  rdbtnMostrarProductosCaducados.setVisible(true);
+	                    	  btnGuardar.setVisible(true);
+	                    	  btnActualizar.setVisible(true);
+	                    	  btnBorrar.setVisible(true);
+	                    	  scrollPaneProductos.setVisible(true);
+	                    	 textFieldNombre.setVisible(false);
+	                    	  textFieldCorreo.setVisible(false);
+	                    	  textFieldTelefono.setVisible(false);
+	                    	  textFieldLocalizacion.setVisible(false);
+	                    	  textFieldFechaNac.setVisible(false);
+	                    	  textFieldFechaInicio.setVisible(false);
+	                    	 btnEntrar.setVisible(false);
+	                    		  lblNombreUsuario.setVisible(false);
+	                    		  lblCorreoElectrnico.setVisible(false);
+	                    		  lblTelfono.setVisible(false);
+	                    		  lblLocalizacin.setVisible(false);
+	                    		  lblFechaInicio.setVisible(false);
+	                    		  lblFechaNacimiento.setVisible(false);
+	                    		  btnRegistrarse.setVisible(false);
+	                    		  btnActualizarUsuario.setVisible(false);
+	                       
+	                    }
+	                } catch (Exception ex) {
+	                    ex.printStackTrace();
+	                }
+	            }
+	        });
+	     
+	      
 		
 		
 		tableProductos.addMouseListener(new MouseAdapter() {
@@ -1529,283 +1742,7 @@ public class App {
 			}
 		});
 		
-		 class Registro {
-
-		    private JFrame frameRegistro;
-		    private JTextField textFieldNombre;
-		    private JTextField textFieldCorreoElectronico;
-		    private JTextField textFieldTelefono;
-		    private JTextField textFieldLocalizacion;
-		    private JTextField textFieldFechaNacimiento;
-		    private JTextField textFieldFechaInicio;
-		    private boolean registrado = false; // Variable para controlar el estado de registro
-		     UsuarioDAO usuarioDao= new UsuarioDAO();
-		    
-
-		    public Registro() {
-		        initialize();
-		    }
-
-		    private void initialize() {
-		        frameRegistro = new JFrame();
-		        frameRegistro.getContentPane().setBackground(Color.PINK);
-		        frameRegistro.setBounds(100, 100, 627, 659);
-		        frameRegistro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		        frameRegistro.getContentPane().setLayout(null);
-
-		        JLabel lblRegistro = new JLabel("Registro de Usuario");
-		        lblRegistro.setFont(new Font("Dialog", Font.BOLD, 20));
-		        lblRegistro.setBounds(192, 56, 256, 54);
-		        frameRegistro.getContentPane().add(lblRegistro);
-
-		        textFieldNombre = new JTextField();
-		        textFieldNombre.setBounds(310, 136, 164, 20);
-		        frameRegistro.getContentPane().add(textFieldNombre);
-		        textFieldNombre.setColumns(10);
-
-		        textFieldCorreoElectronico = new JTextField();
-		        textFieldCorreoElectronico.setBounds(310, 167, 164, 20);
-		        frameRegistro.getContentPane().add(textFieldCorreoElectronico);
-		        textFieldCorreoElectronico.setColumns(10);
-
-		        textFieldTelefono = new JTextField();
-		        textFieldTelefono.setBounds(310, 198, 164, 20);
-		        frameRegistro.getContentPane().add(textFieldTelefono);
-		        textFieldTelefono.setColumns(10);
-
-		        textFieldLocalizacion = new JTextField();
-		        textFieldLocalizacion.setBounds(310, 232, 164, 20);
-		        frameRegistro.getContentPane().add(textFieldLocalizacion);
-		        textFieldLocalizacion.setColumns(10);
-
-		        textFieldFechaNacimiento = new JTextField();
-		        textFieldFechaNacimiento.setBounds(310, 260, 164, 20);
-		        frameRegistro.getContentPane().add(textFieldFechaNacimiento);
-		        textFieldFechaNacimiento.setColumns(10);
-
-		        textFieldFechaInicio = new JTextField();
-		        textFieldFechaInicio.setBounds(310, 294, 164, 20);
-		        frameRegistro.getContentPane().add(textFieldFechaInicio);
-		        textFieldFechaInicio.setColumns(10);
-
-		        JLabel lblNombre = new JLabel("Nombre:");
-		        lblNombre.setFont(new Font("Dialog", Font.BOLD, 14));
-		        lblNombre.setBounds(70, 142, 71, 14);
-		        frameRegistro.getContentPane().add(lblNombre);
-
-		        JLabel lblCorreoElectrnico = new JLabel("Correo Electrónico:");
-		        lblCorreoElectrnico.setFont(new Font("Dialog", Font.BOLD, 14));
-		        lblCorreoElectrnico.setBounds(70, 173, 185, 14);
-		        frameRegistro.getContentPane().add(lblCorreoElectrnico);
-
-		        JLabel lblTelfono = new JLabel("Teléfono:");
-		        lblTelfono.setFont(new Font("Dialog", Font.BOLD, 14));
-		        lblTelfono.setBounds(70, 204, 154, 14);
-		        frameRegistro.getContentPane().add(lblTelfono);
-
-		        JLabel lblLocalizacin = new JLabel("Localización:");
-		        lblLocalizacin.setFont(new Font("Dialog", Font.BOLD, 14));
-		        lblLocalizacin.setBounds(70, 235, 154, 14);
-		        frameRegistro.getContentPane().add(lblLocalizacin);
-
-		        JLabel lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
-		        lblFechaNacimiento.setFont(new Font("Dialog", Font.BOLD, 14));
-		        lblFechaNacimiento.setBounds(70, 266, 185, 14);
-		        frameRegistro.getContentPane().add(lblFechaNacimiento);
-
-		        JLabel lblFechaInicio = new JLabel("Fecha de Inicio:");
-		        lblFechaInicio.setFont(new Font("Dialog", Font.BOLD, 14));
-		        lblFechaInicio.setBounds(70, 297, 185, 17);
-		        frameRegistro.getContentPane().add(lblFechaInicio);
-		        
-		        
-		        textFieldNombre.addFocusListener(new FocusAdapter() {
-		        	@Override
-		        	public void focusLost(FocusEvent e) {
-		        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
-						Matcher mat = pat.matcher(textFieldNombre.getText());
-						if (!mat.matches()) {
-							textFieldNombre.setText("Error");
-			
-						}
-		        	}
-		        	
-		        	
-		        });
-
-		        textFieldNombre.addFocusListener(new FocusAdapter() {
-		        	
-		        	
-		            @Override
-		            public void focusGained(FocusEvent e) {
-		                textFieldNombre.setText("");
-		            }
-		        });
-
-		        textFieldCorreoElectronico.addFocusListener(new FocusAdapter() {
-		            @Override
-		            public void focusLost(FocusEvent e) {
-		                String correo = textFieldCorreoElectronico.getText();
-		                String regex = "^\\w+@\\w+\\.[a-z]{2,3}$";
-		                Pattern pattern = Pattern.compile(regex);
-		                Matcher matcher = pattern.matcher(correo);
-		                if (!matcher.matches()) {
-		               
-		                    textFieldCorreoElectronico.setText("Error");
-		                }
-		            }
-
-		            @Override
-		            public void focusGained(FocusEvent e) {
-		                textFieldCorreoElectronico.setText("");
-		            }
-		        });
-		        
-		        
-		        
-		        textFieldTelefono.addFocusListener(new FocusAdapter() {
-		        	@Override
-		        	public void focusLost(FocusEvent e) {
-		        		Pattern pat = Pattern.compile("^[67]\\d{8}$");
-						Matcher mat = pat.matcher(textFieldTelefono.getText());
-						if (!mat.matches()) {
-							textFieldTelefono.setText("Error");
-						
-		        	}
-		        		
-		        	}
-		        
-		        
-
-		        @Override
-		        public void focusGained(FocusEvent e) {
-		        	textFieldTelefono.setText("");
-		        }
-		    });
-		        
-		        textFieldLocalizacion.addFocusListener(new FocusAdapter() {
-		        	@Override
-		        	public void focusLost(FocusEvent e) {
-		        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
-						Matcher mat = pat.matcher(textFieldLocalizacion.getText());
-						if (!mat.matches()) {
-							textFieldLocalizacion.setText("Error");
-						
-		        	}
-		        		
-		        	}
-		        
-		        
-
-		        @Override
-		        public void focusGained(FocusEvent e) {
-		        	textFieldLocalizacion.setText("");
-		        }
-		    });
-
-		        textFieldFechaNacimiento.addFocusListener(new FocusAdapter() {
-		            @Override
-		            public void focusLost(FocusEvent e) {
-		                String fecha = textFieldFechaNacimiento.getText();
-		                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		                try {
-		                    LocalDate.parse(fecha, formatter);
-		                } catch (DateTimeParseException ex) {
-		                 
-		                    textFieldFechaNacimiento.setText("Error");
-		                }
-		            }
-
-		            @Override
-		            public void focusGained(FocusEvent e) {
-		                textFieldFechaNacimiento.setText("");
-		            }
-		        });
-
-		        textFieldFechaInicio.addFocusListener(new FocusAdapter() {
-		            @Override
-		            public void focusLost(FocusEvent e) {
-		                String fecha = textFieldFechaInicio.getText();
-		                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-		                try {
-		                    LocalDate.parse(fecha, formatter);
-		                } catch (DateTimeParseException ex) {
-		                  
-		                    textFieldFechaInicio.setText("Error");
-		                }
-		            }
-
-		            @Override
-		            public void focusGained(FocusEvent e) {
-		                textFieldFechaInicio.setText("");
-		            }
-		        });
-
-		        JButton btnEntrar = new JButton("Registrarse");
-		        btnEntrar.setBackground(new Color(176, 224, 230));
-		        btnEntrar.addActionListener(new ActionListener() {
-		            public void actionPerformed(ActionEvent e) {
-		            	
-		            	 
-		                 
-		                try {
-		                	
-		                	String nombre = textFieldNombre.getText();
-		                    String correo = textFieldCorreoElectronico.getText();
-		                    String telefono = textFieldTelefono.getText();
-		                    String localizacion = textFieldLocalizacion.getText();
-		                    String fechaNacimiento = textFieldFechaNacimiento.getText();
-		                    String fechaInicio = textFieldFechaInicio.getText();
-		                    
-		                    if (registrado) {
-		                        // Si el usuario ya está registrado, mostrar un mensaje o realizar acciones para actualizar el perfil
-		                        JOptionPane.showMessageDialog(null, "El perfil ya está registrado");
-		                        // Realizar las acciones necesarias para actualizar el perfil
-		                    } else if (nombre.equals("Error")|| correo.equals("Error") || telefono.equals("Error") || localizacion.equals("Error")
-		                    		|| fechaNacimiento.equals("Error")|| fechaInicio.equals("Error")){
-		                    	JOptionPane.showMessageDialog(null, "Hay datos erróneos");
-		                
-		                    }else {
-		                    
-		                        // Realizar el registro del usuario
-		                    	 UsuarioDAO usuarioDao= new UsuarioDAO();
-		                       
-		                       Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento,fechaInicio);
-		                       if(usuarioDao.selectAllUsuarios().isEmpty())
-		                       {
-		                        usuarioDao.insertUsuario(usuario);
-		                        JOptionPane.showMessageDialog(null, "Registro exitoso");
-		                       }
-		                       else
-		                       {
-		                    	   JOptionPane.showMessageDialog(null, "Ya hay un usuario creado ");
-		                       }
-		                       
-		                        registrado = true;
-
-		                        
-		                       
-		                    }
-		                } catch (Exception ex) {
-		                    ex.printStackTrace();
-		                }
-		            }
-		        });
-		        btnEntrar.setBounds(70, 360, 154, 25);
-		        frameRegistro.getContentPane().add(btnEntrar);
-		        
-		        JButton btnActualizarUsuario = new JButton("Actualizar usuario");
-		        btnActualizarUsuario.setBackground(new Color(176, 224, 230));
-		        btnActualizarUsuario.setBounds(310, 360, 176, 25);
-		        frameRegistro.getContentPane().add(btnActualizarUsuario);
-		        
-		        JButton btnEntrar_1 = new JButton("Entrar");
-		        btnEntrar_1.setBackground(new Color(176, 224, 230));
-		        btnEntrar_1.setBounds(187, 458, 176, 25);
-		        frameRegistro.getContentPane().add(btnEntrar_1);
-		    }
-		}
 		 
-
 	}
-}
+	
+	}
