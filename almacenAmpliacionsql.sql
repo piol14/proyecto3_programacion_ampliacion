@@ -100,6 +100,35 @@ CREATE TABLE IF NOT EXISTS `almacen`.`Usuario` (
   PRIMARY KEY (`idUsuario`))
 ENGINE = InnoDB;
 
+INSERT INTO `oferta` (`idoferta`, `oferta`) VALUES
+(1,1),
+(2,0.05),
+(3,0.1),
+(4,0.15),
+(5,0.2),
+(6,0.25),
+(7,0.3),
+(8,0.35),
+(9,0.4),
+(10,0.45),
+(11,0.5),
+(12,0.55),
+(13,0.6),
+(14,0.65),
+(15,0.7),
+(16,0.75);
+
+INSERT INTO `categoria` (`id`, `nombre`) VALUES
+(1, 'Bebidas'),
+(2, 'Condimentos'),
+(3, 'Repostería'),
+(4, 'Huevos y Lácteos'),
+(5, 'Granos y Cereales'),
+(6, 'Carnes'),
+(7, 'Frutas y Verduras'),
+(8, 'Pescado y Marisco'),
+(9, 'Congelados'),
+(10, 'Limpieza');
 
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
