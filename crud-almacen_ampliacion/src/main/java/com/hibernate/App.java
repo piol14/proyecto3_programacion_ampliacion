@@ -67,6 +67,7 @@ public class App {
 	CategoriaDAO categoriaDAO = new CategoriaDAO();
 	static OfertaDAO ofertaDAO = new OfertaDAO();
 	
+	
 
 	private JFrame frameAlmacen;
 	private JTable tableProductos;
@@ -83,6 +84,7 @@ public class App {
 	private JTextField textFieldLocalizacion;
 	private JTextField textFieldFechaNac;
 	private JTextField textFieldFechaInicio;
+	
 	
 	
 	
@@ -702,73 +704,98 @@ public class App {
 		lblTitulo.setForeground(new Color(255, 153, 102));
 		lblTitulo.setBackground(new Color(0, 153, 153));
 		lblTitulo.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 25));
-		lblTitulo.setBounds(492, 11, 403, 31);
+		lblTitulo.setBounds(226, 11, 403, 31);
 		frameAlmacen.getContentPane().add(lblTitulo);
+		
+		JButton btnBorrarUsuario = new JButton("Borrar usuario");
+		btnBorrarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				
+				
+				usuarioDao.deleteUsuario(6);
+				
+				
+				JOptionPane.showMessageDialog(null, "Usuario borrado correctamente");
+				
+				textFieldNombre.setText("");
+                textFieldCorreo.setText("");
+                textFieldTelefono.setText("");
+                textFieldLocalizacion.setText("");
+                textFieldFechaNac.setText("");
+                textFieldFechaInicio.setText("");
+			}
+		});
+		btnBorrarUsuario.setBackground(new Color(245, 222, 179));
+		btnBorrarUsuario.setBounds(702, 348, 117, 25);
+		frameAlmacen.getContentPane().add(btnBorrarUsuario);
 		
 		textFieldNombre = new JTextField();
 		textFieldNombre.setColumns(10);
-		textFieldNombre.setBounds(615, 123, 164, 20);
+		textFieldNombre.setBounds(512, 118, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldNombre);
 		
 		textFieldCorreo = new JTextField();
 		textFieldCorreo.setColumns(10);
-		textFieldCorreo.setBounds(615, 154, 164, 20);
+		textFieldCorreo.setBounds(512, 149, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldCorreo);
 		
 		textFieldTelefono = new JTextField();
 		textFieldTelefono.setColumns(10);
-		textFieldTelefono.setBounds(615, 185, 164, 20);
+		textFieldTelefono.setBounds(512, 180, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldTelefono);
 		
 		textFieldLocalizacion = new JTextField();
 		textFieldLocalizacion.setColumns(10);
-		textFieldLocalizacion.setBounds(615, 219, 164, 20);
+		textFieldLocalizacion.setBounds(512, 214, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldLocalizacion);
 		
 		textFieldFechaNac = new JTextField();
 		textFieldFechaNac.setColumns(10);
-		textFieldFechaNac.setBounds(615, 247, 164, 20);
+		textFieldFechaNac.setBounds(512, 242, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldFechaNac);
 		
 		textFieldFechaInicio = new JTextField();
 		textFieldFechaInicio.setColumns(10);
-		textFieldFechaInicio.setBounds(615, 281, 164, 20);
+		textFieldFechaInicio.setBounds(512, 276, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldFechaInicio);
 		
 		JLabel lblNombreUsuario = new JLabel("Nombre:");
 		lblNombreUsuario.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblNombreUsuario.setBounds(375, 129, 71, 14);
+		lblNombreUsuario.setBounds(272, 124, 71, 14);
 		frameAlmacen.getContentPane().add(lblNombreUsuario);
 		
 		JLabel lblCorreoElectrnico = new JLabel("Correo Electrónico:");
 		lblCorreoElectrnico.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblCorreoElectrnico.setBounds(375, 160, 185, 14);
+		lblCorreoElectrnico.setBounds(272, 155, 185, 14);
 		frameAlmacen.getContentPane().add(lblCorreoElectrnico);
 		
 		JLabel lblTelfono = new JLabel("Teléfono:");
 		lblTelfono.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblTelfono.setBounds(375, 191, 154, 14);
+		lblTelfono.setBounds(272, 186, 154, 14);
 		frameAlmacen.getContentPane().add(lblTelfono);
 		
 		JLabel lblLocalizacin = new JLabel("Localización:");
 		lblLocalizacin.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblLocalizacin.setBounds(375, 222, 154, 14);
+		lblLocalizacin.setBounds(272, 217, 154, 14);
 		frameAlmacen.getContentPane().add(lblLocalizacin);
 		
 		JLabel lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
 		lblFechaNacimiento.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblFechaNacimiento.setBounds(375, 253, 185, 14);
+		lblFechaNacimiento.setBounds(272, 248, 185, 14);
 		frameAlmacen.getContentPane().add(lblFechaNacimiento);
 		
 		JLabel lblFechaInicio = new JLabel("Fecha de Inicio:");
 		lblFechaInicio.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblFechaInicio.setBounds(375, 284, 185, 17);
+		lblFechaInicio.setBounds(272, 279, 185, 17);
 		frameAlmacen.getContentPane().add(lblFechaInicio);
+		
 		
 		JButton btnRegistrarse = new JButton("Registrarse");
 		btnRegistrarse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				 try {
+					 
+					
 	                    String nombre = textFieldNombre.getText();
 	                    String correo = textFieldCorreo.getText();
 	                    String telefono = textFieldTelefono.getText();
@@ -791,7 +818,7 @@ public class App {
 	                        } else {
 	                        	
 	                            // Realizar el registro del usuario
-	                            UsuarioDAO usuarioDao = new UsuarioDAO();
+	                           
 	                            Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento, fechaInicio);
 	                            if (usuarioDao.selectAllUsuarios().isEmpty()) {
 	                                usuarioDao.insertUsuario(usuario);
@@ -816,18 +843,59 @@ public class App {
 	                }
 			}
 		});
-		btnRegistrarse.setBackground(new Color(255, 228, 196));
-		btnRegistrarse.setBounds(375, 347, 154, 25);
+		
+		btnRegistrarse.setBackground(new Color(245, 222, 179));
+		btnRegistrarse.setBounds(166, 348, 117, 25);
 		frameAlmacen.getContentPane().add(btnRegistrarse);
 		
 		JButton btnActualizarUsuario = new JButton("Actualizar usuario");
-		btnActualizarUsuario.setBackground(new Color(255, 228, 196));
-		btnActualizarUsuario.setBounds(615, 347, 176, 25);
+		btnActualizarUsuario.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			try {
+				
+				 Usuario usuario = usuarioDao.selectUsuarioByID(6);
+				 
+				 if(usuario != null) {
+        		  
+        		  String nombre = textFieldNombre.getText();
+                  String correo = textFieldCorreo.getText();
+                  String telefono = textFieldTelefono.getText();
+                  String localizacion = textFieldLocalizacion.getText();
+                  String fechaNacimiento = textFieldFechaNac.getText();
+                  String fechaInicio = textFieldFechaInicio.getText();
+                  
+                  usuario.setNombre(nombre);
+                  usuario.setCorreoElectronico(correo);
+                  usuario.setTelefono(telefono);
+                  usuario.setLocalizacion(localizacion);
+                  usuario.setFechaNacimiento(fechaNacimiento);
+                  usuario.setFechaInicio(fechaInicio);
+                  
+                  
+        		usuarioDao.updateUsuario(usuario);
+        		JOptionPane.showMessageDialog(null,
+						"Usuario actualizado correctamente");
+        		
+			}else {
+				JOptionPane.showMessageDialog(null,
+						"No hay ningun usuario creado");
+				
+			}
+			}
+        		catch(IllegalStateException e3) {
+        			JOptionPane.showMessageDialog(null,
+							"No hay ningun usuario creado");
+        		}
+            	
+			}
+		});
+		btnActualizarUsuario.setBackground(new Color(245, 222, 179));
+		btnActualizarUsuario.setBounds(512, 348, 154, 25);
 		frameAlmacen.getContentPane().add(btnActualizarUsuario);
 		
 		JButton btnEntrar = new JButton("Entrar");
-		btnEntrar.setBackground(new Color(255, 228, 196));
-		btnEntrar.setBounds(492, 445, 176, 25);
+		btnEntrar.setBackground(new Color(245, 222, 179));
+		btnEntrar.setBounds(336, 441, 132, 25);
 		frameAlmacen.getContentPane().add(btnEntrar);
 		
 
@@ -1170,7 +1238,7 @@ public class App {
 			comboBoxSeleccionarCategoria.addItem(cg.getNombreCategoria());
 		}
 
-		comboBoxSeleccionarCategoria.setBounds(433, 400, 215, 24);
+		comboBoxSeleccionarCategoria.setBounds(371, 406, 215, 24);
 		frameAlmacen.getContentPane().add(comboBoxSeleccionarCategoria);
 
 		JLabel lblSeleccionarCategoria = new JLabel("Seleccionar Categoria");
@@ -1516,6 +1584,8 @@ public class App {
 		lblMostrarDatos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblMostrarDatos.setBounds(10, 435, 284, 31);
 		frameAlmacen.getContentPane().add(lblMostrarDatos);
+		
+		JButton btnMostrarUsuario = new JButton("Mostrar usuario");
 
 		List<Categoria> Categoria = categoriaDAO.selectAllCategoria();
 		for (Categoria cg : Categoria) {
@@ -1526,12 +1596,15 @@ public class App {
 		
 		JLabel lblRegistro_1 = new JLabel("Registro de Usuario");
 		lblRegistro_1.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblRegistro_1.setBounds(497, 43, 256, 54);
+		lblRegistro_1.setBounds(371, 53, 256, 54);
 		frameAlmacen.getContentPane().add(lblRegistro_1);
 		
 		JButton btnNewButton = new JButton("Cerrar Sesion");
+		btnNewButton.setBackground(new Color(245, 222, 179));
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				btnMostrarUsuario.setVisible(false);
+				 btnBorrarUsuario.setVisible(true);
 				textFieldNombre.setVisible(true);
 				textFieldCorreo.setVisible(true);
 				textFieldTelefono.setVisible(true);
@@ -1577,8 +1650,36 @@ public class App {
 
 			}
 		});
-		btnNewButton.setBounds(644, 634, 132, 23);
+		btnNewButton.setBounds(602, 634, 132, 23);
 		frameAlmacen.getContentPane().add(btnNewButton);
+		
+		
+		btnMostrarUsuario.addActionListener(new ActionListener() {
+		    public void actionPerformed(ActionEvent e) {
+		        try {
+		        	
+		            List<Usuario> selectUsuarios = usuarioDao.selectAllUsuarios();
+
+		            for (Usuario u : selectUsuarios) {
+		                textFieldNombre.setText(u.getNombre());
+		                textFieldCorreo.setText(u.getCorreoElectronico());
+		                textFieldTelefono.setText(u.getTelefono());
+		                textFieldLocalizacion.setText(u.getLocalizacion());
+		                textFieldFechaNac.setText(u.getFechaNacimiento());
+		                textFieldFechaInicio.setText(u.getFechaInicio());
+		            }
+
+		        } catch(Exception e4) {
+		        	
+		        }
+		        
+		    }
+		});
+		btnMostrarUsuario.setBackground(new Color(245, 222, 179));
+		btnMostrarUsuario.setBounds(336, 348, 132, 25);
+		frameAlmacen.getContentPane().add(btnMostrarUsuario);
+		
+		
 		
 		 textFieldNombre.addFocusListener(new FocusAdapter() {
 	        	@Override
@@ -1705,6 +1806,11 @@ public class App {
 	       
 	        btnEntrar.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
+	            
+	            	List<Usuario> selectUsuarios = usuarioDao.selectAllUsuarios();
+
+	            	
+	            	btnMostrarUsuario.setVisible(false);
 	            	textFieldNombre.setVisible(false);
               	  textFieldCorreo.setVisible(false);
               	  textFieldTelefono.setVisible(false);
@@ -1712,6 +1818,7 @@ public class App {
               	  textFieldFechaNac.setVisible(false);
               	  textFieldFechaInicio.setVisible(false);
               	 btnEntrar.setVisible(false);
+              	 btnBorrarUsuario.setVisible(false);
               		  lblNombreUsuario.setVisible(false);
               		  lblCorreoElectrnico.setVisible(false);
               		  lblTelfono.setVisible(false);
