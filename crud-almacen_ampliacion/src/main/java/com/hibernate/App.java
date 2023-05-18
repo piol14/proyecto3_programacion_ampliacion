@@ -19,9 +19,11 @@ import javax.swing.table.TableModel;
 import com.hibernate.dao.CategoriaDAO;
 import com.hibernate.dao.OfertaDAO;
 import com.hibernate.dao.ProductoDAO;
+import com.hibernate.dao.UsuarioDAO;
 import com.hibernate.model.Categoria;
 import com.hibernate.model.Oferta;
 import com.hibernate.model.Producto;
+import com.hibernate.model.Usuario;
 
 import java.awt.Component;
 import javax.swing.JTextField;
@@ -33,13 +35,19 @@ import javax.swing.JButton;
 import javax.swing.UIManager;
 import java.awt.SystemColor;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusAdapter;
+import java.awt.event.FocusEvent;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.DayOfWeek;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import javax.swing.DefaultComboBoxModel;
@@ -70,9 +78,12 @@ public class App {
 	static  LocalDate ultimaFechaEjecucion;
 
 	ButtonGroup g1 = new ButtonGroup();
-	private JTextField textFieldNombreProveedor;
-	private JTextField textFieldCantidad;
-	private JTextField textFieldPrecioPedido;
+	private JTextField textField;
+	private JTextField textField_1;
+	private JTextField textField_2;
+	private JTextField textField_3;
+	private JTextField textField_4;
+	private JTextField textField_5;
 	
 	 static double ComprobarOferta (Producto producto)
 	 {
@@ -661,7 +672,7 @@ public class App {
 	private void initialize() {
 
 		JComboBox comboBoxSeleccionarCategoria = new JComboBox();
-
+		comboBoxSeleccionarCategoria.setVisible(false);
 		frameAlmacen = new JFrame();
 		frameAlmacen.getContentPane().setBackground(new Color(51, 204, 204));
 		frameAlmacen.setBackground(new Color(50, 204, 204));
@@ -675,30 +686,6 @@ public class App {
 		lblTitulo.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 25));
 		lblTitulo.setBounds(492, 11, 403, 31);
 		frameAlmacen.getContentPane().add(lblTitulo);
-		
-
-		textFieldCantidad = new JTextField();
-		textFieldCantidad.setBounds(892, 404, 215, 20);
-		frameAlmacen.getContentPane().add(textFieldCantidad);
-		textFieldCantidad.setColumns(10);
-		
-		JLabel lblCantidadProducto = new JLabel("Cantidad Producto");
-		lblCantidadProducto.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblCantidadProducto.setBounds(702, 410, 180, 14);
-		frameAlmacen.getContentPane().add(lblCantidadProducto);
-		
-		textFieldPrecioPedido = new JTextField();
-		textFieldPrecioPedido.setEditable(false);
-		textFieldPrecioPedido.setText("");
-		textFieldPrecioPedido.setColumns(10);
-		textFieldPrecioPedido.setBounds(892, 379, 215, 19);
-		frameAlmacen.getContentPane().add(textFieldPrecioPedido);
-		
-		JLabel lblPrecioPedido = new JLabel("Precio pedido");
-		lblPrecioPedido.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblPrecioPedido.setBounds(702, 383, 117, 15);
-		frameAlmacen.getContentPane().add(lblPrecioPedido);
-		
 
 		DefaultTableModel modelTabla = new DefaultTableModel() {
 
@@ -725,7 +712,7 @@ public class App {
 		modelTabla.addColumn("Oferta");
 		
 		tableProductos = new JTable(modelTabla);
-
+		tableProductos.setVisible(false);
 		tableProductos.setBounds(26, 251, 489, -159);
 		frameAlmacen.getContentPane().add(tableProductos);
 
@@ -741,61 +728,61 @@ public class App {
 		JScrollPane scrollPaneProductos = new JScrollPane(tableProductos);
 		scrollPaneProductos.setBounds(10, 43, 619, 220);
 		frameAlmacen.getContentPane().add(scrollPaneProductos);
-
+		scrollPaneProductos.setVisible(false);
 		JLabel lblDatos = new JLabel("INTRODUCIR DATOS");
 		lblDatos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblDatos.setBounds(10, 263, 284, 31);
 		frameAlmacen.getContentPane().add(lblDatos);
-
+		lblDatos.setVisible(false);
 		JLabel lblId = new JLabel("ID");
 		lblId.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblId.setBounds(10, 305, 117, 15);
 		frameAlmacen.getContentPane().add(lblId);
-
+		lblId.setVisible(false);
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblNombre.setBounds(10, 331, 117, 15);
 		frameAlmacen.getContentPane().add(lblNombre);
-
+		lblNombre.setVisible(false);
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblCategoria.setBounds(10, 357, 117, 15);
 		frameAlmacen.getContentPane().add(lblCategoria);
-
+		lblCategoria.setVisible(false);
 		JLabel lblPrecio = new JLabel("Precio");
 		lblPrecio.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblPrecio.setBounds(10, 383, 117, 15);
 		frameAlmacen.getContentPane().add(lblPrecio);
-
+		lblPrecio.setVisible(false);
 		JLabel lblStock = new JLabel("Stock");
 		lblStock.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblStock.setBounds(10, 409, 117, 15);
 		frameAlmacen.getContentPane().add(lblStock);
-
+		lblStock.setVisible(false);
 		txtId = new JTextField();
 		txtId.setEnabled(false);
 		txtId.setBounds(137, 301, 151, 19);
 		frameAlmacen.getContentPane().add(txtId);
 		txtId.setColumns(10);
-
+		txtId.setVisible(false);
 		txtNombre = new JTextField();
 		txtNombre.setBounds(137, 327, 215, 19);
 		frameAlmacen.getContentPane().add(txtNombre);
 		txtNombre.setColumns(10);
-
+		txtNombre.setVisible(false);
 		txtPrecio = new JTextField();
 		txtPrecio.setText("");
 		txtPrecio.setBounds(137, 379, 151, 19);
 		frameAlmacen.getContentPane().add(txtPrecio);
 		txtPrecio.setColumns(10);
-
+		txtPrecio.setVisible(false);
 		txtStock = new JTextField();
 		txtStock.setBounds(137, 405, 151, 19);
 		frameAlmacen.getContentPane().add(txtStock);
 		txtStock.setColumns(10);
-		
+		txtStock.setVisible(false);
 		DefaultTableModel modelPedidos = new DefaultTableModel() {
-
+			
 			@Override
 			/**
 			 * Este metodo sirve para que las celdas de la tabla no sean editables
@@ -819,78 +806,31 @@ public class App {
 
 		
 		tablePedidos = new JTable(modelPedidos);
-
+		tablePedidos.setVisible(false);
 		tablePedidos.setBounds(26, 251, 489, -159);
 		frameAlmacen.getContentPane().add(tablePedidos);
 		
 		
 		
 		JScrollPane scrollPanePedidos = new JScrollPane(tablePedidos);
-		scrollPanePedidos.setBounds(697, 43, 619, 220);
+		scrollPanePedidos.setBounds(808, 100, 619, 220);
 		frameAlmacen.getContentPane().add(scrollPanePedidos);
+		scrollPanePedidos.setVisible(false);
 		
-		textFieldNombreProveedor = new JTextField();
-		textFieldNombreProveedor.setBounds(892, 326, 215, 20);
-		frameAlmacen.getContentPane().add(textFieldNombreProveedor);
-		textFieldNombreProveedor.setColumns(10);
-		
-		JLabel lblNombreProveedor = new JLabel("Nombre Proveedor");
-		lblNombreProveedor.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblNombreProveedor.setBounds(702, 332, 180, 14);
-		frameAlmacen.getContentPane().add(lblNombreProveedor);
-		
-		JComboBox comboBoxProductos = new JComboBox();
-		
-				List<Producto> Productos = productoDAO.selectAllProductos();
-				for (Producto pr : Productos) {
-					comboBoxProductos.addItem(pr.getIdProducto());
-				}
-		
-		comboBoxProductos.setBounds(892, 352, 215, 20);
-		frameAlmacen.getContentPane().add(comboBoxProductos);
-		
-		JLabel lblProductosEnStock = new JLabel("Productos en Stock");
-		lblProductosEnStock.setFont(new Font("Tahoma", Font.BOLD, 15));
-		lblProductosEnStock.setBounds(702, 358, 180, 14);
-		frameAlmacen.getContentPane().add(lblProductosEnStock);
-		
-		JButton btnGuardarPedido = new JButton("Guardar Pedido");
+				
 		ImageIcon imagenGuardar4 = new ImageIcon(App.class.getResource("/imagenes/guardar.png"));
 		Image imagenRedimensionada4 = imagenGuardar4.getImage().getScaledInstance(LONGITUD_BTN_GUARDAR,
 				ALTURA_BTN_GUARDAR, java.awt.Image.SCALE_SMOOTH);
-		btnGuardarPedido.setIcon(new ImageIcon(imagenRedimensionada4));
-		btnGuardarPedido.setBackground(new Color(245, 222, 179));
-		btnGuardarPedido.setBounds(697, 634, 180, 25);
-		frameAlmacen.getContentPane().add(btnGuardarPedido);
-		
-		
-		
-		
-		
-		JButton btnActualizarPedido = new JButton("Actualizar Pedido");	
 		ImageIcon imagenActualizarPedido = new ImageIcon(App.class.getResource("/imagenes/actualizar.png"));
 		Image imagenRedimensionada6 = imagenActualizarPedido.getImage().getScaledInstance(LONGITUD_BTN_ACTUALIZAR,
 				ALTURA_BTN_ACTUALIZAR, java.awt.Image.SCALE_SMOOTH);
-		btnActualizarPedido.setIcon(new ImageIcon(imagenRedimensionada6));
-		btnActualizarPedido.setBackground(new Color(245, 222, 179));
-		btnActualizarPedido.setBounds(910, 634, 191, 25);
-		frameAlmacen.getContentPane().add(btnActualizarPedido);
-		
-		JButton btnBorrarPedido = new JButton("Borrar Pedido");
 		ImageIcon imagenBorrar2 = new ImageIcon(App.class.getResource("/imagenes/borrar.png"));
 		Image imagenRedimensionada5 = imagenBorrar2.getImage().getScaledInstance(LONGITUD_BTN_BORRAR, ALTURA_BTN_BORRAR,
 				java.awt.Image.SCALE_SMOOTH);
-		btnBorrarPedido.setBackground(new Color(245, 222, 179));
-		btnBorrarPedido.setBounds(1145, 634, 171, 25);
-	
-		
-	
-		btnBorrarPedido.setIcon(new ImageIcon(imagenRedimensionada5));
-		frameAlmacen.getContentPane().add(btnBorrarPedido);
 
 	
 		JComboBox comboBoxSeleccionarTiempo = new JComboBox();
-		
+		 comboBoxSeleccionarTiempo.setVisible(false);
 		/**
 		 * Evento sobre el comboBoxSeleccionarPeriodo utilizado seleccionar el periodo de tiempo para saber los productos que 
 		 * caducarán en 1 dia, 1 año, 1 mes o 4 años
@@ -991,11 +931,11 @@ public class App {
 		comboBoxSeleccionarTiempo
 				.setModel(new DefaultComboBoxModel(new String[] { "1 dia", "1 mes", "1 año ", "4 años" }));
 		comboBoxSeleccionarTiempo.setEnabled(false);
-		comboBoxSeleccionarTiempo.setBounds(413, 588, 215, 24);
+		comboBoxSeleccionarTiempo.setBounds(433, 482, 215, 24);
 		frameAlmacen.getContentPane().add(comboBoxSeleccionarTiempo);
 		
 		JRadioButton rdbtnMostrarProductosCaducados = new JRadioButton("Mostrar productos que van a caducar");
-		
+		 rdbtnMostrarProductosCaducados.setVisible(false);
 		/**
 		 * Evento sobre el rdbtnMostrarProductosCaducados utilizado para mostrar los productos caducados según el periodo 
 		 * de tiempo seleccionado en el comboBoxSeleccionarPeriodo
@@ -1056,8 +996,9 @@ public class App {
 		lblSeleccionarPeriodoDe.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblSeleccionarPeriodoDe.setBounds(137, 593, 252, 19);
 		frameAlmacen.getContentPane().add(lblSeleccionarPeriodoDe);
-
+		 lblSeleccionarPeriodoDe.setVisible(false);
 		JRadioButton rdbtnMostrarTodos = new JRadioButton("Mostrar todos los productos", true);
+		rdbtnMostrarTodos.setVisible(false);
 		rdbtnMostrarTodos.addActionListener(new ActionListener() {
 			/**
 			 * Esta funcion muestra todos los productos de la lista Productos cuando le das al
@@ -1131,15 +1072,16 @@ public class App {
 			comboBoxSeleccionarCategoria.addItem(cg.getNombreCategoria());
 		}
 
-		comboBoxSeleccionarCategoria.setBounds(413, 506, 215, 24);
+		comboBoxSeleccionarCategoria.setBounds(433, 400, 215, 24);
 		frameAlmacen.getContentPane().add(comboBoxSeleccionarCategoria);
 
 		JLabel lblSeleccionarCategoria = new JLabel("Seleccionar Categoria");
 		lblSeleccionarCategoria.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblSeleccionarCategoria.setBounds(137, 511, 188, 19);
 		frameAlmacen.getContentPane().add(lblSeleccionarCategoria);
-
+		lblSeleccionarCategoria.setVisible(false);
 		JRadioButton rdbtnMostrarProductosCategoria = new JRadioButton("Mostrar productos por categoría");
+		rdbtnMostrarProductosCategoria.setVisible(false);
 		/**
 		 * Esta funcion habilita el comboBox comboBoxSeleccionarCategoria para que
 		 * muestre los productos segun la categoria seleccionada
@@ -1175,6 +1117,7 @@ public class App {
 
 		JRadioButton rdbtnMostrarProductosSinUnidades = new JRadioButton(
 				"Mostrar productos de los que ya no quede unidades");
+		 rdbtnMostrarProductosSinUnidades.setVisible(false);
 		rdbtnMostrarProductosSinUnidades.addActionListener(new ActionListener() {
 			/**
 			 * Esta funcion muestra los productos sin stock al darle al radioButton
@@ -1208,8 +1151,9 @@ public class App {
 		g1.add(rdbtnMostrarProductosCaducados);
 
 		JComboBox comboBoxEscogerCategoria = new JComboBox();
-
+		comboBoxEscogerCategoria.setVisible(false);
 		JButton btnGuardar = new JButton("Guardar");
+		 btnGuardar.setVisible(false);
 		btnGuardar.addActionListener(new ActionListener() {
 			/**
 			 * Esta funcion inserta un producto cuando los datos están introducidos
@@ -1256,11 +1200,8 @@ public class App {
 						modelTabla.addRow(fila);
 					}
 					
-					comboBoxProductos.removeAllItems();
-					List<Producto> Productos = productoDAO.selectAllProductos();
-					for (Producto pr : Productos) {
-						comboBoxProductos.addItem(pr.getIdProducto());
-					}
+					
+					
 					
 					JOptionPane.showMessageDialog(null, "Producto añadido");
 					txtNombre.setText("");
@@ -1355,6 +1296,7 @@ public class App {
 		frameAlmacen.getContentPane().add(btnGuardar);
 
 		JButton btnActualizar = new JButton("Actualizar");
+		btnActualizar.setVisible(false);
 		btnActualizar.addActionListener(new ActionListener() {
 			/**
 			 * Esta funcion actualiza un producto tras seleccionarlo, cambiar un valor de un
@@ -1431,6 +1373,7 @@ public class App {
 		frameAlmacen.getContentPane().add(btnActualizar);
 
 		JButton btnBorrar = new JButton("Borrar");
+		btnBorrar.setVisible(false);
 		btnBorrar.addActionListener(new ActionListener() {
 			/**
 			 * Este evento borra el producto seleccionando cuando le das al boton de borrar
@@ -1445,11 +1388,8 @@ public class App {
 
 					productoDAO.deleteProducto(idProducto);
 					
-					comboBoxProductos.removeAllItems();
-					List<Producto> Productos = productoDAO.selectAllProductos();
-					for (Producto pr : Productos) {
-						comboBoxProductos.addItem(pr.getIdProducto());
-					}
+					
+					
 					
 
 					modelTabla.removeRow(filaSeleccionada);
@@ -1474,6 +1414,7 @@ public class App {
 		frameAlmacen.getContentPane().add(btnBorrar);
 
 		JLabel lblMostrarDatos = new JLabel("MOSTRAR DATOS");
+		lblMostrarDatos.setVisible(false);
 		lblMostrarDatos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblMostrarDatos.setBounds(10, 435, 284, 31);
 		frameAlmacen.getContentPane().add(lblMostrarDatos);
@@ -1484,6 +1425,86 @@ public class App {
 		}
 		comboBoxEscogerCategoria.setBounds(137, 353, 215, 19);
 		frameAlmacen.getContentPane().add(comboBoxEscogerCategoria);
+		
+		JLabel lblRegistro_1 = new JLabel("Registro de Usuario");
+		lblRegistro_1.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblRegistro_1.setBounds(497, 43, 256, 54);
+		frameAlmacen.getContentPane().add(lblRegistro_1);
+		
+		textField = new JTextField();
+		textField.setColumns(10);
+		textField.setBounds(615, 123, 164, 20);
+		frameAlmacen.getContentPane().add(textField);
+		
+		textField_1 = new JTextField();
+		textField_1.setColumns(10);
+		textField_1.setBounds(615, 154, 164, 20);
+		frameAlmacen.getContentPane().add(textField_1);
+		
+		textField_2 = new JTextField();
+		textField_2.setColumns(10);
+		textField_2.setBounds(615, 185, 164, 20);
+		frameAlmacen.getContentPane().add(textField_2);
+		
+		textField_3 = new JTextField();
+		textField_3.setColumns(10);
+		textField_3.setBounds(615, 219, 164, 20);
+		frameAlmacen.getContentPane().add(textField_3);
+		
+		textField_4 = new JTextField();
+		textField_4.setColumns(10);
+		textField_4.setBounds(615, 247, 164, 20);
+		frameAlmacen.getContentPane().add(textField_4);
+		
+		textField_5 = new JTextField();
+		textField_5.setColumns(10);
+		textField_5.setBounds(615, 281, 164, 20);
+		frameAlmacen.getContentPane().add(textField_5);
+		
+		JLabel lblNombre_1 = new JLabel("Nombre:");
+		lblNombre_1.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblNombre_1.setBounds(375, 129, 71, 14);
+		frameAlmacen.getContentPane().add(lblNombre_1);
+		
+		JLabel lblCorreoElectrnico_1 = new JLabel("Correo Electrónico:");
+		lblCorreoElectrnico_1.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblCorreoElectrnico_1.setBounds(375, 160, 185, 14);
+		frameAlmacen.getContentPane().add(lblCorreoElectrnico_1);
+		
+		JLabel lblTelfono_1 = new JLabel("Teléfono:");
+		lblTelfono_1.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblTelfono_1.setBounds(375, 191, 154, 14);
+		frameAlmacen.getContentPane().add(lblTelfono_1);
+		
+		JLabel lblLocalizacin_1 = new JLabel("Localización:");
+		lblLocalizacin_1.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblLocalizacin_1.setBounds(375, 222, 154, 14);
+		frameAlmacen.getContentPane().add(lblLocalizacin_1);
+		
+		JLabel lblFechaNacimiento_1 = new JLabel("Fecha de Nacimiento:");
+		lblFechaNacimiento_1.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblFechaNacimiento_1.setBounds(375, 253, 185, 14);
+		frameAlmacen.getContentPane().add(lblFechaNacimiento_1);
+		
+		JLabel lblFechaInicio_1 = new JLabel("Fecha de Inicio:");
+		lblFechaInicio_1.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblFechaInicio_1.setBounds(375, 284, 185, 17);
+		frameAlmacen.getContentPane().add(lblFechaInicio_1);
+		
+		JButton btnEntrar_2 = new JButton("Registrarse");
+		btnEntrar_2.setBackground(new Color(176, 224, 230));
+		btnEntrar_2.setBounds(375, 347, 154, 25);
+		frameAlmacen.getContentPane().add(btnEntrar_2);
+		
+		JButton btnActualizarUsuario_1 = new JButton("Actualizar usuario");
+		btnActualizarUsuario_1.setBackground(new Color(176, 224, 230));
+		btnActualizarUsuario_1.setBounds(615, 347, 176, 25);
+		frameAlmacen.getContentPane().add(btnActualizarUsuario_1);
+		
+		JButton btnEntrar_1_1 = new JButton("Entrar");
+		btnEntrar_1_1.setBackground(new Color(176, 224, 230));
+		btnEntrar_1_1.setBounds(492, 445, 176, 25);
+		frameAlmacen.getContentPane().add(btnEntrar_1_1);
 		
 		
 		tableProductos.addMouseListener(new MouseAdapter() {
@@ -1507,24 +1528,283 @@ public class App {
 			
 			}
 		});
-		tablePedidos.addMouseListener(new MouseAdapter() {
-			@Override
-		public void mouseClicked(MouseEvent e) {
-			int índice = tablePedidos.getSelectedRow();
-			TableModel model = tablePedidos.getModel();
 		
-			textFieldNombreProveedor.setText(model.getValueAt(índice, 1).toString());
+		 class Registro {
+
+		    private JFrame frameRegistro;
+		    private JTextField textFieldNombre;
+		    private JTextField textFieldCorreoElectronico;
+		    private JTextField textFieldTelefono;
+		    private JTextField textFieldLocalizacion;
+		    private JTextField textFieldFechaNacimiento;
+		    private JTextField textFieldFechaInicio;
+		    private boolean registrado = false; // Variable para controlar el estado de registro
+		     UsuarioDAO usuarioDao= new UsuarioDAO();
+		    
+
+		    public Registro() {
+		        initialize();
+		    }
+
+		    private void initialize() {
+		        frameRegistro = new JFrame();
+		        frameRegistro.getContentPane().setBackground(Color.PINK);
+		        frameRegistro.setBounds(100, 100, 627, 659);
+		        frameRegistro.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		        frameRegistro.getContentPane().setLayout(null);
+
+		        JLabel lblRegistro = new JLabel("Registro de Usuario");
+		        lblRegistro.setFont(new Font("Dialog", Font.BOLD, 20));
+		        lblRegistro.setBounds(192, 56, 256, 54);
+		        frameRegistro.getContentPane().add(lblRegistro);
+
+		        textFieldNombre = new JTextField();
+		        textFieldNombre.setBounds(310, 136, 164, 20);
+		        frameRegistro.getContentPane().add(textFieldNombre);
+		        textFieldNombre.setColumns(10);
+
+		        textFieldCorreoElectronico = new JTextField();
+		        textFieldCorreoElectronico.setBounds(310, 167, 164, 20);
+		        frameRegistro.getContentPane().add(textFieldCorreoElectronico);
+		        textFieldCorreoElectronico.setColumns(10);
+
+		        textFieldTelefono = new JTextField();
+		        textFieldTelefono.setBounds(310, 198, 164, 20);
+		        frameRegistro.getContentPane().add(textFieldTelefono);
+		        textFieldTelefono.setColumns(10);
+
+		        textFieldLocalizacion = new JTextField();
+		        textFieldLocalizacion.setBounds(310, 232, 164, 20);
+		        frameRegistro.getContentPane().add(textFieldLocalizacion);
+		        textFieldLocalizacion.setColumns(10);
+
+		        textFieldFechaNacimiento = new JTextField();
+		        textFieldFechaNacimiento.setBounds(310, 260, 164, 20);
+		        frameRegistro.getContentPane().add(textFieldFechaNacimiento);
+		        textFieldFechaNacimiento.setColumns(10);
+
+		        textFieldFechaInicio = new JTextField();
+		        textFieldFechaInicio.setBounds(310, 294, 164, 20);
+		        frameRegistro.getContentPane().add(textFieldFechaInicio);
+		        textFieldFechaInicio.setColumns(10);
+
+		        JLabel lblNombre = new JLabel("Nombre:");
+		        lblNombre.setFont(new Font("Dialog", Font.BOLD, 14));
+		        lblNombre.setBounds(70, 142, 71, 14);
+		        frameRegistro.getContentPane().add(lblNombre);
+
+		        JLabel lblCorreoElectrnico = new JLabel("Correo Electrónico:");
+		        lblCorreoElectrnico.setFont(new Font("Dialog", Font.BOLD, 14));
+		        lblCorreoElectrnico.setBounds(70, 173, 185, 14);
+		        frameRegistro.getContentPane().add(lblCorreoElectrnico);
+
+		        JLabel lblTelfono = new JLabel("Teléfono:");
+		        lblTelfono.setFont(new Font("Dialog", Font.BOLD, 14));
+		        lblTelfono.setBounds(70, 204, 154, 14);
+		        frameRegistro.getContentPane().add(lblTelfono);
+
+		        JLabel lblLocalizacin = new JLabel("Localización:");
+		        lblLocalizacin.setFont(new Font("Dialog", Font.BOLD, 14));
+		        lblLocalizacin.setBounds(70, 235, 154, 14);
+		        frameRegistro.getContentPane().add(lblLocalizacin);
+
+		        JLabel lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
+		        lblFechaNacimiento.setFont(new Font("Dialog", Font.BOLD, 14));
+		        lblFechaNacimiento.setBounds(70, 266, 185, 14);
+		        frameRegistro.getContentPane().add(lblFechaNacimiento);
+
+		        JLabel lblFechaInicio = new JLabel("Fecha de Inicio:");
+		        lblFechaInicio.setFont(new Font("Dialog", Font.BOLD, 14));
+		        lblFechaInicio.setBounds(70, 297, 185, 17);
+		        frameRegistro.getContentPane().add(lblFechaInicio);
+		        
+		        
+		        textFieldNombre.addFocusListener(new FocusAdapter() {
+		        	@Override
+		        	public void focusLost(FocusEvent e) {
+		        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
+						Matcher mat = pat.matcher(textFieldNombre.getText());
+						if (!mat.matches()) {
+							textFieldNombre.setText("Error");
 			
-			Object valorSeleccionado = model.getValueAt(índice, 2);
-			comboBoxProductos.setSelectedItem((int) valorSeleccionado -1);
-			
-			textFieldPrecioPedido.setText(model.getValueAt(índice, 3).toString());
-			
-			textFieldCantidad.setText(model.getValueAt(índice, 4).toString());
-		
+						}
+		        	}
+		        	
+		        	
+		        });
+
+		        textFieldNombre.addFocusListener(new FocusAdapter() {
+		        	
+		        	
+		            @Override
+		            public void focusGained(FocusEvent e) {
+		                textFieldNombre.setText("");
+		            }
+		        });
+
+		        textFieldCorreoElectronico.addFocusListener(new FocusAdapter() {
+		            @Override
+		            public void focusLost(FocusEvent e) {
+		                String correo = textFieldCorreoElectronico.getText();
+		                String regex = "^\\w+@\\w+\\.[a-z]{2,3}$";
+		                Pattern pattern = Pattern.compile(regex);
+		                Matcher matcher = pattern.matcher(correo);
+		                if (!matcher.matches()) {
+		               
+		                    textFieldCorreoElectronico.setText("Error");
+		                }
+		            }
+
+		            @Override
+		            public void focusGained(FocusEvent e) {
+		                textFieldCorreoElectronico.setText("");
+		            }
+		        });
+		        
+		        
+		        
+		        textFieldTelefono.addFocusListener(new FocusAdapter() {
+		        	@Override
+		        	public void focusLost(FocusEvent e) {
+		        		Pattern pat = Pattern.compile("^[67]\\d{8}$");
+						Matcher mat = pat.matcher(textFieldTelefono.getText());
+						if (!mat.matches()) {
+							textFieldTelefono.setText("Error");
+						
+		        	}
+		        		
+		        	}
+		        
+		        
+
+		        @Override
+		        public void focusGained(FocusEvent e) {
+		        	textFieldTelefono.setText("");
+		        }
+		    });
+		        
+		        textFieldLocalizacion.addFocusListener(new FocusAdapter() {
+		        	@Override
+		        	public void focusLost(FocusEvent e) {
+		        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
+						Matcher mat = pat.matcher(textFieldLocalizacion.getText());
+						if (!mat.matches()) {
+							textFieldLocalizacion.setText("Error");
+						
+		        	}
+		        		
+		        	}
+		        
+		        
+
+		        @Override
+		        public void focusGained(FocusEvent e) {
+		        	textFieldLocalizacion.setText("");
+		        }
+		    });
+
+		        textFieldFechaNacimiento.addFocusListener(new FocusAdapter() {
+		            @Override
+		            public void focusLost(FocusEvent e) {
+		                String fecha = textFieldFechaNacimiento.getText();
+		                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		                try {
+		                    LocalDate.parse(fecha, formatter);
+		                } catch (DateTimeParseException ex) {
+		                 
+		                    textFieldFechaNacimiento.setText("Error");
+		                }
+		            }
+
+		            @Override
+		            public void focusGained(FocusEvent e) {
+		                textFieldFechaNacimiento.setText("");
+		            }
+		        });
+
+		        textFieldFechaInicio.addFocusListener(new FocusAdapter() {
+		            @Override
+		            public void focusLost(FocusEvent e) {
+		                String fecha = textFieldFechaInicio.getText();
+		                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+		                try {
+		                    LocalDate.parse(fecha, formatter);
+		                } catch (DateTimeParseException ex) {
+		                  
+		                    textFieldFechaInicio.setText("Error");
+		                }
+		            }
+
+		            @Override
+		            public void focusGained(FocusEvent e) {
+		                textFieldFechaInicio.setText("");
+		            }
+		        });
+
+		        JButton btnEntrar = new JButton("Registrarse");
+		        btnEntrar.setBackground(new Color(176, 224, 230));
+		        btnEntrar.addActionListener(new ActionListener() {
+		            public void actionPerformed(ActionEvent e) {
+		            	
+		            	 
+		                 
+		                try {
+		                	
+		                	String nombre = textFieldNombre.getText();
+		                    String correo = textFieldCorreoElectronico.getText();
+		                    String telefono = textFieldTelefono.getText();
+		                    String localizacion = textFieldLocalizacion.getText();
+		                    String fechaNacimiento = textFieldFechaNacimiento.getText();
+		                    String fechaInicio = textFieldFechaInicio.getText();
+		                    
+		                    if (registrado) {
+		                        // Si el usuario ya está registrado, mostrar un mensaje o realizar acciones para actualizar el perfil
+		                        JOptionPane.showMessageDialog(null, "El perfil ya está registrado");
+		                        // Realizar las acciones necesarias para actualizar el perfil
+		                    } else if (nombre.equals("Error")|| correo.equals("Error") || telefono.equals("Error") || localizacion.equals("Error")
+		                    		|| fechaNacimiento.equals("Error")|| fechaInicio.equals("Error")){
+		                    	JOptionPane.showMessageDialog(null, "Hay datos erróneos");
+		                
+		                    }else {
+		                    
+		                        // Realizar el registro del usuario
+		                    	 UsuarioDAO usuarioDao= new UsuarioDAO();
+		                       
+		                       Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento,fechaInicio);
+		                       if(usuarioDao.selectAllUsuarios().isEmpty())
+		                       {
+		                        usuarioDao.insertUsuario(usuario);
+		                        JOptionPane.showMessageDialog(null, "Registro exitoso");
+		                       }
+		                       else
+		                       {
+		                    	   JOptionPane.showMessageDialog(null, "Ya hay un usuario creado ");
+		                       }
+		                       
+		                        registrado = true;
+
+		                        
+		                       
+		                    }
+		                } catch (Exception ex) {
+		                    ex.printStackTrace();
+		                }
+		            }
+		        });
+		        btnEntrar.setBounds(70, 360, 154, 25);
+		        frameRegistro.getContentPane().add(btnEntrar);
+		        
+		        JButton btnActualizarUsuario = new JButton("Actualizar usuario");
+		        btnActualizarUsuario.setBackground(new Color(176, 224, 230));
+		        btnActualizarUsuario.setBounds(310, 360, 176, 25);
+		        frameRegistro.getContentPane().add(btnActualizarUsuario);
+		        
+		        JButton btnEntrar_1 = new JButton("Entrar");
+		        btnEntrar_1.setBackground(new Color(176, 224, 230));
+		        btnEntrar_1.setBounds(187, 458, 176, 25);
+		        frameRegistro.getContentPane().add(btnEntrar_1);
+		    }
 		}
-	});
-		
 		 
 
 	}

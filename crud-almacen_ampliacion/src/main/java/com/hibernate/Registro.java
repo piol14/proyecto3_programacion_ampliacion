@@ -246,7 +246,7 @@ public class Registro {
             }
         });
 
-        JButton btnEntrar = new JButton("Entrar");
+        JButton btnEntrar = new JButton("Registrarse");
         btnEntrar.setBackground(new Color(176, 224, 230));
         btnEntrar.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
@@ -276,22 +276,38 @@ public class Registro {
                     	 UsuarioDAO usuarioDao= new UsuarioDAO();
                        
                        Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento,fechaInicio);
+                       if(usuarioDao.selectAllUsuarios().isEmpty())
+                       {
                         usuarioDao.insertUsuario(usuario);
-                        
-
+                        JOptionPane.showMessageDialog(null, "Registro exitoso");
+                       }
+                       else
+                       {
+                    	   JOptionPane.showMessageDialog(null, "Ya hay un usuario creado ");
+                       }
                        
                         registrado = true;
 
                         
-                        JOptionPane.showMessageDialog(null, "Registro exitoso");
+                       
                     }
                 } catch (Exception ex) {
                     ex.printStackTrace();
                 }
             }
         });
-        btnEntrar.setBounds(221, 360, 137, 25);
+        btnEntrar.setBounds(70, 360, 154, 25);
         frameRegistro.getContentPane().add(btnEntrar);
+        
+        JButton btnActualizarUsuario = new JButton("Actualizar usuario");
+        btnActualizarUsuario.setBackground(new Color(176, 224, 230));
+        btnActualizarUsuario.setBounds(310, 360, 176, 25);
+        frameRegistro.getContentPane().add(btnActualizarUsuario);
+        
+        JButton btnEntrar_1 = new JButton("Entrar");
+        btnEntrar_1.setBackground(new Color(176, 224, 230));
+        btnEntrar_1.setBounds(187, 458, 176, 25);
+        frameRegistro.getContentPane().add(btnEntrar_1);
     }
 }
 
