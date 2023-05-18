@@ -70,31 +70,13 @@ public class App {
 
 	private JFrame frameAlmacen;
 	private JTable tableProductos;
-	private JTable tablePedidos;
+	
 	private JTextField txtId;
 	private JTextField txtNombre;
 	private JTextField txtPrecio;
 	private JTextField txtStock;
 	static  LocalDate ultimaFechaEjecucion;
-	private JComboBox comboBoxSeleccionarCategoria;
-	private JLabel lblTitulo;
-	private JLabel lblNombre;
-	private JLabel lblCategoria;
-	private JLabel lblPrecio;
-	private JLabel lblStock;
-	private JLabel lblMostrarDatos;
-	private JLabel lblSeleccionarPeriodoDe;
-	private JLabel lblSeleccionarCategoria;
-	private JComboBox comboBoxEscogerCategoria;
-	private JComboBox comboBoxSeleccionarTiempo;
-	private JRadioButton rdbtnMostrarTodos;
-	private JRadioButton rdbtnMostrarProductosCategoria;
-	private JRadioButton rdbtnMostrarProductosSinUnidades;
-	private JRadioButton rdbtnMostrarProductosCaducados;
-	private JButton btnGuardar ;
-	private JButton btnActualizar ;
-	private JButton btnBorrar; 
-	private JScrollPane scrollPaneProductos;
+	
 	private JTextField textFieldNombre;
 	private JTextField textFieldCorreo;
 	private JTextField textFieldTelefono;
@@ -102,19 +84,11 @@ public class App {
 	private JTextField textFieldFechaNac;
 	private JTextField textFieldFechaInicio;
 	
-	private JButton btnEntrar ;
-	private JLabel lblNombreUsuario;
-	private JLabel lblCorreoElectrnico;
-	private JLabel lblTelfono;
-	private JLabel lblLocalizacin;
-	private JLabel lblFechaInicio;
-	private JLabel lblFechaNacimiento;
-	private JButton btnRegistrarse;
-	private JButton btnActualizarUsuario;
+	
 	
 
 	ButtonGroup g1 = new ButtonGroup();
-	private boolean registrado = false; // Variable para controlar el estado de registro
+	 // Variable para controlar el estado de registro
     static UsuarioDAO usuarioDao= new UsuarioDAO();
 	
 	 static double ComprobarOferta (Producto producto)
@@ -792,6 +766,56 @@ public class App {
 		frameAlmacen.getContentPane().add(lblFechaInicio);
 		
 		JButton btnRegistrarse = new JButton("Registrarse");
+		btnRegistrarse.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				 try {
+	                    String nombre = textFieldNombre.getText();
+	                    String correo = textFieldCorreo.getText();
+	                    String telefono = textFieldTelefono.getText();
+	                    String localizacion = textFieldLocalizacion.getText();
+	                    String fechaNacimiento = textFieldFechaNac.getText();
+	                    String fechaInicio = textFieldFechaInicio.getText();
+	                    
+	                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+	                    LocalDate fechaNacimientoFormateada = LocalDate.parse(fechaNacimiento, formatter);
+	                    LocalDate fechaInicioFormateada = LocalDate.parse(fechaInicio, formatter);
+	                    Period edad = Period.between(LocalDate.parse(fechaNacimiento, formatter), LocalDate.parse(fechaInicio, formatter));
+	                    
+	                        if (fechaInicioFormateada.isBefore(fechaNacimientoFormateada)) {
+	                            JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser posterior a la fecha de nacimiento");
+	                        } else if (Period.between(fechaNacimientoFormateada, fechaInicioFormateada).getYears() < 18) {
+	                            JOptionPane.showMessageDialog(null, "El empleado es menor de edad");
+	                        } else if (nombre.equals("Error") || correo.equals("Error") || telefono.equals("Error") || localizacion.equals("Error")
+	                                || fechaNacimiento.equals("Error") || fechaInicio.equals("Error")) {
+	                            JOptionPane.showMessageDialog(null, "Hay datos erróneos");
+	                        } else {
+	                        	
+	                            // Realizar el registro del usuario
+	                            UsuarioDAO usuarioDao = new UsuarioDAO();
+	                            Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento, fechaInicio);
+	                            if (usuarioDao.selectAllUsuarios().isEmpty()) {
+	                                usuarioDao.insertUsuario(usuario);
+	                                JOptionPane.showMessageDialog(null, "Registro exitoso");
+	                                
+
+		                            // Mostrar elementos de la interfaz para administrar productos, pedidos, etc.
+	                                
+		                    	
+		                       
+	                            } else {
+	                                JOptionPane.showMessageDialog(null, "Ya hay un usuario creado");
+	                            }
+
+	                        
+	                    
+	                    }
+	                }catch(DateTimeParseException error ) {
+	                	JOptionPane.showMessageDialog(null, "Fechas mal introducidas");
+	                }catch(NullPointerException error2) {
+	                	JOptionPane.showMessageDialog(null, "Hay casillas vacias");
+	                }
+			}
+		});
 		btnRegistrarse.setBackground(new Color(255, 228, 196));
 		btnRegistrarse.setBounds(375, 347, 154, 25);
 		frameAlmacen.getContentPane().add(btnRegistrarse);
@@ -1479,7 +1503,7 @@ public class App {
 			}
 		});
 		btnBorrar.setBackground(new Color(245, 222, 179));
-		btnBorrar.setBounds(506, 633, 121, 25);
+		btnBorrar.setBounds(433, 633, 121, 25);
 
 		ImageIcon imagenBorrar = new ImageIcon(App.class.getResource("/imagenes/borrar.png"));
 		Image imagenRedimensionada3 = imagenBorrar.getImage().getScaledInstance(LONGITUD_BTN_BORRAR, ALTURA_BTN_BORRAR,
@@ -1504,6 +1528,57 @@ public class App {
 		lblRegistro_1.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblRegistro_1.setBounds(497, 43, 256, 54);
 		frameAlmacen.getContentPane().add(lblRegistro_1);
+		
+		JButton btnNewButton = new JButton("Cerrar Sesion");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				textFieldNombre.setVisible(true);
+				textFieldCorreo.setVisible(true);
+				textFieldTelefono.setVisible(true);
+				textFieldLocalizacion.setVisible(true);
+				textFieldFechaNac.setVisible(true);
+				textFieldFechaInicio.setVisible(true);
+				btnEntrar.setVisible(true);
+				lblNombreUsuario.setVisible(true);
+				lblCorreoElectrnico.setVisible(true);
+				lblTelfono.setVisible(true);
+				lblLocalizacin.setVisible(true);
+				lblFechaInicio.setVisible(true);
+				lblFechaNacimiento.setVisible(true);
+				btnRegistrarse.setVisible(true);
+				btnActualizarUsuario.setVisible(true);
+				lblRegistro_1.setVisible(true);
+				btnNewButton.setVisible(false);
+				tableProductos.setVisible(false);
+
+				txtId.setVisible(false);
+				txtNombre.setVisible(false);
+				txtPrecio.setVisible(false);
+				txtStock.setVisible(false);
+				comboBoxSeleccionarCategoria.setVisible(false);
+				lblTitulo.setVisible(false);
+				lblNombre.setVisible(false);
+				lblCategoria.setVisible(false);
+				lblPrecio.setVisible(false);
+				lblStock.setVisible(false);
+				lblMostrarDatos.setVisible(false);
+				lblSeleccionarPeriodoDe.setVisible(false);
+				lblSeleccionarCategoria.setVisible(false);
+				comboBoxEscogerCategoria.setVisible(false);
+				comboBoxSeleccionarTiempo.setVisible(false);
+				rdbtnMostrarTodos.setVisible(false);
+				rdbtnMostrarProductosCategoria.setVisible(false);
+				rdbtnMostrarProductosSinUnidades.setVisible(false);
+				rdbtnMostrarProductosCaducados.setVisible(false);
+				btnGuardar.setVisible(false);
+				btnActualizar.setVisible(false);
+				btnBorrar.setVisible(false);
+				scrollPaneProductos.setVisible(false);
+
+			}
+		});
+		btnNewButton.setBounds(644, 634, 132, 23);
+		frameAlmacen.getContentPane().add(btnNewButton);
 		
 		 textFieldNombre.addFocusListener(new FocusAdapter() {
 	        	@Override
@@ -1630,97 +1705,49 @@ public class App {
 	       
 	        btnEntrar.addActionListener(new ActionListener() {
 	            public void actionPerformed(ActionEvent e) {
-	                try {
-	                    String nombre = textFieldNombre.getText();
-	                    String correo = textFieldCorreo.getText();
-	                    String telefono = textFieldTelefono.getText();
-	                    String localizacion = textFieldLocalizacion.getText();
-	                    String fechaNacimiento = textFieldFechaNac.getText();
-	                    String fechaInicio = textFieldFechaInicio.getText();
-	                    
-	                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	                    LocalDate fechaNacimientoFormateada = LocalDate.parse(fechaNacimiento, formatter);
-	                    LocalDate fechaInicioFormateada = LocalDate.parse(fechaInicio, formatter);
-
-	                    if (registrado) {
-	                        
-	                        JOptionPane.showMessageDialog(null, "El perfil ya está registrado");
-	                       
-	                        Period edad = Period.between(LocalDate.parse(fechaNacimiento, formatter), LocalDate.parse(fechaInicio, formatter));
-	                    } else {
-	                        if (fechaInicioFormateada.isBefore(fechaNacimientoFormateada)) {
-	                            JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser posterior a la fecha de nacimiento");
-	                        } else if (Period.between(fechaNacimientoFormateada, fechaInicioFormateada).getYears() < 18) {
-	                            JOptionPane.showMessageDialog(null, "El empleado es menor de edad");
-	                        } else if (nombre.equals("Error") || correo.equals("Error") || telefono.equals("Error") || localizacion.equals("Error")
-	                                || fechaNacimiento.equals("Error") || fechaInicio.equals("Error")) {
-	                            JOptionPane.showMessageDialog(null, "Hay datos erróneos");
-	                        } else {
-	                        	
-	                            // Realizar el registro del usuario
-	                            UsuarioDAO usuarioDao = new UsuarioDAO();
-	                            Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento, fechaInicio);
-	                            if (!usuarioDao.selectAllUsuarios().isEmpty()) {
-	                                usuarioDao.insertUsuario(usuario);
-	                                JOptionPane.showMessageDialog(null, "Registro exitoso");
-	                                registrado = true;
-
-		                            // Mostrar elementos de la interfaz para administrar productos, pedidos, etc.
-	                                textFieldNombre.setVisible(false);
-			                    	  textFieldCorreo.setVisible(false);
-			                    	  textFieldTelefono.setVisible(false);
-			                    	  textFieldLocalizacion.setVisible(false);
-			                    	  textFieldFechaNac.setVisible(false);
-			                    	  textFieldFechaInicio.setVisible(false);
-			                    	 btnEntrar.setVisible(false);
-			                    		  lblNombreUsuario.setVisible(false);
-			                    		  lblCorreoElectrnico.setVisible(false);
-			                    		  lblTelfono.setVisible(false);
-			                    		  lblLocalizacin.setVisible(false);
-			                    		  lblFechaInicio.setVisible(false);
-			                    		  lblFechaNacimiento.setVisible(false);
-			                    		  btnRegistrarse.setVisible(false);
-			                    		  btnActualizarUsuario.setVisible(false);
-		                            frameAlmacen.setVisible(true);
-		                            tableProductos.setVisible(true);
-		                            tablePedidos.setVisible(true);
-		                            txtId.setVisible(true);
-		                            txtNombre.setVisible(true);
-		                            txtPrecio.setVisible(true);
-		                            txtStock.setVisible(true);
-		                            comboBoxSeleccionarCategoria.setVisible(true);
-		                            lblTitulo.setVisible(true);
-		                            lblNombre.setVisible(true);
-		                            lblCategoria.setVisible(true);
-		                            lblPrecio.setVisible(true);
-		                            lblStock.setVisible(true);
-		                            lblMostrarDatos.setVisible(true);
-		                    	  lblSeleccionarPeriodoDe.setVisible(true);
-		                    	  lblSeleccionarCategoria.setVisible(true);
-		                    	  comboBoxEscogerCategoria.setVisible(true);
-		                    	  comboBoxSeleccionarTiempo.setVisible(true);
-		                    	  rdbtnMostrarTodos.setVisible(true);
-		                    	  rdbtnMostrarProductosCategoria.setVisible(true);
-		                    	  rdbtnMostrarProductosSinUnidades.setVisible(true);
-		                    	  rdbtnMostrarProductosCaducados.setVisible(true);
-		                    	  btnGuardar.setVisible(true);
-		                    	  btnActualizar.setVisible(true);
-		                    	  btnBorrar.setVisible(true);
-		                    	  scrollPaneProductos.setVisible(true);
-		                    	
-		                       
-	                            } else {
-	                                JOptionPane.showMessageDialog(null, "Ya hay un usuario creado");
-	                            }
-
-	                           
-	                    }
-	                    }
-	                }catch(DateTimeParseException error ) {
-	                	JOptionPane.showMessageDialog(null, "Fechas mal introducidas");
-	                }catch(NullPointerException error2) {
-	                	JOptionPane.showMessageDialog(null, "Hay casillas vacias");
-	                }
+	            	textFieldNombre.setVisible(false);
+              	  textFieldCorreo.setVisible(false);
+              	  textFieldTelefono.setVisible(false);
+              	  textFieldLocalizacion.setVisible(false);
+              	  textFieldFechaNac.setVisible(false);
+              	  textFieldFechaInicio.setVisible(false);
+              	 btnEntrar.setVisible(false);
+              		  lblNombreUsuario.setVisible(false);
+              		  lblCorreoElectrnico.setVisible(false);
+              		  lblTelfono.setVisible(false);
+              		  lblLocalizacin.setVisible(false);
+              		  lblFechaInicio.setVisible(false);
+              		  lblFechaNacimiento.setVisible(false);
+              		  btnRegistrarse.setVisible(false);
+              		  btnActualizarUsuario.setVisible(false);
+              		lblRegistro_1.setVisible(false);
+                  frameAlmacen.setVisible(true);
+                  tableProductos.setVisible(true);
+                  btnNewButton.setVisible(true);
+                  txtId.setVisible(true);
+                  txtNombre.setVisible(true);
+                  txtPrecio.setVisible(true);
+                  txtStock.setVisible(true);
+                  comboBoxSeleccionarCategoria.setVisible(true);
+                  lblTitulo.setVisible(true);
+                  lblNombre.setVisible(true);
+                  lblCategoria.setVisible(true);
+                  lblPrecio.setVisible(true);
+                  lblStock.setVisible(true);
+                  lblMostrarDatos.setVisible(true);
+          	  lblSeleccionarPeriodoDe.setVisible(true);
+          	  lblSeleccionarCategoria.setVisible(true);
+          	  comboBoxEscogerCategoria.setVisible(true);
+          	  comboBoxSeleccionarTiempo.setVisible(true);
+          	  rdbtnMostrarTodos.setVisible(true);
+          	  rdbtnMostrarProductosCategoria.setVisible(true);
+          	  rdbtnMostrarProductosSinUnidades.setVisible(true);
+          	  rdbtnMostrarProductosCaducados.setVisible(true);
+          	  btnGuardar.setVisible(true);
+          	  btnActualizar.setVisible(true);
+          	  btnBorrar.setVisible(true);
+          	  scrollPaneProductos.setVisible(true);
+	               
 	            }
 	        });
 	     
@@ -1752,5 +1779,4 @@ public class App {
 		 
 	
 	}
-	
 	}
