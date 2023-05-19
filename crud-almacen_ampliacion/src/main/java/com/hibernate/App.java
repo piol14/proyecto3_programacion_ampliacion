@@ -92,6 +92,12 @@ public class App {
 	ButtonGroup g1 = new ButtonGroup();
 	 // Variable para controlar el estado de registro
     static UsuarioDAO usuarioDao= new UsuarioDAO();
+    private JTextField textFieldNombreLogin;
+    private JTextField textFieldCorreoLogin;
+    private JTable tablePedidos;
+    private JTextField textFieldNombrePedido;
+    private JTextField textFieldCantidad;
+    private JTextField textFieldPrecio;
 	
 	 static double ComprobarOferta (Producto producto)
 	 {
@@ -622,13 +628,7 @@ public class App {
 	        ComprobarOferta(producto);
 	    }
 	}
-	
-	public  LocalDate obtenerUltimaFechaEjecucion() {
-     
-		ultimaFechaEjecucion = LocalDate.now();
-        return ultimaFechaEjecucion;
-    }
-	
+
 
 	/**
 	 * Launch the application.
@@ -638,12 +638,6 @@ public class App {
 	 * @param args
 	 */
 	
-	public void registrarUsuario () {
-		
-		
-		
-		
-	}
 	
 	
 	
@@ -670,14 +664,9 @@ public class App {
 	public App() {
 		
 		
-		ultimaFechaEjecucion = obtenerUltimaFechaEjecucion();
-             
-	        LocalDate fechaActual = LocalDate.now();
-	        
-	        ultimaFechaEjecucion = LocalDate.now();
-	        if (!fechaActual.isEqual(ultimaFechaEjecucion)) {
+	
 	            aplicarOfertasProductos();
-	        }
+	        
 		
 
 		borrarProductosCaducados();
@@ -696,7 +685,7 @@ public class App {
 		frameAlmacen = new JFrame();
 		frameAlmacen.getContentPane().setBackground(new Color(51, 204, 204));
 		frameAlmacen.setBackground(new Color(50, 204, 204));
-		frameAlmacen.setBounds(100, 100, 900, 788);
+		frameAlmacen.setBounds(100, 100, 1500, 788);
 		frameAlmacen.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frameAlmacen.getContentPane().setLayout(null);
 
@@ -704,30 +693,8 @@ public class App {
 		lblTitulo.setForeground(new Color(255, 153, 102));
 		lblTitulo.setBackground(new Color(0, 153, 153));
 		lblTitulo.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 25));
-		lblTitulo.setBounds(226, 11, 403, 31);
+		lblTitulo.setBounds(282, 0, 403, 31);
 		frameAlmacen.getContentPane().add(lblTitulo);
-		
-		JButton btnBorrarUsuario = new JButton("Borrar usuario");
-		btnBorrarUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-				usuarioDao.deleteUsuario(6);
-				
-				
-				JOptionPane.showMessageDialog(null, "Usuario borrado correctamente");
-				
-				textFieldNombre.setText("");
-                textFieldCorreo.setText("");
-                textFieldTelefono.setText("");
-                textFieldLocalizacion.setText("");
-                textFieldFechaNac.setText("");
-                textFieldFechaInicio.setText("");
-			}
-		});
-		btnBorrarUsuario.setBackground(new Color(245, 222, 179));
-		btnBorrarUsuario.setBounds(702, 348, 117, 25);
-		frameAlmacen.getContentPane().add(btnBorrarUsuario);
 		
 		textFieldNombre = new JTextField();
 		textFieldNombre.setColumns(10);
@@ -759,20 +726,46 @@ public class App {
 		textFieldFechaInicio.setBounds(512, 276, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldFechaInicio);
 		
-		JLabel lblNombreUsuario = new JLabel("Nombre:");
-		lblNombreUsuario.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblNombreUsuario.setBounds(272, 124, 71, 14);
-		frameAlmacen.getContentPane().add(lblNombreUsuario);
+		JLabel lblNombreRegistro = new JLabel("Nombre:");
+		lblNombreRegistro.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblNombreRegistro.setBounds(272, 124, 71, 14);
+		frameAlmacen.getContentPane().add(lblNombreRegistro);
 		
-		JLabel lblCorreoElectrnico = new JLabel("Correo Electrónico:");
-		lblCorreoElectrnico.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblCorreoElectrnico.setBounds(272, 155, 185, 14);
-		frameAlmacen.getContentPane().add(lblCorreoElectrnico);
+		JLabel lblCorreoRegistro = new JLabel("Correo Electrónico:");
+		lblCorreoRegistro.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblCorreoRegistro.setBounds(272, 155, 185, 14);
+		frameAlmacen.getContentPane().add(lblCorreoRegistro);
 		
 		JLabel lblTelfono = new JLabel("Teléfono:");
 		lblTelfono.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblTelfono.setBounds(272, 186, 154, 14);
 		frameAlmacen.getContentPane().add(lblTelfono);
+		
+		JLabel lblNombreLogin = new JLabel("Nombre:");
+		lblNombreLogin.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblNombreLogin.setBounds(272, 487, 71, 14);
+		frameAlmacen.getContentPane().add(lblNombreLogin);
+		
+		JLabel lblCorreoRegistroUsuario = new JLabel("Correo Electrónico:");
+		lblCorreoRegistroUsuario.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblCorreoRegistroUsuario.setBounds(272, 513, 185, 14);
+		frameAlmacen.getContentPane().add(lblCorreoRegistroUsuario);
+		
+		textFieldNombreLogin = new JTextField();
+		textFieldNombreLogin.setColumns(10);
+		textFieldNombreLogin.setBounds(512, 481, 164, 20);
+		frameAlmacen.getContentPane().add(textFieldNombreLogin);
+		
+		textFieldCorreoLogin = new JTextField();
+		textFieldCorreoLogin.setColumns(10);
+		textFieldCorreoLogin.setBounds(512, 507, 164, 20);
+		frameAlmacen.getContentPane().add(textFieldCorreoLogin);
+		
+		JLabel lblLogin = new JLabel("Login");
+		lblLogin.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblLogin.setBounds(397, 435, 70, 15);
+		frameAlmacen.getContentPane().add(lblLogin);
+		
 		
 		JLabel lblLocalizacin = new JLabel("Localización:");
 		lblLocalizacin.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -795,7 +788,7 @@ public class App {
 			public void actionPerformed(ActionEvent e) {
 				 try {
 					 
-					
+						
 	                    String nombre = textFieldNombre.getText();
 	                    String correo = textFieldCorreo.getText();
 	                    String telefono = textFieldTelefono.getText();
@@ -820,7 +813,7 @@ public class App {
 	                            // Realizar el registro del usuario
 	                           
 	                            Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento, fechaInicio);
-	                            if (usuarioDao.selectAllUsuarios().isEmpty()) {
+	                            
 	                                usuarioDao.insertUsuario(usuario);
 	                                JOptionPane.showMessageDialog(null, "Registro exitoso");
 	                                
@@ -829,11 +822,9 @@ public class App {
 	                                
 		                    	
 		                       
-	                            } else {
-	                                JOptionPane.showMessageDialog(null, "Ya hay un usuario creado");
-	                            }
+	                            
 
-	                        
+				 
 	                    
 	                    }
 	                }catch(DateTimeParseException error ) {
@@ -845,57 +836,12 @@ public class App {
 		});
 		
 		btnRegistrarse.setBackground(new Color(245, 222, 179));
-		btnRegistrarse.setBounds(166, 348, 117, 25);
+		btnRegistrarse.setBounds(336, 348, 164, 25);
 		frameAlmacen.getContentPane().add(btnRegistrarse);
-		
-		JButton btnActualizarUsuario = new JButton("Actualizar usuario");
-		btnActualizarUsuario.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			try {
-				
-				 Usuario usuario = usuarioDao.selectUsuarioByID(6);
-				 
-				 if(usuario != null) {
-        		  
-        		  String nombre = textFieldNombre.getText();
-                  String correo = textFieldCorreo.getText();
-                  String telefono = textFieldTelefono.getText();
-                  String localizacion = textFieldLocalizacion.getText();
-                  String fechaNacimiento = textFieldFechaNac.getText();
-                  String fechaInicio = textFieldFechaInicio.getText();
-                  
-                  usuario.setNombre(nombre);
-                  usuario.setCorreoElectronico(correo);
-                  usuario.setTelefono(telefono);
-                  usuario.setLocalizacion(localizacion);
-                  usuario.setFechaNacimiento(fechaNacimiento);
-                  usuario.setFechaInicio(fechaInicio);
-                  
-                  
-        		usuarioDao.updateUsuario(usuario);
-        		JOptionPane.showMessageDialog(null,
-						"Usuario actualizado correctamente");
-        		
-			}else {
-				JOptionPane.showMessageDialog(null,
-						"No hay ningun usuario creado");
-				
-			}
-			}
-        		catch(IllegalStateException e3) {
-        			JOptionPane.showMessageDialog(null,
-							"No hay ningun usuario creado");
-        		}
-            	
-			}
-		});
-		btnActualizarUsuario.setBackground(new Color(245, 222, 179));
-		btnActualizarUsuario.setBounds(512, 348, 154, 25);
-		frameAlmacen.getContentPane().add(btnActualizarUsuario);
 		
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setBackground(new Color(245, 222, 179));
-		btnEntrar.setBounds(336, 441, 132, 25);
+		btnEntrar.setBounds(336, 594, 164, 25);
 		frameAlmacen.getContentPane().add(btnEntrar);
 		
 
@@ -941,36 +887,76 @@ public class App {
 		scrollPaneProductos.setBounds(10, 43, 619, 220);
 		frameAlmacen.getContentPane().add(scrollPaneProductos);
 		scrollPaneProductos.setVisible(false);
+		
+		
 		JLabel lblDatos = new JLabel("INTRODUCIR DATOS");
 		lblDatos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblDatos.setBounds(10, 263, 284, 31);
 		frameAlmacen.getContentPane().add(lblDatos);
 		lblDatos.setVisible(false);
+		
+		JLabel lblDatosPedido = new JLabel("INTRODUCIR DATOS");
+		lblDatosPedido.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblDatosPedido.setBounds(812, 268, 284, 31);
+		frameAlmacen.getContentPane().add(lblDatosPedido);
+		lblDatosPedido.setVisible(false);
+		
+		
+		JLabel lblNombrePedido = new JLabel("Nombre Pedido");
+		lblNombrePedido.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblNombrePedido.setBounds(812, 315, 284, 31);
+		frameAlmacen.getContentPane().add(lblNombrePedido);
+		lblNombrePedido.setVisible(false);
+		
+		JLabel lblProductoPedido = new JLabel("Producto");
+		lblProductoPedido.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblProductoPedido.setBounds(812, 323, 284, 31);
+		frameAlmacen.getContentPane().add(lblProductoPedido);
+		lblProductoPedido.setVisible(false);
+		
+		JLabel lblPrecioPedido = new JLabel("Precio");
+		lblPrecioPedido.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblPrecioPedido.setBounds(812, 401, 126, 31);
+		frameAlmacen.getContentPane().add(lblPrecioPedido);
+		lblPrecioPedido.setVisible(false);
+		
+		JLabel lblCantidadPedido= new JLabel("Stock");
+		lblCantidadPedido.setFont(new Font("Dialog", Font.BOLD, 15));
+		lblCantidadPedido.setBounds(808, 349, 79, 40);
+		frameAlmacen.getContentPane().add(lblCantidadPedido);
+		lblCantidadPedido.setVisible(false);
+		
+		
 		JLabel lblId = new JLabel("ID");
 		lblId.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblId.setBounds(10, 305, 117, 15);
 		frameAlmacen.getContentPane().add(lblId);
 		lblId.setVisible(false);
+		
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblNombre.setBounds(10, 331, 117, 15);
 		frameAlmacen.getContentPane().add(lblNombre);
 		lblNombre.setVisible(false);
+		
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblCategoria.setBounds(10, 357, 117, 15);
 		frameAlmacen.getContentPane().add(lblCategoria);
 		lblCategoria.setVisible(false);
+		
 		JLabel lblPrecio = new JLabel("Precio");
 		lblPrecio.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblPrecio.setBounds(10, 383, 117, 15);
 		frameAlmacen.getContentPane().add(lblPrecio);
 		lblPrecio.setVisible(false);
+		
 		JLabel lblStock = new JLabel("Stock");
 		lblStock.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblStock.setBounds(10, 409, 117, 15);
 		frameAlmacen.getContentPane().add(lblStock);
 		lblStock.setVisible(false);
+		
 		txtId = new JTextField();
 		txtId.setEnabled(false);
 		txtId.setBounds(137, 301, 151, 19);
@@ -1097,7 +1083,7 @@ public class App {
 		comboBoxSeleccionarTiempo
 				.setModel(new DefaultComboBoxModel(new String[] { "1 dia", "1 mes", "1 año ", "4 años" }));
 		comboBoxSeleccionarTiempo.setEnabled(false);
-		comboBoxSeleccionarTiempo.setBounds(433, 482, 215, 24);
+		comboBoxSeleccionarTiempo.setBounds(456, 506, 215, 24);
 		frameAlmacen.getContentPane().add(comboBoxSeleccionarTiempo);
 		
 		JRadioButton rdbtnMostrarProductosCaducados = new JRadioButton("Mostrar productos que van a caducar");
@@ -1572,21 +1558,90 @@ public class App {
 		});
 		btnBorrar.setBackground(new Color(245, 222, 179));
 		btnBorrar.setBounds(433, 633, 121, 25);
-
+		JButton btnActualizarPedido = new JButton("Actualizar");
+		btnActualizarPedido.setBounds(1040, 614, 117, 25);
+		frameAlmacen.getContentPane().add(btnActualizarPedido);
+		JButton btnBorrarPedido = new JButton("Borrar");
+		btnBorrarPedido.setVisible(false);
+		btnBorrarPedido.setBounds(1253, 614, 117, 25);
+		frameAlmacen.getContentPane().add(btnBorrarPedido);
+		btnActualizarPedido.setVisible(false);
 		ImageIcon imagenBorrar = new ImageIcon(App.class.getResource("/imagenes/borrar.png"));
 		Image imagenRedimensionada3 = imagenBorrar.getImage().getScaledInstance(LONGITUD_BTN_BORRAR, ALTURA_BTN_BORRAR,
 				java.awt.Image.SCALE_SMOOTH);
 		btnBorrar.setIcon(new ImageIcon(imagenRedimensionada3));
 		frameAlmacen.getContentPane().add(btnBorrar);
+		tablePedidos = new JTable();
+		tablePedidos.setBounds(820, 322, 487, -277);
+		frameAlmacen.getContentPane().add(tablePedidos);
+		
+		DefaultTableModel modelPedidos = new DefaultTableModel() {
 
+			@Override
+			/**
+			 * Este metodo sirve para que las celdas de la tabla no sean editables
+			 * 
+			 * @param filas:    este parametro son las filas de la tabla
+			 * @param columnas: las columnas de la tabla
+			 * @return: false, asi no se pueden editar las celdas
+			 */
+			public boolean isCellEditable(int filas, int columnas) {
+				return false;
+			}
+		};
+        //Añadir las columnas a la tabla Productos
+		
+		modelPedidos.addColumn("Pedido");
+		modelPedidos.addColumn("Producto");
+		modelPedidos.addColumn("Categoria");
+		modelPedidos.addColumn("Precio");
+		modelPedidos.addColumn("Cantidad");
+		
+		tablePedidos = new JTable(modelPedidos);
+		tablePedidos.setVisible(false);
+		tablePedidos.setBounds(26, 251, 489, -159);
+		frameAlmacen.getContentPane().add(tablePedidos);
+
+		 //Leer los productos guardados en la base de datos mediante la función productoDAO.selectAllProductos() y mostrarlos en la tabla
+		
+		//List<Producto> selectProducto = productoDAO.selectAllProductos();
+		/*for (Producto pr : selectProducto) {
+			Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
+					pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad() };
+			modelTabla.addRow(fila);
+		}*/
+		
+
+		JScrollPane scrollPanePedidos = new JScrollPane(tablePedidos);
+		scrollPanePedidos.setBounds(812, 43, 619, 220);
+		frameAlmacen.getContentPane().add(scrollPanePedidos);
+		scrollPanePedidos.setVisible(false);
+		textFieldNombrePedido = new JTextField();
+		textFieldNombrePedido.setBounds(1087, 311, 164, 19);
+		frameAlmacen.getContentPane().add(textFieldNombrePedido);
+		textFieldNombrePedido.setColumns(10);
+		textFieldNombrePedido.setVisible(false);
+	
+		lblPrecioPedido.setVisible(false);
+		textFieldCantidad = new JTextField();
+		textFieldCantidad.setBounds(1087, 435, 164, 19);
+		frameAlmacen.getContentPane().add(textFieldCantidad);
+		textFieldCantidad.setColumns(10);
+		textFieldCantidad.setVisible(false);
+		textFieldPrecio = new JTextField();
+		textFieldPrecio.setBounds(1076, 407, 164, 19);
+		textFieldPrecio.setVisible(false);
+		frameAlmacen.getContentPane().add(textFieldPrecio);
+		textFieldPrecio.setColumns(10);
 		JLabel lblMostrarDatos = new JLabel("MOSTRAR DATOS");
 		lblMostrarDatos.setVisible(false);
 		lblMostrarDatos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblMostrarDatos.setBounds(10, 435, 284, 31);
 		frameAlmacen.getContentPane().add(lblMostrarDatos);
-		
-		JButton btnMostrarUsuario = new JButton("Mostrar usuario");
-
+		JButton btnGuardarPedido = new JButton("Guardar");
+		btnGuardarPedido.setBounds(844, 614, 117, 25);
+		btnGuardarPedido.setVisible(false);
+		frameAlmacen.getContentPane().add(btnGuardarPedido);
 		List<Categoria> Categoria = categoriaDAO.selectAllCategoria();
 		for (Categoria cg : Categoria) {
 			comboBoxEscogerCategoria.addItem(cg.getNombreCategoria());
@@ -1598,13 +1653,35 @@ public class App {
 		lblRegistro_1.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblRegistro_1.setBounds(371, 53, 256, 54);
 		frameAlmacen.getContentPane().add(lblRegistro_1);
-		
-		JButton btnNewButton = new JButton("Cerrar Sesion");
-		btnNewButton.setBackground(new Color(245, 222, 179));
-		btnNewButton.addActionListener(new ActionListener() {
+		JComboBox comboBoxPedido = new JComboBox();
+		comboBoxPedido.setBounds(1087, 348, 164, 24);
+		comboBoxPedido.setVisible(false);
+		frameAlmacen.getContentPane().add(comboBoxPedido);
+		JButton btnCerrarSesion = new JButton("Cerrar Sesion");
+		btnCerrarSesion.setBackground(new Color(245, 222, 179));
+		btnCerrarSesion.setVisible(false);
+		btnCerrarSesion.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				btnMostrarUsuario.setVisible(false);
-				 btnBorrarUsuario.setVisible(true);
+				btnCerrarSesion.setVisible(false);
+				btnActualizarPedido.setVisible(false);
+				textFieldPrecio.setVisible(false);
+				textFieldCantidad.setVisible(false);
+				btnGuardarPedido.setVisible(false);
+				textFieldNombrePedido.setVisible(false);
+				textFieldNombreLogin.setVisible(true);
+            	textFieldCorreoLogin.setVisible(true);
+            	lblCorreoRegistroUsuario.setVisible(true);
+            	lblLogin.setVisible(true);
+            	scrollPanePedidos.setVisible(false);
+            	lblCantidadPedido.setVisible(false);
+            	lblPrecioPedido.setVisible(false);
+            	
+            	textFieldNombrePedido.setVisible(false);
+            	btnBorrarPedido.setVisible(false);
+            	lblPrecioPedido.setVisible(true);
+            	lblNombreLogin.setVisible(true);
+            	comboBoxPedido.setVisible(false);
+            	textFieldPrecio.setVisible(false);
 				textFieldNombre.setVisible(true);
 				textFieldCorreo.setVisible(true);
 				textFieldTelefono.setVisible(true);
@@ -1612,18 +1689,23 @@ public class App {
 				textFieldFechaNac.setVisible(true);
 				textFieldFechaInicio.setVisible(true);
 				btnEntrar.setVisible(true);
-				lblNombreUsuario.setVisible(true);
-				lblCorreoElectrnico.setVisible(true);
+				lblNombreRegistro.setVisible(true);
+				lblCorreoRegistro.setVisible(true);
 				lblTelfono.setVisible(true);
 				lblLocalizacin.setVisible(true);
 				lblFechaInicio.setVisible(true);
 				lblFechaNacimiento.setVisible(true);
 				btnRegistrarse.setVisible(true);
-				btnActualizarUsuario.setVisible(true);
+				btnGuardarPedido.setVisible(false);
 				lblRegistro_1.setVisible(true);
-				btnNewButton.setVisible(false);
+				btnCerrarSesion.setVisible(false);
+				lblProductoPedido.setVisible(false);
 				tableProductos.setVisible(false);
-
+				lblDatosPedido.setVisible(false);
+				lblNombrePedido.setVisible(false);
+				lblProductoPedido.setVisible(false);
+				lblProductoPedido.setVisible(false);
+				
 				txtId.setVisible(false);
 				txtNombre.setVisible(false);
 				txtPrecio.setVisible(false);
@@ -1647,38 +1729,31 @@ public class App {
 				btnActualizar.setVisible(false);
 				btnBorrar.setVisible(false);
 				scrollPaneProductos.setVisible(false);
-
+				
+				
+				textFieldNombreLogin.setText("");
+            	textFieldCorreoLogin.setText("");
+            	textFieldNombre.setText("");
+				textFieldCorreo.setText("");
+				textFieldTelefono.setText("");
+				textFieldLocalizacion.setText("");
+				textFieldFechaNac.setText("");
+				textFieldFechaInicio.setText("");
+            	
 			}
 		});
-		btnNewButton.setBounds(602, 634, 132, 23);
-		frameAlmacen.getContentPane().add(btnNewButton);
+		btnCerrarSesion.setBounds(617, 634, 132, 23);
+		frameAlmacen.getContentPane().add(btnCerrarSesion);
 		
 		
-		btnMostrarUsuario.addActionListener(new ActionListener() {
-		    public void actionPerformed(ActionEvent e) {
-		        try {
-		        	
-		            List<Usuario> selectUsuarios = usuarioDao.selectAllUsuarios();
-
-		            for (Usuario u : selectUsuarios) {
-		                textFieldNombre.setText(u.getNombre());
-		                textFieldCorreo.setText(u.getCorreoElectronico());
-		                textFieldTelefono.setText(u.getTelefono());
-		                textFieldLocalizacion.setText(u.getLocalizacion());
-		                textFieldFechaNac.setText(u.getFechaNacimiento());
-		                textFieldFechaInicio.setText(u.getFechaInicio());
-		            }
-
-		        } catch(Exception e4) {
-		        	
-		        }
-		        
-		    }
-		});
-		btnMostrarUsuario.setBackground(new Color(245, 222, 179));
-		btnMostrarUsuario.setBounds(336, 348, 132, 25);
-		frameAlmacen.getContentPane().add(btnMostrarUsuario);
 		
+		
+		
+		
+		
+	
+		
+	
 		
 		
 		 textFieldNombre.addFocusListener(new FocusAdapter() {
@@ -1695,14 +1770,24 @@ public class App {
 	        	
 	        });
 
-	        textFieldNombre.addFocusListener(new FocusAdapter() {
+	     
+	        
+	        
+	        textFieldNombreLogin.addFocusListener(new FocusAdapter() {
+	        	@Override
+	        	public void focusLost(FocusEvent e) {
+	        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
+					Matcher mat = pat.matcher(textFieldNombreLogin.getText());
+					if (!mat.matches()) {
+						textFieldNombreLogin.setText("Error");
+		
+					}
+	        	}
 	        	
 	        	
-	            @Override
-	            public void focusGained(FocusEvent e) {
-	                textFieldNombre.setText("");
-	            }
 	        });
+
+	
 
 	        textFieldCorreo.addFocusListener(new FocusAdapter() {
 	            @Override
@@ -1717,13 +1802,23 @@ public class App {
 	                }
 	            }
 
-	            @Override
-	            public void focusGained(FocusEvent e) {
-	            	textFieldCorreo.setText("");
-	            }
+	          
 	        });
 	        
-	        
+	        textFieldCorreoLogin.addFocusListener(new FocusAdapter() {
+	            @Override
+	            public void focusLost(FocusEvent e) {
+	                String correo = textFieldCorreoLogin.getText();
+	                String regex = "^\\w+@\\w+\\.[a-z]{2,3}$";
+	                Pattern pattern = Pattern.compile(regex);
+	                Matcher matcher = pattern.matcher(correo);
+	                if (!matcher.matches()) {
+	               
+	                	textFieldCorreoLogin.setText("Error");
+	                }
+	            }
+
+	        });
 	        
 	        textFieldTelefono.addFocusListener(new FocusAdapter() {
 	        	@Override
@@ -1737,12 +1832,7 @@ public class App {
 	        		
 	        	}
 	        
-	        
-
-	        @Override
-	        public void focusGained(FocusEvent e) {
-	        	textFieldTelefono.setText("");
-	        }
+	       
 	    });
 	        
 	        textFieldLocalizacion.addFocusListener(new FocusAdapter() {
@@ -1759,10 +1849,7 @@ public class App {
 	        
 	        
 
-	        @Override
-	        public void focusGained(FocusEvent e) {
-	        	textFieldLocalizacion.setText("");
-	        }
+	 
 	    });
 
 	        textFieldFechaNac.addFocusListener(new FocusAdapter() {
@@ -1778,10 +1865,6 @@ public class App {
 	                }
 	            }
 
-	            @Override
-	            public void focusGained(FocusEvent e) {
-	            	textFieldFechaNac.setText("");
-	            }
 	        });
 
 	        textFieldFechaInicio.addFocusListener(new FocusAdapter() {
@@ -1797,10 +1880,6 @@ public class App {
 	                }
 	            }
 
-	            @Override
-	            public void focusGained(FocusEvent e) {
-	                textFieldFechaInicio.setText("");
-	            }
 	        });
 
 	       
@@ -1808,53 +1887,94 @@ public class App {
 	            public void actionPerformed(ActionEvent e) {
 	            
 	            	List<Usuario> selectUsuarios = usuarioDao.selectAllUsuarios();
+	            	boolean usuarioEncontrado = false;
 
+	            	if(selectUsuarios.isEmpty())
+	            	{
+	            		JOptionPane.showMessageDialog(null, "No hay ningun usuario creado");
+	            	}
+	            	else 
+	            		for (Usuario u :selectUsuarios)
+	            		{
+	            			String nombreBD = u.getNombre();
+		                    String correoBD = u.getCorreoElectronico() ;
+		                   
+		                    String nombre = textFieldNombreLogin.getText();
+		                    String correo = textFieldCorreoLogin.getText();
+		                  
+		                    if(nombreBD.equals(nombre) && correoBD.equals(correo))
+		                    {
+		                    	usuarioEncontrado = true;
+		                    	break;
+		                    }
+	            		}
+	            	if (usuarioEncontrado) {
+	            		textFieldCantidad.setVisible(true);
+	            		textFieldPrecio.setVisible(true);
+		                    	textFieldNombreLogin.setVisible(false);
+		                    	textFieldCorreoLogin.setVisible(false);
+		                    	lblCorreoRegistroUsuario.setVisible(false);
+		                    	lblLogin.setVisible(false);
+		                    	btnGuardarPedido.setVisible(true);
+		                    	btnActualizarPedido.setVisible(true);
+		                    	lblNombreLogin.setVisible(false);
+			            	textFieldNombre.setVisible(false);
+		              	  textFieldCorreo.setVisible(false);
+		              	  textFieldTelefono.setVisible(false);
+		              	  textFieldLocalizacion.setVisible(false);
+		              	  textFieldFechaNac.setVisible(false);
+		              	  textFieldFechaInicio.setVisible(false);
+		              	 btnEntrar.setVisible(false);
+		              	 btnBorrarPedido.setVisible(true);
+		              	textFieldNombrePedido.setVisible(true);
+		              		  lblNombreRegistro.setVisible(false);
+		              		  lblCorreoRegistro.setVisible(false);
+		              		  lblTelfono.setVisible(false);
+		              		  lblLocalizacin.setVisible(false);
+		              		  lblFechaInicio.setVisible(false);
+		              		  lblFechaNacimiento.setVisible(false);
+		              		  btnRegistrarse.setVisible(false);
+		              		scrollPanePedidos.setVisible(true);
+		              		lblRegistro_1.setVisible(false);
+		              		lblDatosPedido.setVisible(true);
+		                  frameAlmacen.setVisible(true);
+		                  tableProductos.setVisible(true);
+		                  btnCerrarSesion.setVisible(true);
+		                  txtId.setVisible(true);
+		                  txtNombre.setVisible(true);
+		                  txtPrecio.setVisible(true);
+		                  txtStock.setVisible(true);
+		          		comboBoxPedido.setVisible(true);
+		                  comboBoxSeleccionarCategoria.setVisible(true);
+		                  lblTitulo.setVisible(true);
+		                  lblNombre.setVisible(true);
+		                  lblCategoria.setVisible(true);
+		                  lblPrecio.setVisible(true);
+		                  lblStock.setVisible(true);
+		                  lblMostrarDatos.setVisible(true);
+		          	  lblSeleccionarPeriodoDe.setVisible(true);
+		          	  lblSeleccionarCategoria.setVisible(true);
+		          	  comboBoxEscogerCategoria.setVisible(true);
+		          	  comboBoxSeleccionarTiempo.setVisible(true);
+		          	  rdbtnMostrarTodos.setVisible(true);
+		          	  rdbtnMostrarProductosCategoria.setVisible(true);
+		          	  rdbtnMostrarProductosSinUnidades.setVisible(true);
+		          	  rdbtnMostrarProductosCaducados.setVisible(true);
+		          	  btnGuardar.setVisible(true);
+		          	  btnActualizar.setVisible(true);
+		          	  btnBorrar.setVisible(true);
+		          	  scrollPaneProductos.setVisible(true);
+		          	lblNombrePedido.setVisible(true);
+		          	lblCantidadPedido.setVisible(true);
+		          	lblPrecioPedido.setVisible(true);
+		          	lblProductoPedido.setVisible(true);
+		          	lblDatosPedido.setVisible(true);
+	            		}
+		                    else
+		                    {
+		                    	JOptionPane.showMessageDialog(null, "Hay datos incorrectos");
+		                    }
 	            	
-	            	btnMostrarUsuario.setVisible(false);
-	            	textFieldNombre.setVisible(false);
-              	  textFieldCorreo.setVisible(false);
-              	  textFieldTelefono.setVisible(false);
-              	  textFieldLocalizacion.setVisible(false);
-              	  textFieldFechaNac.setVisible(false);
-              	  textFieldFechaInicio.setVisible(false);
-              	 btnEntrar.setVisible(false);
-              	 btnBorrarUsuario.setVisible(false);
-              		  lblNombreUsuario.setVisible(false);
-              		  lblCorreoElectrnico.setVisible(false);
-              		  lblTelfono.setVisible(false);
-              		  lblLocalizacin.setVisible(false);
-              		  lblFechaInicio.setVisible(false);
-              		  lblFechaNacimiento.setVisible(false);
-              		  btnRegistrarse.setVisible(false);
-              		  btnActualizarUsuario.setVisible(false);
-              		lblRegistro_1.setVisible(false);
-                  frameAlmacen.setVisible(true);
-                  tableProductos.setVisible(true);
-                  btnNewButton.setVisible(true);
-                  txtId.setVisible(true);
-                  txtNombre.setVisible(true);
-                  txtPrecio.setVisible(true);
-                  txtStock.setVisible(true);
-                  comboBoxSeleccionarCategoria.setVisible(true);
-                  lblTitulo.setVisible(true);
-                  lblNombre.setVisible(true);
-                  lblCategoria.setVisible(true);
-                  lblPrecio.setVisible(true);
-                  lblStock.setVisible(true);
-                  lblMostrarDatos.setVisible(true);
-          	  lblSeleccionarPeriodoDe.setVisible(true);
-          	  lblSeleccionarCategoria.setVisible(true);
-          	  comboBoxEscogerCategoria.setVisible(true);
-          	  comboBoxSeleccionarTiempo.setVisible(true);
-          	  rdbtnMostrarTodos.setVisible(true);
-          	  rdbtnMostrarProductosCategoria.setVisible(true);
-          	  rdbtnMostrarProductosSinUnidades.setVisible(true);
-          	  rdbtnMostrarProductosCaducados.setVisible(true);
-          	  btnGuardar.setVisible(true);
-          	  btnActualizar.setVisible(true);
-          	  btnBorrar.setVisible(true);
-          	  scrollPaneProductos.setVisible(true);
-	               
 	            }
 	        });
 	     
