@@ -9,7 +9,9 @@ import org.hibernate.cfg.Environment;
 import org.hibernate.service.ServiceRegistry;
 
 import com.hibernate.model.Categoria;
+import com.hibernate.model.DetalleVenta;
 import com.hibernate.model.Oferta;
+import com.hibernate.model.PedidoVenta;
 import com.hibernate.model.Producto;
 import com.hibernate.model.Usuario;
 
@@ -40,6 +42,8 @@ public class HibernateUtil {
 				configuration.addAnnotatedClass(Categoria.class);
 				configuration.addAnnotatedClass(Oferta.class);
 				configuration.addAnnotatedClass(Usuario.class);
+				configuration.addAnnotatedClass(PedidoVenta.class);
+				configuration.addAnnotatedClass(DetalleVenta.class);
 				
 				
 				ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder()
