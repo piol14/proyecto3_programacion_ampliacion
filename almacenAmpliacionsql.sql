@@ -100,6 +100,42 @@ CREATE TABLE IF NOT EXISTS `almacen`.`Usuario` (
   PRIMARY KEY (`idUsuario`))
 ENGINE = InnoDB;
 
+
+-- -----------------------------------------------------
+-- Table `almacen`.`detalle_venta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `almacen`.`detalle_venta` (
+  `iddetalle_venta` INT NOT NULL AUTO_INCREMENT,
+  `precio` FLOAT NOT NULL,
+  `cantidad` INT NOT NULL,
+  `producto_idproducto` INT NOT NULL,
+  PRIMARY KEY (`iddetalle_venta`, `producto_idproducto`),
+  INDEX `fk_detalle_venta_producto1_idx` (`producto_idproducto` ASC) VISIBLE,
+  CONSTRAINT `fk_detalle_venta_producto1`
+    FOREIGN KEY (`producto_idproducto`)
+    REFERENCES `almacen`.`producto` (`idproducto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `almacen`.`pedidoVenta`
+-- -----------------------------------------------------
+CREATE TABLE IF NOT EXISTS `almacen`.`pedidoVenta` (
+  `idpedidoVenta` INT NOT NULL AUTO_INCREMENT,
+  `proveedor` VARCHAR(45) NOT NULL,
+  `detalle_venta_iddetalle_venta` INT NOT NULL,
+  `detalle_venta_producto_idproducto` INT NOT NULL,
+  PRIMARY KEY (`idpedidoVenta`, `detalle_venta_iddetalle_venta`, `detalle_venta_producto_idproducto`),
+  INDEX `fk_pedidoVenta_detalle_venta1_idx` (`detalle_venta_iddetalle_venta` ASC, `detalle_venta_producto_idproducto` ASC) VISIBLE,
+  CONSTRAINT `fk_pedidoVenta_detalle_venta1`
+    FOREIGN KEY (`detalle_venta_iddetalle_venta` , `detalle_venta_producto_idproducto`)
+    REFERENCES `almacen`.`detalle_venta` (`iddetalle_venta` , `producto_idproducto`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
 INSERT INTO `oferta` (`idoferta`, `oferta`) VALUES
 (1,1),
 (2,0.05),
