@@ -70,7 +70,21 @@ public class PedidoVentaDAO {
 	}
 	
 
-	
+	// Selección simple
+			public PedidoVenta selectPedidoVentaById(int id) {
+				Transaction transaction = null;
+				PedidoVenta pv = null;
+				try (Session session = HibernateUtil.getSessionFactory().openSession()) {
+					transaction = session.beginTransaction();
+					pv = session.get(PedidoVenta.class, id);
+					transaction.commit();
+				} catch (Exception e) {
+					if (transaction != null) {
+						transaction.rollback();
+					}
+				}
+				return pv;
+			}
 	
 
 }

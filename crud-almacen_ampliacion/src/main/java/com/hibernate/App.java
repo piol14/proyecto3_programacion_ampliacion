@@ -101,8 +101,8 @@ public class App {
     private JTextField textFieldCorreoLogin;
     private JTable tablePedidos;
     private JTextField textFieldNombrePedido;
+    private JTextField textFieldPrecioPedido;
     private JTextField textFieldCantidad;
-    private JTextField textFieldPrecio;
 	
 	 static double ComprobarOferta (Producto producto)
 	 {
@@ -670,7 +670,7 @@ public class App {
 		
 		
 	
-	            aplicarOfertasProductos();
+	    aplicarOfertasProductos();
 	        
 		
 
@@ -775,7 +775,7 @@ public class App {
 		lblDatosPedido.setVisible(false);
 		
 		
-		JLabel lblNombrePedido = new JLabel("Nombre Pedido");
+		JLabel lblNombrePedido = new JLabel("Nombre Proveedor");
 		lblNombrePedido.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblNombrePedido.setBounds(707, 289, 138, 31);
 		frameAlmacen.getContentPane().add(lblNombrePedido);
@@ -794,7 +794,7 @@ public class App {
 		frameAlmacen.getContentPane().add(lblPrecioPedido);
 		lblPrecioPedido.setVisible(false);
 		
-		JLabel lblCantidadPedido= new JLabel("Stock");
+		JLabel lblCantidadPedido= new JLabel("Cantidad");
 		lblCantidadPedido.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblCantidadPedido.setBounds(707, 332, 79, 40);
 		frameAlmacen.getContentPane().add(lblCantidadPedido);
@@ -862,6 +862,8 @@ public class App {
 		textFieldCorreoLogin.setColumns(10);
 		textFieldCorreoLogin.setBounds(512, 507, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldCorreoLogin);
+		
+		JComboBox comboBoxPedido = new JComboBox();
 		
 		JLabel lblLogin = new JLabel("Login");
 		lblLogin.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -1094,7 +1096,7 @@ public class App {
 		comboBoxSeleccionarTiempo
 				.setModel(new DefaultComboBoxModel(new String[] { "1 dia", "1 mes", "1 año ", "4 años" }));
 		comboBoxSeleccionarTiempo.setEnabled(false);
-		comboBoxSeleccionarTiempo.setBounds(456, 506, 215, 19);
+		comboBoxSeleccionarTiempo.setBounds(456, 593, 215, 19);
 		frameAlmacen.getContentPane().add(comboBoxSeleccionarTiempo);
 		
 		JRadioButton rdbtnMostrarProductosCaducados = new JRadioButton("Mostrar productos que van a caducar");
@@ -1236,7 +1238,7 @@ public class App {
 			comboBoxSeleccionarCategoria.addItem(cg.getNombreCategoria());
 		}
 
-		comboBoxSeleccionarCategoria.setBounds(371, 406, 215, 19);
+		comboBoxSeleccionarCategoria.setBounds(445, 513, 215, 19);
 		frameAlmacen.getContentPane().add(comboBoxSeleccionarCategoria);
 
 		JLabel lblSeleccionarCategoria = new JLabel("Seleccionar Categoria");
@@ -1343,7 +1345,7 @@ public class App {
 			       
 					Producto producto1 = new Producto(nombre, precio, existencias, categoria, fechaCaducidad,oferta);
 					int idOferta = MostrarIdOferta(producto1);
-					 double precioOferta = CalcularOferta(producto1);
+					double precioOferta = CalcularOferta(producto1);
 					 oferta= ofertaDAO.selectOfertaId(idOferta);
 					 producto1.setOferta(oferta);
 
@@ -1362,6 +1364,16 @@ public class App {
 								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta()};
 
 						modelTabla.addRow(fila);
+					}
+					
+					comboBoxPedido.removeAllItems();
+					List<Producto> selectProductos = productoDAO.selectAllProductos();
+					
+
+					for (Producto pr : selectProductos) {
+						comboBoxPedido.addItem(pr.getIdProducto());
+						
+
 					}
 					
 					
@@ -1572,33 +1584,59 @@ public class App {
 		btnBorrar.setBounds(433, 633, 121, 25);
 		JButton btnActualizarPedido = new JButton("Actualizar");
 		btnActualizarPedido.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-			
-			
-			
-		});
-		btnActualizarPedido.setBounds(958, 633, 117, 25);
-		frameAlmacen.getContentPane().add(btnActualizarPedido);
-		JButton btnBorrarPedido = new JButton("Borrar");
-		btnBorrarPedido.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				
-				
-			}
-		});
-		btnBorrarPedido.setVisible(false);
-		btnBorrarPedido.setBounds(1209, 633, 117, 25);
-		frameAlmacen.getContentPane().add(btnBorrarPedido);
-		btnActualizarPedido.setVisible(false);
-		ImageIcon imagenBorrar = new ImageIcon(App.class.getResource("/imagenes/borrar.png"));
-		Image imagenRedimensionada3 = imagenBorrar.getImage().getScaledInstance(LONGITUD_BTN_BORRAR, ALTURA_BTN_BORRAR,
-				java.awt.Image.SCALE_SMOOTH);
-		btnBorrar.setIcon(new ImageIcon(imagenRedimensionada3));
-		frameAlmacen.getContentPane().add(btnBorrar);
-		tablePedidos = new JTable();
-		tablePedidos.setBounds(820, 322, 487, -277);
-		frameAlmacen.getContentPane().add(tablePedidos);
+			 public void actionPerformed(ActionEvent e) {
+			        int selectedRow = tablePedidos.getSelectedRow();
+			 
+			        try {
+			            int id = (int) tablePedidos.getValueAt(selectedRow, 0);
+
+			            String nombre = textFieldNombrePedido.getText();
+			            String indice = comboBoxPedido.getSelectedItem().toString();
+			            int numeroSeleccionado = Integer.parseInt(indice);
+			            int cantidad = Integer.parseInt(textFieldCantidad.getText());
+
+			            Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
+			            double precio = producto.getPrecio();
+
+			            PedidoVenta pedidoVenta = new PedidoVenta();
+			            pedidoDAO.insertPedidoVenta(pedidoVenta);
+
+			            DetalleVenta pedido = new DetalleVenta(pedidoVenta, nombre, producto, cantidad, precio);
+			            detalleDAO.insertDetalleVenta(pedido);
+
+			            JOptionPane.showMessageDialog(null, "Producto actualizado correctamente");
+
+			            pedido.setProveedor(nombre);
+			            pedido.setProducto(producto);
+			            pedido.setCantidad(cantidad);
+			            pedido.setPrecio(precio);
+
+			            int idOferta = MostrarIdOferta(producto);
+			            Oferta oferta = ofertaDAO.selectOfertaId(idOferta);
+			            double precioOferta = CalcularOferta(producto);
+
+			            productoDAO.updateProducto(producto);
+
+			            DefaultTableModel modelPedidos = (DefaultTableModel) tablePedidos.getModel();
+			            modelPedidos.setValueAt(nombre, selectedRow, 1);
+			            modelPedidos.setValueAt(producto.getIdProducto(), selectedRow, 2);
+			            modelPedidos.setValueAt(cantidad, selectedRow, 3);
+			            modelPedidos.setValueAt(precio, selectedRow, 4);
+
+			   
+
+			            textFieldNombrePedido.setText("");
+			            textFieldPrecioPedido.setText("");
+			            textFieldCantidad.setText("");
+			         
+			        } catch (ArrayIndexOutOfBoundsException e1) {
+			            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna casilla o no hay ningún pedido");
+			        } catch (NumberFormatException e1) {
+			            JOptionPane.showMessageDialog(null, "¡Error! Hay casillas vacías o datos mal introducidos.");
+			        }
+			    }
+			});
+	
 		
 		DefaultTableModel modelPedidos = new DefaultTableModel() {
 
@@ -1617,30 +1655,73 @@ public class App {
         //Añadir las columnas a la tabla Productos
 		
 		modelPedidos.addColumn("Pedido");
+		modelPedidos.addColumn("Proveedor");
 		modelPedidos.addColumn("Producto");
-		modelPedidos.addColumn("Categoria");
-		modelPedidos.addColumn("Precio");
 		modelPedidos.addColumn("Cantidad");
+		modelPedidos.addColumn("Precio");
 		
+		
+	
+		
+		List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
+		for (DetalleVenta dv : pedidoSelect) {
+		 
+
+		    Object[] fila = {dv.getPedidoVenta().getIdpedidoVenta(),dv.getProveedor() , dv.getProducto().getIdProducto(),dv.getCantidad(),dv.getProducto().getPrecio()};
+		    modelPedidos.addRow(fila);
+		
+		}
+
 		tablePedidos = new JTable(modelPedidos);
 		tablePedidos.setVisible(false);
 		tablePedidos.setBounds(26, 251, 489, -159);
 		frameAlmacen.getContentPane().add(tablePedidos);
-
-		 //Leer los productos guardados en la base de datos mediante la función productoDAO.selectAllProductos() y mostrarlos en la tabla
 		
-		//List<Producto> selectProducto = productoDAO.selectAllProductos();
-		/*for (Producto pr : selectProducto) {
-			Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-					pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad() };
-			modelTabla.addRow(fila);
-		}*/
-		
-
 		JScrollPane scrollPanePedidos = new JScrollPane(tablePedidos);
 		scrollPanePedidos.setBounds(707, 43, 619, 220);
 		frameAlmacen.getContentPane().add(scrollPanePedidos);
 		scrollPanePedidos.setVisible(false);
+	
+		btnActualizarPedido.setBounds(958, 633, 117, 25);
+		frameAlmacen.getContentPane().add(btnActualizarPedido);
+		
+		
+		JButton btnBorrarPedido = new JButton("Borrar");
+		btnBorrarPedido.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			
+
+					try {
+
+						int filaSeleccionada = tablePedidos.getSelectedRow();
+						int idPedido = (int) tablePedidos.getValueAt(filaSeleccionada, 0);
+
+						detalleDAO.deleteDetalleVenta(idPedido);
+		
+						modelPedidos.removeRow(filaSeleccionada);
+						JOptionPane.showMessageDialog(null, "Pedido borrado correctamente");
+						textFieldNombrePedido.setText("");
+						textFieldCantidad.setText("");
+						textFieldPrecioPedido.setText("");
+						
+
+					} catch (ArrayIndexOutOfBoundsException e1) {
+						JOptionPane.showMessageDialog(null, "No hay ningun pedido o no se ha seleccionado ninguno");
+					}
+				}
+			});
+				
+		
+		btnBorrarPedido.setVisible(false);
+		btnBorrarPedido.setBounds(1209, 633, 117, 25);
+		frameAlmacen.getContentPane().add(btnBorrarPedido);
+		btnActualizarPedido.setVisible(false);
+		ImageIcon imagenBorrar = new ImageIcon(App.class.getResource("/imagenes/borrar.png"));
+		Image imagenRedimensionada3 = imagenBorrar.getImage().getScaledInstance(LONGITUD_BTN_BORRAR, ALTURA_BTN_BORRAR,
+				java.awt.Image.SCALE_SMOOTH);
+		btnBorrar.setIcon(new ImageIcon(imagenRedimensionada3));
+		frameAlmacen.getContentPane().add(btnBorrar);
+	
 		
 		
 		textFieldNombrePedido = new JTextField();
@@ -1650,17 +1731,18 @@ public class App {
 		textFieldNombrePedido.setVisible(false);
 	
 		lblPrecioPedido.setVisible(false);
+		textFieldPrecioPedido = new JTextField();
+		textFieldPrecioPedido.setEnabled(false);
+		textFieldPrecioPedido.setBounds(901, 379, 215, 19);
+		frameAlmacen.getContentPane().add(textFieldPrecioPedido);
+		textFieldPrecioPedido.setColumns(10);
+		textFieldPrecioPedido.setVisible(false);
+		
 		textFieldCantidad = new JTextField();
-		textFieldCantidad.setBounds(901, 379, 215, 19);
+		textFieldCantidad.setBounds(901, 353, 215, 19);
+		textFieldCantidad.setVisible(false);
 		frameAlmacen.getContentPane().add(textFieldCantidad);
 		textFieldCantidad.setColumns(10);
-		textFieldCantidad.setVisible(false);
-		
-		textFieldPrecio = new JTextField();
-		textFieldPrecio.setBounds(901, 353, 215, 19);
-		textFieldPrecio.setVisible(false);
-		frameAlmacen.getContentPane().add(textFieldPrecio);
-		textFieldPrecio.setColumns(10);
 		
 		JLabel lblMostrarDatos = new JLabel("MOSTRAR DATOS");
 		lblMostrarDatos.setVisible(false);
@@ -1673,17 +1755,18 @@ public class App {
 		lblRegistro_1.setBounds(371, 53, 256, 54);
 		frameAlmacen.getContentPane().add(lblRegistro_1);
 		
-		JComboBox comboBoxPedido = new JComboBox();
-				modelTabla.setRowCount(0);	
+		
 				
+		comboBoxPedido.removeAllItems();
 				List<Producto> selectProductos = productoDAO.selectAllProductos();
-				modelPedidos.setRowCount(0);
+				
 
 				for (Producto pr : selectProductos) {
-					Object[] fila = { pr.getIdProducto() };
-					modelPedidos.addRow(fila);
+					comboBoxPedido.addItem(pr.getIdProducto());
+					
 
 				}
+				
 			
 	
 		comboBoxPedido.setBounds(901, 327, 215, 19);
@@ -1694,42 +1777,44 @@ public class App {
 		btnGuardarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
+				try {
 				String nombre = textFieldNombrePedido.getText();
-				double precio = Double.parseDouble(textFieldPrecio.getText()); 
+				String indice = comboBoxPedido.getSelectedItem().toString();
+				int numeroSeleccionado = Integer.parseInt(indice);
 				int cantidad = Integer.parseInt(textFieldCantidad.getText());
+			  
+
+				Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
+				double precio = producto.getPrecio();
 				
-				int indice = comboBoxPedido.getSelectedIndex() +1;
-	
-				Producto producto = productoDAO.selectProductoById(indice);
-				
-		       
-				DetalleVenta pedido = new DetalleVenta (precio,cantidad,producto);
-				
+               
+                PedidoVenta pedidoVenta = new PedidoVenta();
+                pedidoDAO.insertPedidoVenta(pedidoVenta);
+                
+				DetalleVenta pedido = new DetalleVenta( pedidoVenta, nombre, producto,cantidad ,  precio);
+				 
 				detalleDAO.insertDetalleVenta(pedido);
-				
-				
-				
-				modelPedidos.setRowCount(0);
-				List<PedidoVenta> pedidoSelect = pedidoDAO.selectAllPedidos();
-				for (PedidoVenta pv : pedidoSelect) {
 
-					Object[] fila = { pv.getIdpedidoVenta(), pv.getProeedor(), pv.getProducto().getIdProducto(),pv.getProducto().getPrecio(), pv.getProducto().getExistencias()};
+				
+				List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
+				for (DetalleVenta dv : pedidoSelect) {
+					
 
-					modelPedidos.addRow(fila);
+				    Object[] fila = {dv.getPedidoVenta().getIdpedidoVenta(), dv.getProveedor(), dv.getProducto().getIdProducto(),dv.getCantidad(),dv.getProducto().getPrecio()};
+				    modelPedidos.addRow(fila);
+				
 				}
-				
-				
-				
-				
+
+
 				JOptionPane.showMessageDialog(null, "Pedido añadido");
 				textFieldNombrePedido.setText("");
-				textFieldPrecio.setText("");
 				textFieldCantidad.setText("");
+				textFieldPrecioPedido.setText("");
 				
+			} catch (NumberFormatException e1) {
+				JOptionPane.showMessageDialog(null, "¡Error hay casillas vacías o datos mal introducidos!");
+			}
 
-				
-				
-				
 				
 			}
 		});
@@ -1752,8 +1837,8 @@ public class App {
 			public void actionPerformed(ActionEvent e) {
 				btnCerrarSesion.setVisible(false);
 				btnActualizarPedido.setVisible(false);
-				textFieldPrecio.setVisible(false);
 				textFieldCantidad.setVisible(false);
+				textFieldPrecioPedido.setVisible(false);
 				btnGuardarPedido.setVisible(false);
 				textFieldNombrePedido.setVisible(false);
 				textFieldNombreLogin.setVisible(true);
@@ -1769,7 +1854,7 @@ public class App {
             	lblPrecioPedido.setVisible(true);
             	lblNombreLogin.setVisible(true);
             	comboBoxPedido.setVisible(false);
-            	textFieldPrecio.setVisible(false);
+            	textFieldCantidad.setVisible(false);
 				textFieldNombre.setVisible(true);
 				textFieldCorreo.setVisible(true);
 				textFieldTelefono.setVisible(true);
@@ -1997,8 +2082,8 @@ public class App {
 		                    }
 	            		}
 	            	if (usuarioEncontrado) {
+	            		textFieldPrecioPedido.setVisible(true);
 	            		textFieldCantidad.setVisible(true);
-	            		textFieldPrecio.setVisible(true);
 		                    	textFieldNombreLogin.setVisible(false);
 		                    	textFieldCorreoLogin.setVisible(false);
 		                    	lblCorreoRegistroUsuario.setVisible(false);
@@ -2027,6 +2112,7 @@ public class App {
 		              		lblDatosPedido.setVisible(true);
 		                  frameAlmacen.setVisible(true);
 		                  tableProductos.setVisible(true);
+		                  tablePedidos.setVisible(true);
 		                  btnCerrarSesion.setVisible(true);
 		                  txtId.setVisible(true);
 		                  txtNombre.setVisible(true);
@@ -2087,6 +2173,29 @@ public class App {
 				Object valorSeleccionado = model.getValueAt(índice, 4); // obtiene el valor de la columna de la
 																		// categoría
 				comboBoxEscogerCategoria.setSelectedIndex((int) valorSeleccionado - 1);
+				
+			
+			}
+		});
+		
+		
+		tablePedidos.addMouseListener(new MouseAdapter() {
+			@Override
+			/**
+			 * Este evento sirve para que cuando el usuario le de a una fila de la tabla se
+			 * muestre en los text field
+			 * 
+			 */
+			public void mouseClicked(MouseEvent e) {
+				int índice = tablePedidos.getSelectedRow();
+				TableModel model = tablePedidos.getModel();
+				textFieldNombrePedido.setText(model.getValueAt(índice, 1).toString());
+				Object valorSeleccionado = model.getValueAt(índice, 2); // obtiene el valor de la columna de la producto
+				 comboBoxPedido.setSelectedItem(valorSeleccionado.toString());
+                textFieldCantidad.setText(model.getValueAt(índice, 3).toString());
+                textFieldPrecioPedido.setText(model.getValueAt(índice, 4).toString());
+				;
+				
 				
 			
 			}

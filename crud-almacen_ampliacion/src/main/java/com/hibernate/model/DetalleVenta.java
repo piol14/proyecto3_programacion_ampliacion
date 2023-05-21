@@ -27,17 +27,58 @@ public class DetalleVenta {
 	@ManyToOne
 	@JoinColumn(name = "producto_idproducto")
 	private Producto producto;
+	
+	@ManyToOne
+	@JoinColumn(name = "pedidoVenta_idpedidoVenta")
+	private PedidoVenta PedidoVenta;
+	
+
+	@Column(name = "nombreProveedor")
+	private String proveedor;
+
+	
+
 
 	public DetalleVenta() {
 
 	}
 
-	public DetalleVenta(double precio, int cantidad, Producto producto) {
+
+
+	public DetalleVenta( PedidoVenta pedidoVenta, String proveedor, Producto producto, int cantidad,  double precio ) {
 		super();
 		this.precio = precio;
 		this.cantidad = cantidad;
 		this.producto = producto;
+		this.PedidoVenta = pedidoVenta;
+		this.proveedor = proveedor;
 	}
+
+
+
+	public String getProveedor() {
+		return proveedor;
+	}
+
+
+
+	public void setProveedor(String proveedor) {
+		this.proveedor = proveedor;
+	}
+
+
+
+	public PedidoVenta getPedidoVenta() {
+		return PedidoVenta;
+	}
+
+
+
+	public void setDetalleVenta(PedidoVenta pedidoVenta) {
+		this.PedidoVenta = pedidoVenta;
+	}
+
+
 
 	public int getIdDealleVenta() {
 		return idDealleVenta;
