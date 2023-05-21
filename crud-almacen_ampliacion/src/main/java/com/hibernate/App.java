@@ -103,6 +103,7 @@ public class App {
     private JTextField textFieldNombrePedido;
     private JTextField textFieldPrecioPedido;
     private JTextField textFieldCantidad;
+    private JButton btnGuardarPedido;
 	
 	 static double ComprobarOferta (Producto producto)
 	 {
@@ -1594,10 +1595,17 @@ public class App {
 			            String indice = comboBoxPedido.getSelectedItem().toString();
 			            int numeroSeleccionado = Integer.parseInt(indice);
 			            int cantidad = Integer.parseInt(textFieldCantidad.getText());
-
+			            
 			            Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
-			            double precio = producto.getPrecio();
-
+			            double precio = producto.getPrecio()*cantidad;
+			            int stockProducto= producto.getExistencias()-cantidad;
+			            if(cantidad> producto.getExistencias())
+			            {
+			            	 JOptionPane.showMessageDialog(null, "Hay menos stock del que pide ");
+			            }
+			            else {
+			            	producto.setExistencias(stockProducto);
+			            	productoDAO.updateProducto(producto);
 			            PedidoVenta pedidoVenta = new PedidoVenta();
 			            pedidoDAO.insertPedidoVenta(pedidoVenta);
 
@@ -1622,13 +1630,20 @@ public class App {
 			            modelPedidos.setValueAt(producto.getIdProducto(), selectedRow, 2);
 			            modelPedidos.setValueAt(cantidad, selectedRow, 3);
 			            modelPedidos.setValueAt(precio, selectedRow, 4);
+			        	List<Producto> productoSelect = productoDAO.selectAllProductos();
+			        	modelTabla.setRowCount(0);
+			            for (Producto pr : productoSelect) {
 
-			   
+							Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
+									pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta()};
+
+							modelTabla.addRow(fila);
+						}
 
 			            textFieldNombrePedido.setText("");
 			            textFieldPrecioPedido.setText("");
 			            textFieldCantidad.setText("");
-			         
+			            }
 			        } catch (ArrayIndexOutOfBoundsException e1) {
 			            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna casilla o no hay ningún pedido");
 			        } catch (NumberFormatException e1) {
@@ -1773,7 +1788,7 @@ public class App {
 		comboBoxPedido.setVisible(false);
 		frameAlmacen.getContentPane().add(comboBoxPedido);
 		
-		JButton btnGuardarPedido = new JButton("Guardar");
+		btnGuardarPedido = new JButton("Guardar");
 		btnGuardarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -1783,33 +1798,54 @@ public class App {
 				int numeroSeleccionado = Integer.parseInt(indice);
 				int cantidad = Integer.parseInt(textFieldCantidad.getText());
 			  
-
-				Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
-				double precio = producto.getPrecio();
 				
+				Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
+				double precio = producto.getPrecio()*cantidad;
+				 int stockProductos= producto.getExistencias()-cantidad;
+				 producto.setExistencias(stockProductos);
+				 productoDAO.updateProducto(producto);
                
                 PedidoVenta pedidoVenta = new PedidoVenta();
                 pedidoDAO.insertPedidoVenta(pedidoVenta);
                 
-				DetalleVenta pedido = new DetalleVenta( pedidoVenta, nombre, producto,cantidad ,  precio);
-				 
-				detalleDAO.insertDetalleVenta(pedido);
-
 				
+				 if(cantidad > producto.getExistencias())
+				 {
+					 JOptionPane.showMessageDialog(null, "Error: hay menos stock del que pide");
+				 }
+				 else
+				 {
+					 DetalleVenta pedido = new DetalleVenta( pedidoVenta, nombre, producto,cantidad ,  precio);
+				detalleDAO.insertDetalleVenta(pedido);
 				List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
+				List<Producto> productoSelect = productoDAO.selectAllProductos();
+				
+				modelPedidos.setRowCount(0);
+				modelTabla.setRowCount(0);
 				for (DetalleVenta dv : pedidoSelect) {
 					
-
-				    Object[] fila = {dv.getPedidoVenta().getIdpedidoVenta(), dv.getProveedor(), dv.getProducto().getIdProducto(),dv.getCantidad(),dv.getProducto().getPrecio()};
+					
+					
+					
+				    Object[] fila = {dv.getPedidoVenta().getIdpedidoVenta(), dv.getProveedor(), dv.getProducto().getIdProducto(),dv.getCantidad(),dv.getPrecio()};
 				    modelPedidos.addRow(fila);
-				
+					
 				}
+				for (Producto pr : productoSelect) {
 
+					Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
+							pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta()};
+
+					modelTabla.addRow(fila);
+				}
 
 				JOptionPane.showMessageDialog(null, "Pedido añadido");
 				textFieldNombrePedido.setText("");
 				textFieldCantidad.setText("");
 				textFieldPrecioPedido.setText("");
+				 }
+				
+				
 				
 			} catch (NumberFormatException e1) {
 				JOptionPane.showMessageDialog(null, "¡Error hay casillas vacías o datos mal introducidos!");
