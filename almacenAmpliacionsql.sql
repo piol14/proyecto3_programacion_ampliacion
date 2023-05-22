@@ -62,7 +62,7 @@ CREATE TABLE IF NOT EXISTS `almacen`.`pedidoVenta` (
   `idpedidoVenta` INT NOT NULL AUTO_INCREMENT,
   PRIMARY KEY (`idpedidoVenta`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 1056
+AUTO_INCREMENT = 1103
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -101,7 +101,7 @@ CREATE TABLE IF NOT EXISTS `almacen`.`producto` (
     FOREIGN KEY (`oferta_idoferta`)
     REFERENCES `almacen`.`oferta` (`idoferta`))
 ENGINE = InnoDB
-AUTO_INCREMENT = 11
+AUTO_INCREMENT = 12
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
@@ -130,7 +130,7 @@ CREATE TABLE IF NOT EXISTS `almacen`.`detalle_venta` (
     ON DELETE CASCADE
     ON UPDATE CASCADE)
 ENGINE = InnoDB
-AUTO_INCREMENT = 956
+AUTO_INCREMENT = 1003
 DEFAULT CHARACTER SET = utf8mb4
 COLLATE = utf8mb4_unicode_ci;
 
