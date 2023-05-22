@@ -1548,7 +1548,27 @@ public class App {
 				ALTURA_BTN_ACTUALIZAR, java.awt.Image.SCALE_SMOOTH);
 		btnActualizar.setIcon(new ImageIcon(imagenRedimensionada2));
 		frameAlmacen.getContentPane().add(btnActualizar);
+		DefaultTableModel modelPedidos = new DefaultTableModel() {
 
+			@Override
+			/**
+			 * Este metodo sirve para que las celdas de la tabla no sean editables
+			 * 
+			 * @param filas:    este parametro son las filas de la tabla
+			 * @param columnas: las columnas de la tabla
+			 * @return: false, asi no se pueden editar las celdas
+			 */
+			public boolean isCellEditable(int filas, int columnas) {
+				return false;
+			}
+		};
+        //Añadir las columnas a la tabla Productos
+		
+		modelPedidos.addColumn("Pedido");
+		modelPedidos.addColumn("Proveedor");
+		modelPedidos.addColumn("Producto");
+		modelPedidos.addColumn("Cantidad");
+		modelPedidos.addColumn("Precio");
 		JButton btnBorrar = new JButton("Borrar");
 		btnBorrar.setVisible(false);
 		btnBorrar.addActionListener(new ActionListener() {
@@ -1570,12 +1590,24 @@ public class App {
 					
 
 					modelTabla.removeRow(filaSeleccionada);
+					
 					JOptionPane.showMessageDialog(null, "Producto borrado correctamente");
 					txtNombre.setText("");
 					txtPrecio.setText("");
 					txtStock.setText("");
 					txtId.setText("");
-
+					modelPedidos.setRowCount(0);
+					
+					List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
+					for (DetalleVenta dv : pedidoSelect) {
+						
+						
+						
+						
+					    Object[] fila = {dv.getPedidoVenta().getIdpedidoVenta(), dv.getProveedor(), dv.getProducto().getIdProducto(),dv.getCantidad(),dv.getPrecio()};
+					    modelPedidos.addRow(fila);
+						
+					}
 				} catch (ArrayIndexOutOfBoundsException e1) {
 					JOptionPane.showMessageDialog(null, "No hay ningun producto o no se ha seleccionado ninguno");
 				}
@@ -1653,27 +1685,7 @@ public class App {
 			});
 	
 		
-		DefaultTableModel modelPedidos = new DefaultTableModel() {
-
-			@Override
-			/**
-			 * Este metodo sirve para que las celdas de la tabla no sean editables
-			 * 
-			 * @param filas:    este parametro son las filas de la tabla
-			 * @param columnas: las columnas de la tabla
-			 * @return: false, asi no se pueden editar las celdas
-			 */
-			public boolean isCellEditable(int filas, int columnas) {
-				return false;
-			}
-		};
-        //Añadir las columnas a la tabla Productos
 		
-		modelPedidos.addColumn("Pedido");
-		modelPedidos.addColumn("Proveedor");
-		modelPedidos.addColumn("Producto");
-		modelPedidos.addColumn("Cantidad");
-		modelPedidos.addColumn("Precio");
 		
 		
 	
@@ -1801,20 +1813,27 @@ public class App {
 				
 				Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
 				double precio = producto.getPrecio()*cantidad;
-				 int stockProductos= producto.getExistencias()-cantidad;
-				 producto.setExistencias(stockProductos);
-				 productoDAO.updateProducto(producto);
+				
+				
                
-                PedidoVenta pedidoVenta = new PedidoVenta();
-                pedidoDAO.insertPedidoVenta(pedidoVenta);
+                
                 
 				
-				 if(cantidad > producto.getExistencias())
+				 if( producto.getExistencias() < cantidad)
 				 {
 					 JOptionPane.showMessageDialog(null, "Error: hay menos stock del que pide");
 				 }
+				 else if( cantidad == 0)
+				 {
+					 JOptionPane.showMessageDialog(null, "Error: la cantidad no puede ser 0");
+				 }
 				 else
 				 {
+					 int stockProductos= producto.getExistencias()-cantidad;
+					 producto.setExistencias(stockProductos);
+					 productoDAO.updateProducto(producto);
+					 PedidoVenta pedidoVenta = new PedidoVenta();
+		                pedidoDAO.insertPedidoVenta(pedidoVenta);
 					 DetalleVenta pedido = new DetalleVenta( pedidoVenta, nombre, producto,cantidad ,  precio);
 				detalleDAO.insertDetalleVenta(pedido);
 				List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
