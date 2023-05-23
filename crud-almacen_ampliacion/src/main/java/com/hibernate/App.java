@@ -66,6 +66,9 @@ public class App {
 
 	static final int LONGITUD_BTN_BORRAR = 20;
 	static final int ALTURA_BTN_BORRAR = 20;
+	
+	static final int LONGITUD_BTN_CERRAR_SESION = 18;
+	static final int ALTURA_BTN_CERRAR_SESION= 18;
 
 	static ProductoDAO productoDAO = new ProductoDAO();
 	CategoriaDAO categoriaDAO = new CategoriaDAO();
@@ -771,14 +774,14 @@ public class App {
 		
 		JLabel lblDatosPedido = new JLabel("INTRODUCIR DATOS");
 		lblDatosPedido.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblDatosPedido.setBounds(707, 263, 284, 31);
+		lblDatosPedido.setBounds(707, 268, 284, 31);
 		frameAlmacen.getContentPane().add(lblDatosPedido);
 		lblDatosPedido.setVisible(false);
 		
 		
 		JLabel lblNombrePedido = new JLabel("Nombre Proveedor");
 		lblNombrePedido.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblNombrePedido.setBounds(707, 289, 138, 31);
+		lblNombrePedido.setBounds(707, 289, 176, 31);
 		frameAlmacen.getContentPane().add(lblNombrePedido);
 		lblNombrePedido.setVisible(false);
 		
@@ -791,13 +794,13 @@ public class App {
 		JLabel lblPrecioPedido = new JLabel("Precio");
 		
 		lblPrecioPedido.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblPrecioPedido.setBounds(707, 367, 126, 31);
+		lblPrecioPedido.setBounds(707, 378, 91, 20);
 		frameAlmacen.getContentPane().add(lblPrecioPedido);
 		lblPrecioPedido.setVisible(false);
 		
 		JLabel lblCantidadPedido= new JLabel("Cantidad");
 		lblCantidadPedido.setFont(new Font("Dialog", Font.BOLD, 15));
-		lblCantidadPedido.setBounds(707, 332, 79, 40);
+		lblCantidadPedido.setBounds(707, 352, 79, 20);
 		frameAlmacen.getContentPane().add(lblCantidadPedido);
 		lblCantidadPedido.setVisible(false);
 		
@@ -868,7 +871,7 @@ public class App {
 		
 		JLabel lblLogin = new JLabel("Login");
 		lblLogin.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblLogin.setBounds(397, 435, 70, 15);
+		lblLogin.setBounds(397, 435, 79, 31);
 		frameAlmacen.getContentPane().add(lblLogin);
 		
 		
@@ -921,13 +924,13 @@ public class App {
 	                            
 	                                usuarioDao.insertUsuario(usuario);
 	                                JOptionPane.showMessageDialog(null, "Registro exitoso");
-	                                
-
-		                            // Mostrar elementos de la interfaz para administrar productos, pedidos, etc.
-	                                
-		                    	
 		                       
-	                            
+	                               textFieldNombre.setText("");                          
+       	                    textFieldCorreo.setText("");
+	        	                   textFieldTelefono.setText("");
+	        	                     textFieldLocalizacion.setText("");
+	        	                     textFieldFechaNac.setText("");
+	        	                   textFieldFechaInicio.setText("");      
 
 				 
 	                    
@@ -942,7 +945,15 @@ public class App {
 		
 		btnRegistrarse.setBackground(new Color(245, 222, 179));
 		btnRegistrarse.setBounds(336, 348, 164, 25);
+		ImageIcon imagenRegistrarse = new ImageIcon(App.class.getResource("/imagenes/registrarse.png"));
+		Image imagenRedimensionada7 = imagenRegistrarse.getImage().getScaledInstance(LONGITUD_BTN_GUARDAR,
+				ALTURA_BTN_GUARDAR, java.awt.Image.SCALE_SMOOTH);
+		btnRegistrarse.setIcon(new ImageIcon(imagenRedimensionada7));
+		
+
 		frameAlmacen.getContentPane().add(btnRegistrarse);
+		
+		
 		
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setBackground(new Color(245, 222, 179));
@@ -1569,6 +1580,7 @@ public class App {
 		modelPedidos.addColumn("Producto");
 		modelPedidos.addColumn("Cantidad");
 		modelPedidos.addColumn("Precio");
+		
 		JButton btnBorrar = new JButton("Borrar");
 		btnBorrar.setVisible(false);
 		btnBorrar.addActionListener(new ActionListener() {
@@ -1625,7 +1637,10 @@ public class App {
 		});
 		btnBorrar.setBackground(new Color(245, 222, 179));
 		btnBorrar.setBounds(433, 633, 121, 25);
+		
+		
 		JButton btnActualizarPedido = new JButton("Actualizar");
+		btnActualizarPedido.setBackground(new Color(245, 222, 179));
 		btnActualizarPedido.addActionListener(new ActionListener() {
 			 public void actionPerformed(ActionEvent e) {
 			        int selectedRow = tablePedidos.getSelectedRow();
@@ -1694,9 +1709,13 @@ public class App {
 			    }
 			});
 	
+		ImageIcon imagenActualizarPedido = new ImageIcon(App.class.getResource("/imagenes/actualizar.png"));
+		Image imagenRedimensionada5 = imagenActualizarPedido.getImage().getScaledInstance(LONGITUD_BTN_ACTUALIZAR,
+				ALTURA_BTN_ACTUALIZAR, java.awt.Image.SCALE_SMOOTH);
+		btnActualizarPedido.setIcon(new ImageIcon(imagenRedimensionada5));
 		
-		
-		
+		btnActualizarPedido.setBounds(941, 633, 151, 25);
+		frameAlmacen.getContentPane().add(btnActualizarPedido);
 		
 	
 		
@@ -1719,11 +1738,11 @@ public class App {
 		frameAlmacen.getContentPane().add(scrollPanePedidos);
 		scrollPanePedidos.setVisible(false);
 	
-		btnActualizarPedido.setBounds(958, 633, 117, 25);
-		frameAlmacen.getContentPane().add(btnActualizarPedido);
+		
 		
 		
 		JButton btnBorrarPedido = new JButton("Borrar");
+		btnBorrarPedido.setBackground(new Color(245, 222, 179));
 		btnBorrarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 			
@@ -1750,8 +1769,14 @@ public class App {
 				
 		
 		btnBorrarPedido.setVisible(false);
-		btnBorrarPedido.setBounds(1209, 633, 117, 25);
+		btnBorrarPedido.setBounds(1209, 633, 121, 25);
 		frameAlmacen.getContentPane().add(btnBorrarPedido);
+		ImageIcon imagenBorrarPedido = new ImageIcon(App.class.getResource("/imagenes/borrar.png"));
+		Image imagenRedimensionada6 = imagenBorrarPedido.getImage().getScaledInstance(LONGITUD_BTN_BORRAR, ALTURA_BTN_BORRAR,
+				java.awt.Image.SCALE_SMOOTH);
+		btnBorrarPedido.setIcon(new ImageIcon(imagenRedimensionada6));
+		
+		
 		btnActualizarPedido.setVisible(false);
 		ImageIcon imagenBorrar = new ImageIcon(App.class.getResource("/imagenes/borrar.png"));
 		Image imagenRedimensionada3 = imagenBorrar.getImage().getScaledInstance(LONGITUD_BTN_BORRAR, ALTURA_BTN_BORRAR,
@@ -1811,6 +1836,7 @@ public class App {
 		frameAlmacen.getContentPane().add(comboBoxPedido);
 		
 		btnGuardarPedido = new JButton("Guardar");
+		btnGuardarPedido.setBackground(new Color(245, 222, 179));
 		btnGuardarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
@@ -1831,7 +1857,7 @@ public class App {
 				
 				 if( producto.getExistencias() < cantidad)
 				 {
-					 JOptionPane.showMessageDialog(null, "Error: hay menos stock del que pide");
+					 JOptionPane.showMessageDialog(null, "No hay stock suficiente");
 				 }
 				 else if( cantidad == 0)
 				 {
@@ -1878,14 +1904,22 @@ public class App {
 				
 			} catch (NumberFormatException e1) {
 				JOptionPane.showMessageDialog(null, "¡Error hay casillas vacías o datos mal introducidos!");
+			}catch(NullPointerException e2) {
+				
+				JOptionPane.showMessageDialog(null, "¡Error hay casillas vacías o datos mal introducidos!");	
 			}
+				
 
 				
 			}
 		});
 		btnGuardarPedido.setBounds(707, 633, 117, 25);
 		btnGuardarPedido.setVisible(false);
-		frameAlmacen.getContentPane().add(btnGuardarPedido);
+		ImageIcon imagenGuardarPedido = new ImageIcon(App.class.getResource("/imagenes/guardar.png"));
+		Image imagenRedimensionada4 = imagenGuardarPedido.getImage().getScaledInstance(LONGITUD_BTN_GUARDAR,
+				ALTURA_BTN_GUARDAR, java.awt.Image.SCALE_SMOOTH);
+		btnGuardarPedido.setIcon(new ImageIcon(imagenRedimensionada4));
+		frameAlmacen.getContentPane().add(btnGuardar);frameAlmacen.getContentPane().add(btnGuardarPedido);
 		List<Categoria> Categoria = categoriaDAO.selectAllCategoria();
 		for (Categoria cg : Categoria) {
 			comboBoxEscogerCategoria.addItem(cg.getNombreCategoria());
@@ -1916,7 +1950,7 @@ public class App {
             	
             	textFieldNombrePedido.setVisible(false);
             	btnBorrarPedido.setVisible(false);
-            	lblPrecioPedido.setVisible(true);
+            	lblPrecioPedido.setVisible(false);
             	lblNombreLogin.setVisible(true);
             	comboBoxPedido.setVisible(false);
             	textFieldCantidad.setVisible(false);
@@ -1980,9 +2014,12 @@ public class App {
             	
 			}
 		});
-		btnCerrarSesion.setBounds(220, 697, 151, 23);
+		btnCerrarSesion.setBounds(220, 697, 188, 23);
 		frameAlmacen.getContentPane().add(btnCerrarSesion);
-		
+		ImageIcon imagenCerrarSesion = new ImageIcon(App.class.getResource("/imagenes/cerrarSesion.png"));
+		Image imagenRedimensionada9 = imagenCerrarSesion.getImage().getScaledInstance(LONGITUD_BTN_GUARDAR,
+				ALTURA_BTN_GUARDAR, java.awt.Image.SCALE_SMOOTH);
+		btnCerrarSesion.setIcon(new ImageIcon(imagenRedimensionada9));
 		
 		
 		
@@ -2147,6 +2184,7 @@ public class App {
 		                    }
 	            		}
 	            	if (usuarioEncontrado) {
+	            		lblDatos.setVisible(true);
 	            		textFieldPrecioPedido.setVisible(true);
 	            		textFieldCantidad.setVisible(true);
 		                    	textFieldNombreLogin.setVisible(false);
@@ -2212,12 +2250,15 @@ public class App {
 	            		}
 		                    else
 		                    {
-		                    	JOptionPane.showMessageDialog(null, "Hay datos incorrectos");
+		                    	JOptionPane.showMessageDialog(null, "Hay datos incorrectos o casillas vacias");
 		                    }
 	            	
 	            }
 	        });
-	     
+	        ImageIcon imagenEntrar = new ImageIcon(App.class.getResource("/imagenes/autenticarse.png"));
+			Image imagenRedimensionada8 = imagenEntrar.getImage().getScaledInstance(LONGITUD_BTN_CERRAR_SESION,
+					ALTURA_BTN_CERRAR_SESION, java.awt.Image.SCALE_SMOOTH);
+			btnEntrar.setIcon(new ImageIcon(imagenRedimensionada8));
 	      
 		
 		
