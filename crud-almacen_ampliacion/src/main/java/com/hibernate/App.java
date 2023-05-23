@@ -111,7 +111,7 @@ public class App {
 	 static double ComprobarOferta (Producto producto)
 	 {
 		 LocalDate hoy = LocalDate.now();
-		 ultimaFechaEjecucion =LocalDate.now();
+		 
 		    DayOfWeek semana = hoy.getDayOfWeek();
 		    int numeroSemana = semana.getValue();
 		    Categoria categoria = producto.getCategoria();
@@ -139,15 +139,14 @@ public class App {
 		                productoDAO.updateProducto(pr);
 		              
 		          }
-		          else {
-		        	  if(producto.getOferta().getIdOferta()!=1)
+		          else 
+		          {
+		        	  if(pr.getOferta().getIdOferta()!=1)
 		        	  {
-		        	  double precioOriginal = pr.getPrecio() / ofertaDAO.selectOfertaById(pr.getOferta().getIdOferta());
-		              double precioOriginalRedondeado = Math.round(precioOriginal * 100.0) / 100.0;
-		              pr.setPrecio(precioOriginalRedondeado);
-		              productoDAO.updateProducto(pr);
+		        		  DevolverPrecioOriginal(pr);
 		        	  }
 		          }
+		          
 	            }
 	        
 	            break;
@@ -165,10 +164,7 @@ public class App {
 	        	else {
 	        		  if(producto.getOferta().getIdOferta()!=1)
 		        	  {
-		        	  double precioOriginal = pr.getPrecio() / ofertaDAO.selectOfertaById(pr.getOferta().getIdOferta());
-		              double precioOriginalRedondeado = Math.round(precioOriginal * 100.0) / 100.0;
-		              pr.setPrecio(precioOriginalRedondeado);
-		              productoDAO.updateProducto(pr);
+	        			  DevolverPrecioOriginal(pr);
 		        	  }
 	          }
 		            }
@@ -199,10 +195,7 @@ public class App {
 	          else {
 	        	  if(producto.getOferta().getIdOferta()!=1)
 	        	  {
-	        	  double precioOriginal = pr.getPrecio() / ofertaDAO.selectOfertaById(pr.getOferta().getIdOferta());
-	              double precioOriginalRedondeado = Math.round(precioOriginal * 100.0) / 100.0;
-	              pr.setPrecio(precioOriginalRedondeado);
-	              productoDAO.updateProducto(pr);
+	        		  DevolverPrecioOriginal(pr);
 		            }
 	          }
 		            }
@@ -220,10 +213,7 @@ public class App {
 	                else {
 	                	  if(producto.getOferta().getIdOferta()!=1)
 			        	  {
-			        	  double precioOriginal = pr.getPrecio() / ofertaDAO.selectOfertaById(pr.getOferta().getIdOferta());
-			              double precioOriginalRedondeado = Math.round(precioOriginal * 100.0) / 100.0;
-			              pr.setPrecio(precioOriginalRedondeado);
-			              productoDAO.updateProducto(pr);
+	                		  DevolverPrecioOriginal(pr);
 	                }
 	                }
 	            
@@ -254,10 +244,7 @@ public class App {
 		          else {
 		        	  if(producto.getOferta().getIdOferta()!=1)
 		        	  {
-		        	  double precioOriginal = pr.getPrecio() / ofertaDAO.selectOfertaById(pr.getOferta().getIdOferta());
-		              double precioOriginalRedondeado = Math.round(precioOriginal * 100.0) / 100.0;
-		              pr.setPrecio(precioOriginalRedondeado);
-		              productoDAO.updateProducto(pr);
+		        		  DevolverPrecioOriginal(pr);
 		        	  }
 		          }
 		            }
@@ -278,10 +265,7 @@ public class App {
 	        	 else {
 	        		  if(producto.getOferta().getIdOferta()!=1)
 		        	  {
-		        	  double precioOriginal = pr.getPrecio() / ofertaDAO.selectOfertaById(pr.getOferta().getIdOferta());
-		              double precioOriginalRedondeado = Math.round(precioOriginal * 100.0) / 100.0;
-		              pr.setPrecio(precioOriginalRedondeado);
-		              productoDAO.updateProducto(pr);
+	        			  DevolverPrecioOriginal(pr);
                }
 	        	 }
 		            }
@@ -299,16 +283,11 @@ public class App {
 		              
 		          }
 	        	 else {
-	        		  if(producto.getOferta().getIdOferta()!=1)
-		        	  {
-		        	  double precioOriginal = producto.getPrecio() / ofertaDAO.selectOfertaById(producto.getOferta().getIdOferta());
-		              double precioOriginalRedondeado = Math.round(precioOriginal * 100.0) / 100.0;
-		              pr.setPrecio(precioOriginalRedondeado);
-		              productoDAO.updateProducto(pr);
-		        	  }
+	        		 DevolverPrecioOriginal(pr);
 	        	 }
 		            
 		            }
+	        	 
 	        break;
 	    }
 
@@ -318,7 +297,19 @@ public class App {
 		    
 		  
 		 
-	 
+static double DevolverPrecioOriginal(Producto producto)
+{
+	
+	
+	 double precioOriginal = producto.getPrecio() / ofertaDAO.selectOfertaById(producto.getOferta().getIdOferta());
+     double precioOriginalRedondeado = Math.round(precioOriginal * 100.0) / 100.0;
+     producto.setPrecio(precioOriginalRedondeado);
+     producto.getOferta().setIdOferta(1);
+     
+     productoDAO.updateProducto(producto);
+     return producto.getPrecio();
+    }
+
 	static int MostrarIdOferta(Producto producto1)
 	{
 		
@@ -405,9 +396,7 @@ public class App {
 		        	
 		        case 6:
 		        	 if (producto1.getCategoria().getIdCategoria()==5){
-		        		 Oferta oferta = ofertaDAO.selectOfertaId(11);
-		        		 producto1.setOferta(oferta);
-			         
+		        			idOferta=11;
 			            
 			          }
 		        
@@ -635,6 +624,7 @@ public class App {
 	    
 	    for (Producto producto : productos) {
 	        ComprobarOferta(producto);
+	        MostrarIdOferta(producto);
 	    }
 	}
 
