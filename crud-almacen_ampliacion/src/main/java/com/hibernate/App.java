@@ -1598,6 +1598,16 @@ public class App {
 					txtId.setText("");
 					modelPedidos.setRowCount(0);
 					
+					comboBoxPedido.removeAllItems();
+					List<Producto> selectProductos = productoDAO.selectAllProductos();
+					
+
+					for (Producto pr : selectProductos) {
+						comboBoxPedido.addItem(pr.getIdProducto());
+						
+
+					}
+					
 					List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
 					for (DetalleVenta dv : pedidoSelect) {
 						
