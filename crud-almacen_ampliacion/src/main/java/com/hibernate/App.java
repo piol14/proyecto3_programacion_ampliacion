@@ -310,6 +310,11 @@ static double DevolverPrecioOriginal(Producto producto)
      return producto.getPrecio();
     }
 
+/**
+ * Esta funcion establece la id de la oferta a los productos segun su categoria y dia de la semana
+ * @param producto1 pasamos el producto a modificar 
+ * @return devuelve la id de la oferta 
+ */
 	static int MostrarIdOferta(Producto producto1)
 	{
 		
@@ -321,7 +326,7 @@ static double DevolverPrecioOriginal(Producto producto)
 		     int idOferta = 1;
 		    
 
-		    // Aplicar las ofertas en función del día de la semana
+		    
 		    switch (numeroSemana) {
 		       
 		        case 1:
