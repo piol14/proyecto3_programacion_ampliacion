@@ -702,7 +702,7 @@ public class App {
 		lblTitulo.setForeground(new Color(255, 153, 102));
 		lblTitulo.setBackground(new Color(0, 153, 153));
 		lblTitulo.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 25));
-		lblTitulo.setBounds(282, 0, 403, 31);
+		lblTitulo.setBounds(559, 0, 403, 31);
 		frameAlmacen.getContentPane().add(lblTitulo);
 		
 		textFieldNombre = new JTextField();
@@ -1000,7 +1000,7 @@ public class App {
 		}
 
 		JScrollPane scrollPaneProductos = new JScrollPane(tableProductos);
-		scrollPaneProductos.setBounds(10, 43, 619, 220);
+		scrollPaneProductos.setBounds(10, 43, 666, 220);
 		frameAlmacen.getContentPane().add(scrollPaneProductos);
 		scrollPaneProductos.setVisible(false);
 		
@@ -1108,7 +1108,7 @@ public class App {
 		comboBoxSeleccionarTiempo
 				.setModel(new DefaultComboBoxModel(new String[] { "1 dia", "1 mes", "1 año ", "4 años" }));
 		comboBoxSeleccionarTiempo.setEnabled(false);
-		comboBoxSeleccionarTiempo.setBounds(456, 593, 215, 19);
+		comboBoxSeleccionarTiempo.setBounds(461, 593, 215, 20);
 		frameAlmacen.getContentPane().add(comboBoxSeleccionarTiempo);
 		
 		JRadioButton rdbtnMostrarProductosCaducados = new JRadioButton("Mostrar productos que van a caducar");
@@ -1250,7 +1250,7 @@ public class App {
 			comboBoxSeleccionarCategoria.addItem(cg.getNombreCategoria());
 		}
 
-		comboBoxSeleccionarCategoria.setBounds(445, 513, 215, 19);
+		comboBoxSeleccionarCategoria.setBounds(461, 513, 215, 20);
 		frameAlmacen.getContentPane().add(comboBoxSeleccionarCategoria);
 
 		JLabel lblSeleccionarCategoria = new JLabel("Seleccionar Categoria");
@@ -1497,6 +1497,13 @@ public class App {
 				 
 				 
 				try {
+					
+					if(txtNombre.getText().isEmpty() || comboBoxEscogerCategoria.getSelectedItem() == null || txtPrecio.getText().isEmpty() || txtStock.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
+					
+						
+						
+					}else {
 					int id = (int) tableProductos.getValueAt(selectedRow, 0);
 		
 					
@@ -1516,8 +1523,6 @@ public class App {
 				      
 					int existencias = Integer.parseInt(txtStock.getText());
 					Producto producto = productoDAO.selectProductoById(id);
-					
-					
 					
 					 
 					JOptionPane.showMessageDialog(null, "Producto actualizado correctamente");
@@ -1541,18 +1546,17 @@ public class App {
 					txtPrecio.setText("");
 					txtStock.setText("");
 					txtId.setText("");
+					}
 				} catch (ArrayIndexOutOfBoundsException e1) {
 					JOptionPane.showMessageDialog(null,
 							"No se ha seleccionado ninguna casilla o no hay ningun producto");
 
-				} catch (NumberFormatException e1) {
-					JOptionPane.showMessageDialog(null, "¡Error hay casillas vacías o datos mal introducidos!");
 				}
 			}
 
 		});
 		btnActualizar.setBackground(new Color(245, 222, 179));
-		btnActualizar.setBounds(216, 633, 151, 25);
+		btnActualizar.setBounds(268, 633, 151, 25);
 
 		ImageIcon imagenActualizar = new ImageIcon(App.class.getResource("/imagenes/actualizar.png"));
 		Image imagenRedimensionada2 = imagenActualizar.getImage().getScaledInstance(LONGITUD_BTN_ACTUALIZAR,
@@ -1636,7 +1640,7 @@ public class App {
 			}
 		});
 		btnBorrar.setBackground(new Color(245, 222, 179));
-		btnBorrar.setBounds(433, 633, 121, 25);
+		btnBorrar.setBounds(555, 633, 121, 25);
 		
 		
 		JButton btnActualizarPedido = new JButton("Actualizar");
@@ -1646,6 +1650,11 @@ public class App {
 			        int selectedRow = tablePedidos.getSelectedRow();
 			 
 			        try {
+			        	
+			        	if(textFieldNombrePedido.getText().isEmpty() || comboBoxPedido.getSelectedItem() == null ||  textFieldCantidad.getText().isEmpty()) {
+							JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
+							
+						}else {
 			            int id = (int) tablePedidos.getValueAt(selectedRow, 0);
 
 			            String nombre = textFieldNombrePedido.getText();
@@ -1701,6 +1710,7 @@ public class App {
 			            textFieldPrecioPedido.setText("");
 			            textFieldCantidad.setText("");
 			            }
+						}
 			        } catch (ArrayIndexOutOfBoundsException e1) {
 			            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna casilla o no hay ningún pedido");
 			        } catch (NumberFormatException e1) {
