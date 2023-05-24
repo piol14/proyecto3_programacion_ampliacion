@@ -1607,6 +1607,8 @@ public class App {
 
 						Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
 						double precio = producto.getPrecio() * cantidad;
+						double precioOriginalRedondeado = Math.round(precio * 100.0) / 100.0;
+					
 						int stockProducto = producto.getExistencias() - cantidad;
 						if (cantidad > producto.getExistencias()) {
 							JOptionPane.showMessageDialog(null, "Hay menos stock del que pide ");
@@ -1614,10 +1616,10 @@ public class App {
 							producto.setExistencias(stockProducto);
 							productoDAO.updateProducto(producto);
 							PedidoVenta pedidoVenta = new PedidoVenta();
-							pedidoDAO.insertPedidoVenta(pedidoVenta);
+						
 
-							DetalleVenta pedido = new DetalleVenta(pedidoVenta, nombre, producto, cantidad, precio);
-							detalleDAO.insertDetalleVenta(pedido);
+							DetalleVenta pedido = new DetalleVenta(pedidoVenta, nombre, producto, cantidad, precioOriginalRedondeado);
+							
 
 							JOptionPane.showMessageDialog(null, "Producto actualizado correctamente");
 
@@ -1793,6 +1795,8 @@ public class App {
 
 					Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
 					double precio = producto.getPrecio() * cantidad;
+					double precioOriginalRedondeado = Math.round(precio * 100.0) / 100.0;
+					
 
 					if (producto.getExistencias() < cantidad) {
 						JOptionPane.showMessageDialog(null, "No hay stock suficiente");
@@ -1804,7 +1808,7 @@ public class App {
 						productoDAO.updateProducto(producto);
 						PedidoVenta pedidoVenta = new PedidoVenta();
 						pedidoDAO.insertPedidoVenta(pedidoVenta);
-						DetalleVenta pedido = new DetalleVenta(pedidoVenta, nombre, producto, cantidad, precio);
+						DetalleVenta pedido = new DetalleVenta(pedidoVenta, nombre, producto, cantidad, precioOriginalRedondeado);
 						detalleDAO.insertDetalleVenta(pedido);
 						List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
 						List<Producto> productoSelect = productoDAO.selectAllProductos();
