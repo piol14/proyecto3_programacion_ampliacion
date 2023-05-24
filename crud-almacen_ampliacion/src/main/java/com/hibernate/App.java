@@ -66,508 +66,436 @@ public class App {
 
 	static final int LONGITUD_BTN_BORRAR = 20;
 	static final int ALTURA_BTN_BORRAR = 20;
-	
+
 	static final int LONGITUD_BTN_CERRAR_SESION = 18;
-	static final int ALTURA_BTN_CERRAR_SESION= 18;
+	static final int ALTURA_BTN_CERRAR_SESION = 18;
 
 	static ProductoDAO productoDAO = new ProductoDAO();
 	CategoriaDAO categoriaDAO = new CategoriaDAO();
 	static OfertaDAO ofertaDAO = new OfertaDAO();
 	PedidoVentaDAO pedidoDAO = new PedidoVentaDAO();
 	DetalleVentaDAO detalleDAO = new DetalleVentaDAO();
-	
 
 	private JFrame frameAlmacen;
 	private JTable tableProductos;
-	
+
 	private JTextField txtId;
 	private JTextField txtNombre;
 	private JTextField txtPrecio;
 	private JTextField txtStock;
-	static  LocalDate ultimaFechaEjecucion;
-	
+	static LocalDate ultimaFechaEjecucion;
+
 	private JTextField textFieldNombre;
 	private JTextField textFieldCorreo;
 	private JTextField textFieldTelefono;
 	private JTextField textFieldLocalizacion;
 	private JTextField textFieldFechaNac;
 	private JTextField textFieldFechaInicio;
-	
-	
-	
-	
 
 	ButtonGroup g1 = new ButtonGroup();
-	 // Variable para controlar el estado de registro
-    static UsuarioDAO usuarioDao= new UsuarioDAO();
-    private JTextField textFieldNombreLogin;
-    private JTextField textFieldCorreoLogin;
-    private JTable tablePedidos;
-    private JTextField textFieldNombrePedido;
-    private JTextField textFieldPrecioPedido;
-    private JTextField textFieldCantidad;
-    private JButton btnGuardarPedido;
+	// Variable para controlar el estado de registro
+	static UsuarioDAO usuarioDao = new UsuarioDAO();
+	private JTextField textFieldNombreLogin;
+	private JTextField textFieldCorreoLogin;
+	private JTable tablePedidos;
+	private JTextField textFieldNombrePedido;
+	private JTextField textFieldPrecioPedido;
+	private JTextField textFieldCantidad;
+	private JButton btnGuardarPedido;
+
 	/**
-	 * Este método se ejecuta al iniciar el programa y devuelve o pone en oferta los productos 
-	 * según la categoria y el dia de la semana 
-	 * @param producto: el producto a modificar o no 
+	 * Este método se ejecuta al iniciar el programa y devuelve o pone en oferta los
+	 * productos según la categoria y el dia de la semana
+	 * 
+	 * @param producto: el producto a modificar o no
 	 * @return devuelve el precio del producto
 	 */
-	 static double ComprobarOferta (Producto producto)
-	 {
-		 LocalDate hoy = LocalDate.now();
-		 
-		    DayOfWeek semana = hoy.getDayOfWeek();
-		    int numeroSemana = semana.getValue();
-		    Categoria categoria = producto.getCategoria();
-		    List<Producto> productosCategoria = productoDAO.selectProductoByCategoria(categoria);
-	switch(numeroSemana)
-	{
-	 case 1:
-	        	
-	            for(  Producto pr :productosCategoria)
-	            {
-		          if (pr.getCategoria().getIdCategoria()==1){
-		                double precioConDescuentoBebidas = pr.getPrecio() * ofertaDAO.selectOfertaById(2);
-		               double precioFinal= pr.getPrecio() - precioConDescuentoBebidas;
-		             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-		             pr.setPrecio(precioFinalRedondeado);
-		             productoDAO.updateProducto(pr);
-		               
-		           
-		            
-		          }else if  (pr.getCategoria().getIdCategoria()==9) {
-		                double precioConDescuentoCongelados = pr.getPrecio() * ofertaDAO.selectOfertaById(8);
-		                double precioFinal2= pr.getPrecio() - precioConDescuentoCongelados;
-		                double precioFinalRedondeado = Math.round(precioFinal2*100.0)/100.0;
-		                pr.setPrecio(precioFinalRedondeado);
-		                productoDAO.updateProducto(pr);
-		              
-		          }
-		          else 
-		          {
-		        	  if(pr.getOferta().getIdOferta()!=1)
-		        	  {
-		        		  DevolverPrecioOriginal(pr);
-		        	  }
-		          }
-		          
-	            }
-	        
-	            break;
-	            
-	        case 2:
-	        	 for(  Producto pr :productosCategoria)
-		            {
-	        	if (pr.getCategoria().getIdCategoria()==8){
-	                double precioConDescuentoPescado = pr.getPrecio() * ofertaDAO.selectOfertaById(14);
-	               double precioFinal= pr.getPrecio() - precioConDescuentoPescado;
-	             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-	             pr.setPrecio(precioFinalRedondeado);
-	             productoDAO.updateProducto(pr);
-	        	}
-	        	else {
-	        		  if(producto.getOferta().getIdOferta()!=1)
-		        	  {
-	        			  DevolverPrecioOriginal(pr);
-		        	  }
-	          }
-		            }
-	        	
-	        	break;
-	        	
-	        case 3:
-	        	
-	        	 for(  Producto pr :productosCategoria)
-		            {  
-	          if (pr.getCategoria().getIdCategoria()==10){
-	                double precioConDescuentoLimpieza = pr.getPrecio() * ofertaDAO.selectOfertaById(3);
-	               double precioFinal= pr.getPrecio() - precioConDescuentoLimpieza;
-	             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-	             pr.setPrecio(precioFinalRedondeado);
-	             productoDAO.updateProducto(pr);
-	          
-	              
-	            
-	          }else if  (pr.getCategoria().getIdCategoria()==4) {
-	                double precioConDescuentoLacteos = pr.getPrecio() * ofertaDAO.selectOfertaById(16);
-	                double precioFinal2= pr.getPrecio() - precioConDescuentoLacteos;
-	                double precioFinalRedondeado = Math.round(precioFinal2*100.0)/100.0;
-	                pr.setPrecio(precioFinalRedondeado);
-	                productoDAO.updateProducto(pr);
-	              
-	          }
-	          else {
-	        	  if(producto.getOferta().getIdOferta()!=1)
-	        	  {
-	        		  DevolverPrecioOriginal(pr);
-		            }
-	          }
-		            }
-	            break;
-	        case 4:
-	        	 for(  Producto pr :productosCategoria)
-		            {
-	        	if (pr.getCategoria().getIdCategoria()==7){
-	                double precioConDescuentoFrutasyVerduras = pr.getPrecio() * ofertaDAO.selectOfertaById(7);
-	               double precioFinal= pr.getPrecio() - precioConDescuentoFrutasyVerduras;
-	             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-	             pr.setPrecio(precioFinalRedondeado);
-	             productoDAO.updateProducto(pr);
-	        	}
-	                else {
-	                	  if(producto.getOferta().getIdOferta()!=1)
-			        	  {
-	                		  DevolverPrecioOriginal(pr);
-	                }
-	                }
-	            
-	          }
-		            
-	        	break;
-	        	
-	        case 5:
-	        	 for(  Producto pr :productosCategoria)
-		            {
-	        	 if (pr.getCategoria().getIdCategoria()==2){
-		                double precioConDescuentoCondimentos = pr.getPrecio() * ofertaDAO.selectOfertaById(8);
-		               double precioFinal= producto.getPrecio() - precioConDescuentoCondimentos;
-		             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-		             pr.setPrecio(precioFinalRedondeado);
-		             productoDAO.updateProducto(pr);
-		            
-		            
-		          }else if  (pr.getCategoria().getIdCategoria()==3) {
-		                double precioConDescuentoReposteria = pr.getPrecio() * ofertaDAO.selectOfertaById(10);
-		                double precioFinal2= pr.getPrecio() - precioConDescuentoReposteria;
-		                double precioFinalRedondeado = Math.round(precioFinal2*100.0)/100.0;
-		                pr.setPrecio(precioFinalRedondeado);
-		                productoDAO.updateProducto(pr);
-		             
-		               
-		          }
-		          else {
-		        	  if(producto.getOferta().getIdOferta()!=1)
-		        	  {
-		        		  DevolverPrecioOriginal(pr);
-		        	  }
-		          }
-		            }
-		            
-	        	break;
-	        	
-	        case 6:
-	        	 for(  Producto pr :productosCategoria)
-		            {
-	        	 if (pr.getCategoria().getIdCategoria()==5){
-		                double precioConDescuentoLimpieza = pr.getPrecio() * ofertaDAO.selectOfertaById(11);
-		               double precioFinal= pr.getPrecio() - precioConDescuentoLimpieza;
-		             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-		             pr.setPrecio(precioFinalRedondeado);
-		             productoDAO.updateProducto(pr);
-		             
-		          }
-	        	 else {
-	        		  if(producto.getOferta().getIdOferta()!=1)
-		        	  {
-	        			  DevolverPrecioOriginal(pr);
-               }
-	        	 }
-		            }
-	        	break;
-	        	
-	        case 7:
-	        	 for(  Producto pr :productosCategoria)
-		            {
-	        	 if (pr.getCategoria().getIdCategoria()==6){
-		                double precioConDescuentoLimpieza = pr.getPrecio() * ofertaDAO.selectOfertaById(12);
-		               double precioFinal= pr.getPrecio() - precioConDescuentoLimpieza;
-		             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-		                pr.setPrecio(precioFinalRedondeado);
-		                productoDAO.updateProducto(pr);
-		              
-		          }
-	        	 else {
-	        		 DevolverPrecioOriginal(pr);
-	        	 }
-		            
-		            }
-	        	 
-	        break;
-	    }
+	static double ComprobarOferta(Producto producto) {
+		LocalDate hoy = LocalDate.now();
 
-	    return producto.getPrecio();
-	}  
-		    
-		    
-		 /**
-		  * Esta función se llama en ComprobarOferta y se encarga de devolver al precio original los productos
-		  * que estaban en oferta cuando ya no les toca estar en oferta
-		  * @param producto
-		  * @return el precio del producto 
-		  */
-		 
-static double DevolverPrecioOriginal(Producto producto)
-{
-	
-	
-	 double precioOriginal = producto.getPrecio() / ofertaDAO.selectOfertaById(producto.getOferta().getIdOferta());
-     double precioOriginalRedondeado = Math.round(precioOriginal * 100.0) / 100.0;
-     producto.setPrecio(precioOriginalRedondeado);
-     producto.getOferta().setIdOferta(1);
-     
-     productoDAO.updateProducto(producto);
-     return producto.getPrecio();
-    }
+		DayOfWeek semana = hoy.getDayOfWeek();
+		int numeroSemana = semana.getValue();
+		Categoria categoria = producto.getCategoria();
+		List<Producto> productosCategoria = productoDAO.selectProductoByCategoria(categoria);
+		switch (numeroSemana) {
+		case 1:
 
-/**
- * Esta función establece la id de la oferta a los productos según su categoría y dia de la semana
- * @param producto1 : pasamos el producto a modificar 
- * @return devuelve la id de la oferta 
- */
-	static int MostrarIdOferta(Producto producto1)
-	{
-		
-		 LocalDate hoy = LocalDate.now();
-		    DayOfWeek semana = hoy.getDayOfWeek();
-		    int numeroSemana = semana.getValue();
+			for (Producto pr : productosCategoria) {
+				if (pr.getCategoria().getIdCategoria() == 1) {
+					double precioConDescuentoBebidas = pr.getPrecio() * ofertaDAO.selectOfertaById(2);
+					double precioFinal = pr.getPrecio() - precioConDescuentoBebidas;
+					double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+					pr.setPrecio(precioFinalRedondeado);
+					productoDAO.updateProducto(pr);
 
-		    
-		     int idOferta = 1;
-		    
+				} else if (pr.getCategoria().getIdCategoria() == 9) {
+					double precioConDescuentoCongelados = pr.getPrecio() * ofertaDAO.selectOfertaById(8);
+					double precioFinal2 = pr.getPrecio() - precioConDescuentoCongelados;
+					double precioFinalRedondeado = Math.round(precioFinal2 * 100.0) / 100.0;
+					pr.setPrecio(precioFinalRedondeado);
+					productoDAO.updateProducto(pr);
 
-		    
-		    switch (numeroSemana) {
-		       
-		        case 1:
-		        	
-		            
-			          if (producto1.getCategoria().getIdCategoria()==1){
-			               idOferta =2;
-			          
-			               
-			         
-			                
-			            
-			          }else if  (producto1.getCategoria().getIdCategoria()==9) {
-			        	idOferta =8;
-			           
-			               
-			          }
-			          
-		            break;
-		            
-		        case 2:
-		        	if (producto1.getCategoria().getIdCategoria()==8){
-		        		  idOferta = 14;
-			             
-		            
-		          }
-		        
-		        	
-		        	break;
-		        	
-		        case 3:
-		        	
-		               
-		          if (producto1.getCategoria().getIdCategoria()==10){
-		        	  idOferta=3;
-		             
-		          
-		          
-		            
-		          }else if  (producto1.getCategoria().getIdCategoria()==4) {
-		        	  idOferta=16;
-		             
-		          }
-		            
-		      
-		            break;
-		        case 4:
-		        	
-		        	if (producto1.getCategoria().getIdCategoria()==7){
-		        		idOferta=7;
-			          
-		              
-		            
-		          }
-		        
-		        	break;
-		        	
-		        case 5:
-		        	
-		        	 if (producto1.getCategoria().getIdCategoria()==2){
-		        		 idOferta=8;
-			              
-			            
-			          }else if  (producto1.getCategoria().getIdCategoria()==3) {
-			        	  idOferta=10;
-			           
-			             
-			               
-			          }
-			        
-		        	break;
-		        	
-		        case 6:
-		        	 if (producto1.getCategoria().getIdCategoria()==5){
-		        			idOferta=11;
-			            
-			          }
-		        
-		        	break;
-		        	
-		        case 7:
-		        	 if (producto1.getCategoria().getIdCategoria()==6){
-		        		idOferta=12;
-			            
-			            
-			          }
-		        	
-		        	
-		        break;
-		        default:
-		        
-				    
-				    	idOferta=1;
-			       
-				    
-	        break;
-		        	
-		    }
-		    producto1.setOferta(ofertaDAO.selectOfertaId(idOferta));
-		    
-		    return producto1.getOferta().getIdOferta();
+				} else {
+					if (pr.getOferta().getIdOferta() != 1) {
+						DevolverPrecioOriginal(pr);
+					}
+				}
+
+			}
+
+			break;
+
+		case 2:
+			for (Producto pr : productosCategoria) {
+				if (pr.getCategoria().getIdCategoria() == 8) {
+					double precioConDescuentoPescado = pr.getPrecio() * ofertaDAO.selectOfertaById(14);
+					double precioFinal = pr.getPrecio() - precioConDescuentoPescado;
+					double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+					pr.setPrecio(precioFinalRedondeado);
+					productoDAO.updateProducto(pr);
+				} else {
+					if (producto.getOferta().getIdOferta() != 1) {
+						DevolverPrecioOriginal(pr);
+					}
+				}
+			}
+
+			break;
+
+		case 3:
+
+			for (Producto pr : productosCategoria) {
+				if (pr.getCategoria().getIdCategoria() == 10) {
+					double precioConDescuentoLimpieza = pr.getPrecio() * ofertaDAO.selectOfertaById(3);
+					double precioFinal = pr.getPrecio() - precioConDescuentoLimpieza;
+					double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+					pr.setPrecio(precioFinalRedondeado);
+					productoDAO.updateProducto(pr);
+
+				} else if (pr.getCategoria().getIdCategoria() == 4) {
+					double precioConDescuentoLacteos = pr.getPrecio() * ofertaDAO.selectOfertaById(16);
+					double precioFinal2 = pr.getPrecio() - precioConDescuentoLacteos;
+					double precioFinalRedondeado = Math.round(precioFinal2 * 100.0) / 100.0;
+					pr.setPrecio(precioFinalRedondeado);
+					productoDAO.updateProducto(pr);
+
+				} else {
+					if (producto.getOferta().getIdOferta() != 1) {
+						DevolverPrecioOriginal(pr);
+					}
+				}
+			}
+			break;
+		case 4:
+			for (Producto pr : productosCategoria) {
+				if (pr.getCategoria().getIdCategoria() == 7) {
+					double precioConDescuentoFrutasyVerduras = pr.getPrecio() * ofertaDAO.selectOfertaById(7);
+					double precioFinal = pr.getPrecio() - precioConDescuentoFrutasyVerduras;
+					double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+					pr.setPrecio(precioFinalRedondeado);
+					productoDAO.updateProducto(pr);
+				} else {
+					if (producto.getOferta().getIdOferta() != 1) {
+						DevolverPrecioOriginal(pr);
+					}
+				}
+
+			}
+
+			break;
+
+		case 5:
+			for (Producto pr : productosCategoria) {
+				if (pr.getCategoria().getIdCategoria() == 2) {
+					double precioConDescuentoCondimentos = pr.getPrecio() * ofertaDAO.selectOfertaById(8);
+					double precioFinal = producto.getPrecio() - precioConDescuentoCondimentos;
+					double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+					pr.setPrecio(precioFinalRedondeado);
+					productoDAO.updateProducto(pr);
+
+				} else if (pr.getCategoria().getIdCategoria() == 3) {
+					double precioConDescuentoReposteria = pr.getPrecio() * ofertaDAO.selectOfertaById(10);
+					double precioFinal2 = pr.getPrecio() - precioConDescuentoReposteria;
+					double precioFinalRedondeado = Math.round(precioFinal2 * 100.0) / 100.0;
+					pr.setPrecio(precioFinalRedondeado);
+					productoDAO.updateProducto(pr);
+
+				} else {
+					if (producto.getOferta().getIdOferta() != 1) {
+						DevolverPrecioOriginal(pr);
+					}
+				}
+			}
+
+			break;
+
+		case 6:
+			for (Producto pr : productosCategoria) {
+				if (pr.getCategoria().getIdCategoria() == 5) {
+					double precioConDescuentoLimpieza = pr.getPrecio() * ofertaDAO.selectOfertaById(11);
+					double precioFinal = pr.getPrecio() - precioConDescuentoLimpieza;
+					double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+					pr.setPrecio(precioFinalRedondeado);
+					productoDAO.updateProducto(pr);
+
+				} else {
+					if (producto.getOferta().getIdOferta() != 1) {
+						DevolverPrecioOriginal(pr);
+					}
+				}
+			}
+			break;
+
+		case 7:
+			for (Producto pr : productosCategoria) {
+				if (pr.getCategoria().getIdCategoria() == 6) {
+					double precioConDescuentoLimpieza = pr.getPrecio() * ofertaDAO.selectOfertaById(12);
+					double precioFinal = pr.getPrecio() - precioConDescuentoLimpieza;
+					double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+					pr.setPrecio(precioFinalRedondeado);
+					productoDAO.updateProducto(pr);
+
+				} else {
+					DevolverPrecioOriginal(pr);
+				}
+
+			}
+
+			break;
 		}
-		
+
+		return producto.getPrecio();
+	}
+
 	/**
-	 * Esta función calcula la oferta de un producto segun su categoría y el dia de la semana 
+	 * Esta función se llama en ComprobarOferta y se encarga de devolver al precio
+	 * original los productos que estaban en oferta cuando ya no les toca estar en
+	 * oferta
+	 * 
+	 * @param producto
+	 * @return el precio del producto
+	 */
+
+	static double DevolverPrecioOriginal(Producto producto) {
+
+		double precioOriginal = producto.getPrecio() / ofertaDAO.selectOfertaById(producto.getOferta().getIdOferta());
+		double precioOriginalRedondeado = Math.round(precioOriginal * 100.0) / 100.0;
+		producto.setPrecio(precioOriginalRedondeado);
+		producto.getOferta().setIdOferta(1);
+
+		productoDAO.updateProducto(producto);
+		return producto.getPrecio();
+	}
+
+	/**
+	 * Esta función establece la id de la oferta a los productos según su categoría
+	 * y dia de la semana
+	 * 
+	 * @param producto1 : pasamos el producto a modificar
+	 * @return devuelve la id de la oferta
+	 */
+	static int MostrarIdOferta(Producto producto1) {
+
+		LocalDate hoy = LocalDate.now();
+		DayOfWeek semana = hoy.getDayOfWeek();
+		int numeroSemana = semana.getValue();
+
+		int idOferta = 1;
+
+		switch (numeroSemana) {
+
+		case 1:
+
+			if (producto1.getCategoria().getIdCategoria() == 1) {
+				idOferta = 2;
+
+			} else if (producto1.getCategoria().getIdCategoria() == 9) {
+				idOferta = 8;
+
+			}
+
+			break;
+
+		case 2:
+			if (producto1.getCategoria().getIdCategoria() == 8) {
+				idOferta = 14;
+
+			}
+
+			break;
+
+		case 3:
+
+			if (producto1.getCategoria().getIdCategoria() == 10) {
+				idOferta = 3;
+
+			} else if (producto1.getCategoria().getIdCategoria() == 4) {
+				idOferta = 16;
+
+			}
+
+			break;
+		case 4:
+
+			if (producto1.getCategoria().getIdCategoria() == 7) {
+				idOferta = 7;
+
+			}
+
+			break;
+
+		case 5:
+
+			if (producto1.getCategoria().getIdCategoria() == 2) {
+				idOferta = 8;
+
+			} else if (producto1.getCategoria().getIdCategoria() == 3) {
+				idOferta = 10;
+
+			}
+
+			break;
+
+		case 6:
+			if (producto1.getCategoria().getIdCategoria() == 5) {
+				idOferta = 11;
+
+			}
+
+			break;
+
+		case 7:
+			if (producto1.getCategoria().getIdCategoria() == 6) {
+				idOferta = 12;
+
+			}
+
+			break;
+		default:
+
+			idOferta = 1;
+
+			break;
+
+		}
+		producto1.setOferta(ofertaDAO.selectOfertaId(idOferta));
+
+		return producto1.getOferta().getIdOferta();
+	}
+
+	/**
+	 * Esta función calcula la oferta de un producto segun su categoría y el dia de
+	 * la semana
+	 * 
 	 * @param producto: este producto es el recién insertado
 	 * @return
 	 */
 	static double CalcularOferta(Producto producto) {
-	      LocalDate hoy = LocalDate.now();
-	    DayOfWeek semana = hoy.getDayOfWeek();
-	    int numeroSemana = semana.getValue();
+		LocalDate hoy = LocalDate.now();
+		DayOfWeek semana = hoy.getDayOfWeek();
+		int numeroSemana = semana.getValue();
 
-	    
+		switch (numeroSemana) {
 
-	    
-	    switch (numeroSemana) {
-	       
-	        case 1:
-	        	
-	            
-		          if (producto.getCategoria().getIdCategoria()==1){
-		                double precioConDescuentoBebidas = producto.getPrecio() * ofertaDAO.selectOfertaById(2);
-		               double precioFinal= producto.getPrecio() - precioConDescuentoBebidas;
-		             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-		                producto.setPrecio(precioFinalRedondeado);
-		               
-		                
-		            
-		          }else if  (producto.getCategoria().getIdCategoria()==9) {
-		                double precioConDescuentoCongelados = producto.getPrecio() * ofertaDAO.selectOfertaById(8);
-		                double precioFinal2= producto.getPrecio() - precioConDescuentoCongelados;
-		                double precioFinalRedondeado = Math.round(precioFinal2*100.0)/100.0;
-		                producto.setPrecio(precioFinalRedondeado);
-		              
-		          }
-	        
-	            break;
-	            
-	        case 2:
-	        	if (producto.getCategoria().getIdCategoria()==8){
-	                double precioConDescuentoPescado = producto.getPrecio() * ofertaDAO.selectOfertaById(14);
-	               double precioFinal= producto.getPrecio() - precioConDescuentoPescado;
-	             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-	                producto.setPrecio(precioFinalRedondeado);
-	                
-	            
-	          }
-	        	
-	        	
-	        	break;
-	        	
-	        case 3:
-	        	
-	               
-	          if (producto.getCategoria().getIdCategoria()==10){
-	                double precioConDescuentoLimpieza = producto.getPrecio() * ofertaDAO.selectOfertaById(3);
-	               double precioFinal= producto.getPrecio() - precioConDescuentoLimpieza;
-	             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-	                producto.setPrecio(precioFinalRedondeado);
-	          
-	              
-	            
-	          }else if  (producto.getCategoria().getIdCategoria()==4) {
-	                double precioConDescuentoLacteos = producto.getPrecio() * ofertaDAO.selectOfertaById(16);
-	                double precioFinal2= producto.getPrecio() - precioConDescuentoLacteos;
-	                double precioFinalRedondeado = Math.round(precioFinal2*100.0)/100.0;
-	                producto.setPrecio(precioFinalRedondeado);
-	              
-	          }
-	            
-	       
-	            break;
-	        case 4:
-	        	
-	        	if (producto.getCategoria().getIdCategoria()==7){
-	                double precioConDescuentoFrutasyVerduras = producto.getPrecio() * ofertaDAO.selectOfertaById(7);
-	               double precioFinal= producto.getPrecio() - precioConDescuentoFrutasyVerduras;
-	             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-	                producto.setPrecio(precioFinalRedondeado);
-	            
-	              
-	            
-	          }
-	        	break;
-	        	
-	        case 5:
-	        	
-	        	 if (producto.getCategoria().getIdCategoria()==2){
-		                double precioConDescuentoCondimentos = producto.getPrecio() * ofertaDAO.selectOfertaById(8);
-		               double precioFinal= producto.getPrecio() - precioConDescuentoCondimentos;
-		             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-		                producto.setPrecio(precioFinalRedondeado);
-		            
-		            
-		          }else if  (producto.getCategoria().getIdCategoria()==3) {
-		                double precioConDescuentoReposteria = producto.getPrecio() * ofertaDAO.selectOfertaById(10);
-		                double precioFinal2= producto.getPrecio() - precioConDescuentoReposteria;
-		                double precioFinalRedondeado = Math.round(precioFinal2*100.0)/100.0;
-		                producto.setPrecio(precioFinalRedondeado);
-		             
-		               
-		          }
-		            
-	        	break;
-	        	
-	        case 6:
-	        	 if (producto.getCategoria().getIdCategoria()==5){
-		                double precioConDescuentoLimpieza = producto.getPrecio() * ofertaDAO.selectOfertaById(11);
-		               double precioFinal= producto.getPrecio() - precioConDescuentoLimpieza;
-		             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-		                producto.setPrecio(precioFinalRedondeado);
-		             
-		          }
-	        	
-	        	break;
-	        	
-	        case 7:
-	        	 if (producto.getCategoria().getIdCategoria()==6){ //6
-		                double precioConDescuentoLimpieza = producto.getPrecio() * ofertaDAO.selectOfertaById(12);
-		               double precioFinal= producto.getPrecio() - precioConDescuentoLimpieza;
-		             double precioFinalRedondeado = Math.round(precioFinal*100.0)/100.0;
-		                producto.setPrecio(precioFinalRedondeado);
-		              
-		          }
-		            
-	        	
-	        break;
-	    }
+		case 1:
 
-	    return producto.getPrecio();
+			if (producto.getCategoria().getIdCategoria() == 1) {
+				double precioConDescuentoBebidas = producto.getPrecio() * ofertaDAO.selectOfertaById(2);
+				double precioFinal = producto.getPrecio() - precioConDescuentoBebidas;
+				double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+				producto.setPrecio(precioFinalRedondeado);
+
+			} else if (producto.getCategoria().getIdCategoria() == 9) {
+				double precioConDescuentoCongelados = producto.getPrecio() * ofertaDAO.selectOfertaById(8);
+				double precioFinal2 = producto.getPrecio() - precioConDescuentoCongelados;
+				double precioFinalRedondeado = Math.round(precioFinal2 * 100.0) / 100.0;
+				producto.setPrecio(precioFinalRedondeado);
+
+			}
+
+			break;
+
+		case 2:
+			if (producto.getCategoria().getIdCategoria() == 8) {
+				double precioConDescuentoPescado = producto.getPrecio() * ofertaDAO.selectOfertaById(14);
+				double precioFinal = producto.getPrecio() - precioConDescuentoPescado;
+				double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+				producto.setPrecio(precioFinalRedondeado);
+
+			}
+
+			break;
+
+		case 3:
+
+			if (producto.getCategoria().getIdCategoria() == 10) {
+				double precioConDescuentoLimpieza = producto.getPrecio() * ofertaDAO.selectOfertaById(3);
+				double precioFinal = producto.getPrecio() - precioConDescuentoLimpieza;
+				double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+				producto.setPrecio(precioFinalRedondeado);
+
+			} else if (producto.getCategoria().getIdCategoria() == 4) {
+				double precioConDescuentoLacteos = producto.getPrecio() * ofertaDAO.selectOfertaById(16);
+				double precioFinal2 = producto.getPrecio() - precioConDescuentoLacteos;
+				double precioFinalRedondeado = Math.round(precioFinal2 * 100.0) / 100.0;
+				producto.setPrecio(precioFinalRedondeado);
+
+			}
+
+			break;
+		case 4:
+
+			if (producto.getCategoria().getIdCategoria() == 7) {
+				double precioConDescuentoFrutasyVerduras = producto.getPrecio() * ofertaDAO.selectOfertaById(7);
+				double precioFinal = producto.getPrecio() - precioConDescuentoFrutasyVerduras;
+				double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+				producto.setPrecio(precioFinalRedondeado);
+
+			}
+			break;
+
+		case 5:
+
+			if (producto.getCategoria().getIdCategoria() == 2) {
+				double precioConDescuentoCondimentos = producto.getPrecio() * ofertaDAO.selectOfertaById(8);
+				double precioFinal = producto.getPrecio() - precioConDescuentoCondimentos;
+				double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+				producto.setPrecio(precioFinalRedondeado);
+
+			} else if (producto.getCategoria().getIdCategoria() == 3) {
+				double precioConDescuentoReposteria = producto.getPrecio() * ofertaDAO.selectOfertaById(10);
+				double precioFinal2 = producto.getPrecio() - precioConDescuentoReposteria;
+				double precioFinalRedondeado = Math.round(precioFinal2 * 100.0) / 100.0;
+				producto.setPrecio(precioFinalRedondeado);
+
+			}
+
+			break;
+
+		case 6:
+			if (producto.getCategoria().getIdCategoria() == 5) {
+				double precioConDescuentoLimpieza = producto.getPrecio() * ofertaDAO.selectOfertaById(11);
+				double precioFinal = producto.getPrecio() - precioConDescuentoLimpieza;
+				double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+				producto.setPrecio(precioFinalRedondeado);
+
+			}
+
+			break;
+
+		case 7:
+			if (producto.getCategoria().getIdCategoria() == 6) { // 6
+				double precioConDescuentoLimpieza = producto.getPrecio() * ofertaDAO.selectOfertaById(12);
+				double precioFinal = producto.getPrecio() - precioConDescuentoLimpieza;
+				double precioFinalRedondeado = Math.round(precioFinal * 100.0) / 100.0;
+				producto.setPrecio(precioFinalRedondeado);
+
+			}
+
+			break;
+		}
+
+		return producto.getPrecio();
 	}
 
 	/**
@@ -577,7 +505,7 @@ static double DevolverPrecioOriginal(Producto producto)
 	 * @param indice
 	 * @return fechaCaducidad
 	 */
-	
+
 	static LocalDate calcularCaducidad(int indice) {
 
 		LocalDate hoy = LocalDate.now();
@@ -625,10 +553,10 @@ static double DevolverPrecioOriginal(Producto producto)
 	 * Método borrarProductosCaducados de tipo void, es decir no devuelve nada,
 	 * utilizado para borrar los productos en función de su fecha de caducidad.
 	 */
-/**
- * Esta función recorre los productos al ejecutar el programa y si hay algun producto caducado
- * lo borra
- */
+	/**
+	 * Esta función recorre los productos al ejecutar el programa y si hay algun
+	 * producto caducado lo borra
+	 */
 	static void borrarProductosCaducados() {
 
 		LocalDate hoy = LocalDate.now();
@@ -642,19 +570,20 @@ static double DevolverPrecioOriginal(Producto producto)
 
 		}
 	}
+
 	/*
-	 * Esta función aplica las ofertas a los productos y revisa el dia y la categoría para aplicarle la oferta o devolver el 
-	 * producto a su precio original
+	 * Esta función aplica las ofertas a los productos y revisa el dia y la
+	 * categoría para aplicarle la oferta o devolver el producto a su precio
+	 * original
 	 */
 	static void aplicarOfertasProductos() {
-	    List<Producto> productos = productoDAO.selectAllProductos();
-	    
-	    for (Producto producto : productos) {
-	        ComprobarOferta(producto);
-	        MostrarIdOferta(producto);
-	    }
-	}
+		List<Producto> productos = productoDAO.selectAllProductos();
 
+		for (Producto producto : productos) {
+			ComprobarOferta(producto);
+			MostrarIdOferta(producto);
+		}
+	}
 
 	/**
 	 * Launch the application.
@@ -663,10 +592,7 @@ static double DevolverPrecioOriginal(Producto producto)
 	 * 
 	 * @param args
 	 */
-	
-	
-	
-	
+
 	public static void main(String[] args) {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
@@ -684,29 +610,23 @@ static double DevolverPrecioOriginal(Producto producto)
 	}
 
 	/**
-	 * Create the application. 
-	 * Borrar productos automáticamente
+	 * Create the application. Borrar productos automáticamente
 	 */
 	public App() {
-		
-		
-	
-	    aplicarOfertasProductos();
-	        
-		
+
+		aplicarOfertasProductos();
 
 		borrarProductosCaducados();
 		initialize();
 
 	}
 
-	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
-	 JComboBox comboBoxSeleccionarCategoria = new JComboBox();
-		
+		JComboBox comboBoxSeleccionarCategoria = new JComboBox();
+
 		comboBoxSeleccionarCategoria.setVisible(false);
 		frameAlmacen = new JFrame();
 		frameAlmacen.getContentPane().setBackground(new Color(51, 204, 204));
@@ -721,267 +641,259 @@ static double DevolverPrecioOriginal(Producto producto)
 		lblTitulo.setFont(new Font("Dialog", Font.BOLD | Font.ITALIC, 25));
 		lblTitulo.setBounds(559, 0, 403, 31);
 		frameAlmacen.getContentPane().add(lblTitulo);
-		
+
 		textFieldNombre = new JTextField();
 		textFieldNombre.setColumns(10);
 		textFieldNombre.setBounds(512, 118, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldNombre);
-		
+
 		textFieldCorreo = new JTextField();
 		textFieldCorreo.setColumns(10);
 		textFieldCorreo.setBounds(512, 149, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldCorreo);
-		
+
 		textFieldTelefono = new JTextField();
 		textFieldTelefono.setColumns(10);
 		textFieldTelefono.setBounds(512, 180, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldTelefono);
-		
+
 		textFieldLocalizacion = new JTextField();
 		textFieldLocalizacion.setColumns(10);
 		textFieldLocalizacion.setBounds(512, 214, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldLocalizacion);
-		
+
 		textFieldFechaNac = new JTextField();
 		textFieldFechaNac.setColumns(10);
 		textFieldFechaNac.setBounds(512, 242, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldFechaNac);
-		
+
 		textFieldFechaInicio = new JTextField();
 		textFieldFechaInicio.setColumns(10);
 		textFieldFechaInicio.setBounds(512, 276, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldFechaInicio);
-		
+
 		JLabel lblNombreRegistro = new JLabel("Nombre:");
 		lblNombreRegistro.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblNombreRegistro.setBounds(272, 124, 71, 14);
 		frameAlmacen.getContentPane().add(lblNombreRegistro);
-		
+
 		JLabel lblCorreoRegistro = new JLabel("Correo Electrónico:");
 		lblCorreoRegistro.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblCorreoRegistro.setBounds(272, 155, 185, 14);
 		frameAlmacen.getContentPane().add(lblCorreoRegistro);
-		
+
 		JLabel lblTelfono = new JLabel("Teléfono:");
 		lblTelfono.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblTelfono.setBounds(272, 186, 154, 14);
 		frameAlmacen.getContentPane().add(lblTelfono);
-		
+
 		JLabel lblNombreLogin = new JLabel("Nombre:");
 		lblNombreLogin.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblNombreLogin.setBounds(272, 487, 71, 14);
 		frameAlmacen.getContentPane().add(lblNombreLogin);
-		
+
 		JLabel lblCorreoRegistroUsuario = new JLabel("Correo Electrónico:");
 		lblCorreoRegistroUsuario.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblCorreoRegistroUsuario.setBounds(272, 513, 185, 14);
 		frameAlmacen.getContentPane().add(lblCorreoRegistroUsuario);
-		
+
 		textFieldNombreLogin = new JTextField();
 		textFieldNombreLogin.setColumns(10);
 		textFieldNombreLogin.setBounds(512, 481, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldNombreLogin);
-		
 
 		JLabel lblDatos = new JLabel("INTRODUCIR DATOS");
 		lblDatos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblDatos.setBounds(10, 263, 284, 31);
 		frameAlmacen.getContentPane().add(lblDatos);
 		lblDatos.setVisible(false);
-		
+
 		JLabel lblDatosPedido = new JLabel("INTRODUCIR DATOS");
 		lblDatosPedido.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblDatosPedido.setBounds(707, 268, 284, 31);
 		frameAlmacen.getContentPane().add(lblDatosPedido);
 		lblDatosPedido.setVisible(false);
-		
-		
+
 		JLabel lblNombrePedido = new JLabel("Nombre Proveedor");
 		lblNombrePedido.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblNombrePedido.setBounds(707, 289, 176, 31);
 		frameAlmacen.getContentPane().add(lblNombrePedido);
 		lblNombrePedido.setVisible(false);
-		
+
 		JLabel lblProductoPedido = new JLabel("Producto");
 		lblProductoPedido.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblProductoPedido.setBounds(707, 315, 117, 31);
 		frameAlmacen.getContentPane().add(lblProductoPedido);
 		lblProductoPedido.setVisible(false);
-		
+
 		JLabel lblPrecioPedido = new JLabel("Precio");
-		
+
 		lblPrecioPedido.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblPrecioPedido.setBounds(707, 378, 91, 20);
 		frameAlmacen.getContentPane().add(lblPrecioPedido);
 		lblPrecioPedido.setVisible(false);
-		
-		JLabel lblCantidadPedido= new JLabel("Cantidad");
+
+		JLabel lblCantidadPedido = new JLabel("Cantidad");
 		lblCantidadPedido.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblCantidadPedido.setBounds(707, 352, 79, 20);
 		frameAlmacen.getContentPane().add(lblCantidadPedido);
 		lblCantidadPedido.setVisible(false);
-		
-		
+
 		JLabel lblId = new JLabel("ID");
 		lblId.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblId.setBounds(10, 305, 117, 15);
 		frameAlmacen.getContentPane().add(lblId);
 		lblId.setVisible(false);
-		
+
 		JLabel lblNombre = new JLabel("Nombre");
 		lblNombre.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblNombre.setBounds(10, 331, 117, 15);
 		frameAlmacen.getContentPane().add(lblNombre);
 		lblNombre.setVisible(false);
-		
+
 		JLabel lblCategoria = new JLabel("Categoria");
 		lblCategoria.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblCategoria.setBounds(10, 357, 117, 15);
 		frameAlmacen.getContentPane().add(lblCategoria);
 		lblCategoria.setVisible(false);
-		
+
 		JLabel lblPrecio = new JLabel("Precio");
 		lblPrecio.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblPrecio.setBounds(10, 383, 117, 15);
 		frameAlmacen.getContentPane().add(lblPrecio);
 		lblPrecio.setVisible(false);
-		
+
 		JLabel lblStock = new JLabel("Stock");
 		lblStock.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblStock.setBounds(10, 409, 117, 15);
 		frameAlmacen.getContentPane().add(lblStock);
 		lblStock.setVisible(false);
-		
+
 		txtId = new JTextField();
 		txtId.setEnabled(false);
 		txtId.setBounds(137, 301, 151, 19);
 		frameAlmacen.getContentPane().add(txtId);
 		txtId.setColumns(10);
 		txtId.setVisible(false);
-		
+
 		txtNombre = new JTextField();
 		txtNombre.setBounds(137, 327, 215, 19);
 		frameAlmacen.getContentPane().add(txtNombre);
 		txtNombre.setColumns(10);
 		txtNombre.setVisible(false);
-		
+
 		txtPrecio = new JTextField();
 		txtPrecio.setText("");
 		txtPrecio.setBounds(137, 379, 151, 19);
 		frameAlmacen.getContentPane().add(txtPrecio);
 		txtPrecio.setColumns(10);
 		txtPrecio.setVisible(false);
-		
+
 		txtStock = new JTextField();
 		txtStock.setBounds(137, 405, 151, 19);
 		frameAlmacen.getContentPane().add(txtStock);
 		txtStock.setColumns(10);
 		txtStock.setVisible(false);
 
-		
 		textFieldCorreoLogin = new JTextField();
 		textFieldCorreoLogin.setColumns(10);
 		textFieldCorreoLogin.setBounds(512, 507, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldCorreoLogin);
-		
+
 		JComboBox comboBoxPedido = new JComboBox();
-		
+
 		JLabel lblLogin = new JLabel("Login");
 		lblLogin.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblLogin.setBounds(397, 435, 79, 31);
 		frameAlmacen.getContentPane().add(lblLogin);
-		
-		
+
 		JLabel lblLocalizacin = new JLabel("Localización:");
 		lblLocalizacin.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblLocalizacin.setBounds(272, 217, 154, 14);
 		frameAlmacen.getContentPane().add(lblLocalizacin);
-		
+
 		JLabel lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
 		lblFechaNacimiento.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblFechaNacimiento.setBounds(272, 248, 185, 14);
 		frameAlmacen.getContentPane().add(lblFechaNacimiento);
-		
+
 		JLabel lblFechaInicio = new JLabel("Fecha de Inicio:");
 		lblFechaInicio.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblFechaInicio.setBounds(272, 279, 185, 17);
 		frameAlmacen.getContentPane().add(lblFechaInicio);
-		
+
 		/**
-		 * Esta funcion se ejecuta cuando se da click al boton registrarse 
-		 * este crea un usuario en la base de datos si esta bien introducido 
-		 *y guarda el nombre, el correo electronico, el telefono, la fecha de nacimiento, fecha de inicio
-		 *y la localizacion
+		 * Esta funcion se ejecuta cuando se da click al boton registrarse este crea un
+		 * usuario en la base de datos si esta bien introducido y guarda el nombre, el
+		 * correo electronico, el telefono, la fecha de nacimiento, fecha de inicio y la
+		 * localizacion
 		 */
 		JButton btnRegistrarse = new JButton("Registrarse");
 		btnRegistrarse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				 try {
-					 
-						
-	                    String nombre = textFieldNombre.getText();
-	                    String correo = textFieldCorreo.getText();
-	                    String telefono = textFieldTelefono.getText();
-	                    String localizacion = textFieldLocalizacion.getText();
-	                    String fechaNacimiento = textFieldFechaNac.getText();
-	                    String fechaInicio = textFieldFechaInicio.getText();
-	                    
-	                    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	                    LocalDate fechaNacimientoFormateada = LocalDate.parse(fechaNacimiento, formatter);
-	                    LocalDate fechaInicioFormateada = LocalDate.parse(fechaInicio, formatter);
-	                    Period edad = Period.between(LocalDate.parse(fechaNacimiento, formatter), LocalDate.parse(fechaInicio, formatter));
-	                    
-	                        if (fechaInicioFormateada.isBefore(fechaNacimientoFormateada)) {
-	                            JOptionPane.showMessageDialog(null, "La fecha de inicio debe ser posterior a la fecha de nacimiento");
-	                        } else if (Period.between(fechaNacimientoFormateada, fechaInicioFormateada).getYears() < 18) {
-	                            JOptionPane.showMessageDialog(null, "El empleado es menor de edad");
-	                        } else if (nombre.equals("Error") || correo.equals("Error") || telefono.equals("Error") || localizacion.equals("Error")
-	                                || fechaNacimiento.equals("Error") || fechaInicio.equals("Error")) {
-	                            JOptionPane.showMessageDialog(null, "Hay datos erróneos");
-	                        } else {
-	                        	
-	                            // Realizar el registro del usuario
-	                           
-	                            Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento, fechaInicio);
-	                            
-	                                usuarioDao.insertUsuario(usuario);
-	                                JOptionPane.showMessageDialog(null, "Registro exitoso");
-		                       
-	                               textFieldNombre.setText("");                          
-       	                    textFieldCorreo.setText("");
-	        	                   textFieldTelefono.setText("");
-	        	                     textFieldLocalizacion.setText("");
-	        	                     textFieldFechaNac.setText("");
-	        	                   textFieldFechaInicio.setText("");      
+				try {
 
-				 
-	                    
-	                    }
-	                }catch(DateTimeParseException error ) {
-	                	JOptionPane.showMessageDialog(null, "Fechas mal introducidas");
-	                }catch(NullPointerException error2) {
-	                	JOptionPane.showMessageDialog(null, "Hay casillas vacias");
-	                }
+					String nombre = textFieldNombre.getText();
+					String correo = textFieldCorreo.getText();
+					String telefono = textFieldTelefono.getText();
+					String localizacion = textFieldLocalizacion.getText();
+					String fechaNacimiento = textFieldFechaNac.getText();
+					String fechaInicio = textFieldFechaInicio.getText();
+
+					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+					LocalDate fechaNacimientoFormateada = LocalDate.parse(fechaNacimiento, formatter);
+					LocalDate fechaInicioFormateada = LocalDate.parse(fechaInicio, formatter);
+					Period edad = Period.between(LocalDate.parse(fechaNacimiento, formatter),
+							LocalDate.parse(fechaInicio, formatter));
+
+					if (fechaInicioFormateada.isBefore(fechaNacimientoFormateada)) {
+						JOptionPane.showMessageDialog(null,
+								"La fecha de inicio debe ser posterior a la fecha de nacimiento");
+					} else if (Period.between(fechaNacimientoFormateada, fechaInicioFormateada).getYears() < 18) {
+						JOptionPane.showMessageDialog(null, "El empleado es menor de edad");
+					} else if (nombre.equals("Error") || correo.equals("Error") || telefono.equals("Error")
+							|| localizacion.equals("Error") || fechaNacimiento.equals("Error")
+							|| fechaInicio.equals("Error")) {
+						JOptionPane.showMessageDialog(null, "Hay datos erróneos");
+					} else {
+
+						// Realizar el registro del usuario
+
+						Usuario usuario = new Usuario(nombre, correo, telefono, localizacion, fechaNacimiento,
+								fechaInicio);
+
+						usuarioDao.insertUsuario(usuario);
+						JOptionPane.showMessageDialog(null, "Registro exitoso");
+
+						textFieldNombre.setText("");
+						textFieldCorreo.setText("");
+						textFieldTelefono.setText("");
+						textFieldLocalizacion.setText("");
+						textFieldFechaNac.setText("");
+						textFieldFechaInicio.setText("");
+
+					}
+				} catch (DateTimeParseException error) {
+					JOptionPane.showMessageDialog(null, "Fechas mal introducidas");
+				} catch (NullPointerException error2) {
+					JOptionPane.showMessageDialog(null, "Hay casillas vacias");
+				}
 			}
 		});
-		
+
 		btnRegistrarse.setBackground(new Color(245, 222, 179));
 		btnRegistrarse.setBounds(336, 348, 164, 25);
 		ImageIcon imagenRegistrarse = new ImageIcon(App.class.getResource("/imagenes/registrarse.png"));
 		Image imagenRedimensionada7 = imagenRegistrarse.getImage().getScaledInstance(LONGITUD_BTN_GUARDAR,
 				ALTURA_BTN_GUARDAR, java.awt.Image.SCALE_SMOOTH);
 		btnRegistrarse.setIcon(new ImageIcon(imagenRedimensionada7));
-		
 
 		frameAlmacen.getContentPane().add(btnRegistrarse);
-		
-		
-		
+
 		JButton btnEntrar = new JButton("Entrar");
 		btnEntrar.setBackground(new Color(245, 222, 179));
 		btnEntrar.setBounds(336, 594, 164, 25);
 		frameAlmacen.getContentPane().add(btnEntrar);
-		
 
 		DefaultTableModel modelTabla = new DefaultTableModel() {
 
@@ -997,8 +909,8 @@ static double DevolverPrecioOriginal(Producto producto)
 				return false;
 			}
 		};
-        //Añadir las columnas a la tabla Productos
-		
+		// Añadir las columnas a la tabla Productos
+
 		modelTabla.addColumn("Producto");
 		modelTabla.addColumn("Nombre");
 		modelTabla.addColumn("Precio");
@@ -1006,14 +918,15 @@ static double DevolverPrecioOriginal(Producto producto)
 		modelTabla.addColumn("Categoria");
 		modelTabla.addColumn("Caducidad");
 		modelTabla.addColumn("Oferta");
-		
+
 		tableProductos = new JTable(modelTabla);
 		tableProductos.setVisible(false);
 		tableProductos.setBounds(26, 251, 489, -159);
 		frameAlmacen.getContentPane().add(tableProductos);
 
-		 //Leer los productos guardados en la base de datos mediante la función productoDAO.selectAllProductos() y mostrarlos en la tabla
-		
+		// Leer los productos guardados en la base de datos mediante la función
+		// productoDAO.selectAllProductos() y mostrarlos en la tabla
+
 		List<Producto> selectProducto = productoDAO.selectAllProductos();
 		for (Producto pr : selectProducto) {
 			Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
@@ -1025,19 +938,17 @@ static double DevolverPrecioOriginal(Producto producto)
 		scrollPaneProductos.setBounds(10, 43, 666, 220);
 		frameAlmacen.getContentPane().add(scrollPaneProductos);
 		scrollPaneProductos.setVisible(false);
-		
-		
-	
+
 		JComboBox comboBoxSeleccionarTiempo = new JComboBox();
-		 comboBoxSeleccionarTiempo.setVisible(false);
+		comboBoxSeleccionarTiempo.setVisible(false);
 		/**
-		 * Evento sobre el comboBoxSeleccionarPeriodo utilizado seleccionar el periodo de tiempo para saber los productos que 
-		 * caducarán en 1 dia, 1 año, 1 mes o 4 años
+		 * Evento sobre el comboBoxSeleccionarPeriodo utilizado seleccionar el periodo
+		 * de tiempo para saber los productos que caducarán en 1 dia, 1 año, 1 mes o 4
+		 * años
 		 */
 		comboBoxSeleccionarTiempo.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
 
-				
 				int indice = comboBoxSeleccionarTiempo.getSelectedIndex() + 1;
 
 				LocalDate hoy = LocalDate.now();
@@ -1050,10 +961,10 @@ static double DevolverPrecioOriginal(Producto producto)
 					List<Producto> productosCaducanMañana = productoDAO.selectProductoByfecha(pmañana);
 					modelTabla.setRowCount(0);
 
-					
 					for (Producto pr : productosCaducanMañana) {
 						Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta() };
+								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+								pr.getOferta().getIdOferta() };
 						modelTabla.addRow(fila);
 
 					}
@@ -1073,11 +984,12 @@ static double DevolverPrecioOriginal(Producto producto)
 
 					for (Producto pr : productosCaducan1Mes) {
 						Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta() };
+								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+								pr.getOferta().getIdOferta() };
 						modelTabla.addRow(fila);
 
 					}
-					
+
 					if (productosCaducan1Mes.isEmpty()) {
 						JOptionPane.showMessageDialog(null,
 								"No hay productos que caduquen en el período seleccionado.");
@@ -1092,7 +1004,8 @@ static double DevolverPrecioOriginal(Producto producto)
 
 					for (Producto pr : productosCaducanAlAño) {
 						Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta() };
+								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+								pr.getOferta().getIdOferta() };
 						modelTabla.addRow(fila);
 
 					}
@@ -1111,7 +1024,8 @@ static double DevolverPrecioOriginal(Producto producto)
 
 					for (Producto pr : productosCaducan5Años) {
 						Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta() };
+								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+								pr.getOferta().getIdOferta() };
 						modelTabla.addRow(fila);
 
 					}
@@ -1119,7 +1033,6 @@ static double DevolverPrecioOriginal(Producto producto)
 						JOptionPane.showMessageDialog(null,
 								"No hay productos que caduquen en el período seleccionado.");
 					}
-					
 
 					break;
 
@@ -1132,12 +1045,13 @@ static double DevolverPrecioOriginal(Producto producto)
 		comboBoxSeleccionarTiempo.setEnabled(false);
 		comboBoxSeleccionarTiempo.setBounds(461, 593, 215, 20);
 		frameAlmacen.getContentPane().add(comboBoxSeleccionarTiempo);
-		
+
 		JRadioButton rdbtnMostrarProductosCaducados = new JRadioButton("Mostrar productos que van a caducar");
-		 rdbtnMostrarProductosCaducados.setVisible(false);
+		rdbtnMostrarProductosCaducados.setVisible(false);
 		/**
-		 * Evento sobre el rdbtnMostrarProductosCaducados utilizado para mostrar los productos caducados según el periodo 
-		 * de tiempo seleccionado en el comboBoxSeleccionarPeriodo
+		 * Evento sobre el rdbtnMostrarProductosCaducados utilizado para mostrar los
+		 * productos caducados según el periodo de tiempo seleccionado en el
+		 * comboBoxSeleccionarPeriodo
 		 */
 		rdbtnMostrarProductosCaducados.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
@@ -1170,17 +1084,18 @@ static double DevolverPrecioOriginal(Producto producto)
 
 					}
 					List<Producto> productosCaducados = productoDAO.selectProductoByfecha(periodoSeleccionado);
-				
+
 					if (productosCaducados.isEmpty()) {
 						JOptionPane.showMessageDialog(null,
 								"No hay productos que caduquen en el período seleccionado.");
 					}
 					for (Producto pr : productosCaducados) {
 						Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta() };
+								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+								pr.getOferta().getIdOferta() };
 						modelTabla.addRow(fila);
 					}
-					
+
 				} else {
 					comboBoxSeleccionarTiempo.setEnabled(false);
 				}
@@ -1195,14 +1110,14 @@ static double DevolverPrecioOriginal(Producto producto)
 		lblSeleccionarPeriodoDe.setFont(new Font("Dialog", Font.BOLD, 15));
 		lblSeleccionarPeriodoDe.setBounds(137, 593, 252, 19);
 		frameAlmacen.getContentPane().add(lblSeleccionarPeriodoDe);
-		 lblSeleccionarPeriodoDe.setVisible(false);
-		 
+		lblSeleccionarPeriodoDe.setVisible(false);
+
 		JRadioButton rdbtnMostrarTodos = new JRadioButton("Mostrar todos los productos", true);
 		rdbtnMostrarTodos.setVisible(false);
 		rdbtnMostrarTodos.addActionListener(new ActionListener() {
 			/**
-			 * Esta funcion muestra todos los productos de la lista Productos cuando le das al
-			 * radioButton: rdbtnMostrarTodos
+			 * Esta funcion muestra todos los productos de la lista Productos cuando le das
+			 * al radioButton: rdbtnMostrarTodos
 			 * 
 			 * @param arg0
 			 */
@@ -1215,7 +1130,7 @@ static double DevolverPrecioOriginal(Producto producto)
 				}
 				for (Producto pr : selectProducto) {
 					Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-							pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta() };
+							pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(), pr.getOferta().getIdOferta() };
 					modelTabla.addRow(fila);
 					modelTabla.fireTableDataChanged();
 				}
@@ -1242,7 +1157,8 @@ static double DevolverPrecioOriginal(Producto producto)
 
 					for (Producto pr : selectProducto) {
 						Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(), pr.getOferta().getIdOferta()};
+								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+								pr.getOferta().getIdOferta() };
 						modelTabla.addRow(fila);
 						modelTabla.fireTableDataChanged();
 					}
@@ -1256,7 +1172,8 @@ static double DevolverPrecioOriginal(Producto producto)
 					}
 					for (Producto pr : selectProducto) {
 						Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(), pr.getOferta().getIdOferta()};
+								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+								pr.getOferta().getIdOferta() };
 						modelTabla.addRow(fila);
 						modelTabla.fireTableDataChanged();
 					}
@@ -1300,7 +1217,8 @@ static double DevolverPrecioOriginal(Producto producto)
 					}
 					for (Producto pr : selectProducto) {
 						Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta() };
+								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+								pr.getOferta().getIdOferta() };
 						modelTabla.addRow(fila);
 					}
 				} else {
@@ -1317,7 +1235,7 @@ static double DevolverPrecioOriginal(Producto producto)
 
 		JRadioButton rdbtnMostrarProductosSinUnidades = new JRadioButton(
 				"Mostrar productos de los que ya no quede unidades");
-		 rdbtnMostrarProductosSinUnidades.setVisible(false);
+		rdbtnMostrarProductosSinUnidades.setVisible(false);
 		rdbtnMostrarProductosSinUnidades.addActionListener(new ActionListener() {
 			/**
 			 * Esta funcion muestra los productos sin stock al darle al radioButton
@@ -1332,7 +1250,7 @@ static double DevolverPrecioOriginal(Producto producto)
 				}
 				for (Producto pr : selectProducto) {
 					Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-							pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta() };
+							pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(), pr.getOferta().getIdOferta() };
 					modelTabla.addRow(fila);
 					modelTabla.fireTableDataChanged();
 
@@ -1353,7 +1271,7 @@ static double DevolverPrecioOriginal(Producto producto)
 		JComboBox comboBoxEscogerCategoria = new JComboBox();
 		comboBoxEscogerCategoria.setVisible(false);
 		JButton btnGuardar = new JButton("Guardar");
-		 btnGuardar.setVisible(false);
+		btnGuardar.setVisible(false);
 		btnGuardar.addActionListener(new ActionListener() {
 			/**
 			 * Esta funcion inserta un producto cuando los datos están introducidos
@@ -1361,58 +1279,52 @@ static double DevolverPrecioOriginal(Producto producto)
 			 * 
 			 */
 			public void actionPerformed(ActionEvent arg0) {
-				
+
 				try {
-					
+
 					String nombre = txtNombre.getText();
 
 					int indice = comboBoxEscogerCategoria.getSelectedIndex() + 1;
 					Categoria categoria = categoriaDAO.selectCategoriaById(indice);
 					double precio = Double.parseDouble(txtPrecio.getText());
 					int existencias = Integer.parseInt(txtStock.getText());
-			        Oferta oferta=null;
-					
-					
+					Oferta oferta = null;
+
 					LocalDate hoy = LocalDate.now();
 					LocalDate fechaCaducidad = calcularCaducidad(indice);
-					
-			       
-					Producto producto1 = new Producto(nombre, precio, existencias, categoria, fechaCaducidad,oferta);
+
+					Producto producto1 = new Producto(nombre, precio, existencias, categoria, fechaCaducidad, oferta);
 					int idOferta = MostrarIdOferta(producto1);
 					double precioOferta = CalcularOferta(producto1);
-					 oferta= ofertaDAO.selectOfertaId(idOferta);
-					 producto1.setOferta(oferta);
+					oferta = ofertaDAO.selectOfertaId(idOferta);
+					producto1.setOferta(oferta);
 
-				        // Actualizar el precio si hay una oferta disponible
-				        if (precio != precioOferta) {
-				            precio = precioOferta;
-				            
-				        }
-				        productoDAO.insertProducto(producto1);
-					
+					// Actualizar el precio si hay una oferta disponible
+					if (precio != precioOferta) {
+						precio = precioOferta;
+
+					}
+					productoDAO.insertProducto(producto1);
+
 					modelTabla.setRowCount(0);
 					List<Producto> productoSelect = productoDAO.selectAllProductos();
 					for (Producto pr : productoSelect) {
 
 						Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta()};
+								pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+								pr.getOferta().getIdOferta() };
 
 						modelTabla.addRow(fila);
 					}
-					
+
 					comboBoxPedido.removeAllItems();
 					List<Producto> selectProductos = productoDAO.selectAllProductos();
-					
 
 					for (Producto pr : selectProductos) {
 						comboBoxPedido.addItem(pr.getIdProducto());
-						
 
 					}
-					
-					
-					
-					
+
 					JOptionPane.showMessageDialog(null, "Producto añadido");
 					txtNombre.setText("");
 					txtPrecio.setText("");
@@ -1444,7 +1356,8 @@ static double DevolverPrecioOriginal(Producto producto)
 						}
 						for (Producto pr : selectProducto) {
 							Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-									pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta() };
+									pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+									pr.getOferta().getIdOferta() };
 							modelTabla.addRow(fila);
 						}
 					} else if (rdbtnMostrarProductosCaducados.isSelected()) {
@@ -1481,7 +1394,8 @@ static double DevolverPrecioOriginal(Producto producto)
 						}
 						for (Producto pr : productosCaducados) {
 							Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-									pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta() };
+									pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+									pr.getOferta().getIdOferta() };
 							modelTabla.addRow(fila);
 						}
 					}
@@ -1516,58 +1430,50 @@ static double DevolverPrecioOriginal(Producto producto)
 			 */
 			public void actionPerformed(ActionEvent e) {
 				int selectedRow = tableProductos.getSelectedRow();
-				 
-				 
-				try {
-					
-					if(txtNombre.getText().isEmpty() || comboBoxEscogerCategoria.getSelectedItem() == null || txtPrecio.getText().isEmpty() || txtStock.getText().isEmpty()) {
-						JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
-					
-						
-						
-					}else {
-					int id = (int) tableProductos.getValueAt(selectedRow, 0);
-		
-					
-					 
-			        
-					String nombre = txtNombre.getText();
-					int indice = comboBoxEscogerCategoria.getSelectedIndex() + 1;
-					Categoria categoria = categoriaDAO.selectCategoriaById(indice);
-					double precio = Double.parseDouble(txtPrecio.getText());
-					 //double precioOriginal = productoOriginal.getPrecio();
-			         //pedido.getProducto().setPrecio(precioOriginal);
-					Oferta oferta=null;
-					
-					
 
-				        // Actualizar el precio si hay una oferta disponible
-				      
-					int existencias = Integer.parseInt(txtStock.getText());
-					Producto producto = productoDAO.selectProductoById(id);
-					
-					 
-					JOptionPane.showMessageDialog(null, "Producto actualizado correctamente");
-					producto.setNombre(nombre);
-					producto.setCategoria(categoria);
-					producto.setPrecio(precio);
-					producto.setExistencias(existencias);
-				int idOferta = MostrarIdOferta(producto);
-				
-				 oferta= ofertaDAO.selectOfertaId(idOferta);
-					 double precioOferta = CalcularOferta(producto);
-				
-					productoDAO.updateProducto(producto);
-				
-					tableProductos.setValueAt(nombre, selectedRow, 1);
-					tableProductos.setValueAt(precioOferta, selectedRow, 2);
-					tableProductos.setValueAt(existencias, selectedRow, 3);
-					tableProductos.setValueAt(indice, selectedRow, 4);
-				
-					txtNombre.setText("");
-					txtPrecio.setText("");
-					txtStock.setText("");
-					txtId.setText("");
+				try {
+
+					if (txtNombre.getText().isEmpty() || comboBoxEscogerCategoria.getSelectedItem() == null
+							|| txtPrecio.getText().isEmpty() || txtStock.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
+
+					} else {
+						int id = (int) tableProductos.getValueAt(selectedRow, 0);
+
+						String nombre = txtNombre.getText();
+						int indice = comboBoxEscogerCategoria.getSelectedIndex() + 1;
+						Categoria categoria = categoriaDAO.selectCategoriaById(indice);
+						double precio = Double.parseDouble(txtPrecio.getText());
+						// double precioOriginal = productoOriginal.getPrecio();
+						// pedido.getProducto().setPrecio(precioOriginal);
+						Oferta oferta = null;
+
+						// Actualizar el precio si hay una oferta disponible
+
+						int existencias = Integer.parseInt(txtStock.getText());
+						Producto producto = productoDAO.selectProductoById(id);
+
+						JOptionPane.showMessageDialog(null, "Producto actualizado correctamente");
+						producto.setNombre(nombre);
+						producto.setCategoria(categoria);
+						producto.setPrecio(precio);
+						producto.setExistencias(existencias);
+						int idOferta = MostrarIdOferta(producto);
+
+						oferta = ofertaDAO.selectOfertaId(idOferta);
+						double precioOferta = CalcularOferta(producto);
+
+						productoDAO.updateProducto(producto);
+
+						tableProductos.setValueAt(nombre, selectedRow, 1);
+						tableProductos.setValueAt(precioOferta, selectedRow, 2);
+						tableProductos.setValueAt(existencias, selectedRow, 3);
+						tableProductos.setValueAt(indice, selectedRow, 4);
+
+						txtNombre.setText("");
+						txtPrecio.setText("");
+						txtStock.setText("");
+						txtId.setText("");
 					}
 				} catch (ArrayIndexOutOfBoundsException e1) {
 					JOptionPane.showMessageDialog(null,
@@ -1599,14 +1505,14 @@ static double DevolverPrecioOriginal(Producto producto)
 				return false;
 			}
 		};
-        //Añadir las columnas a la tabla Productos
-		
+		// Añadir las columnas a la tabla Productos
+
 		modelPedidos.addColumn("Pedido");
 		modelPedidos.addColumn("Proveedor");
 		modelPedidos.addColumn("Producto");
 		modelPedidos.addColumn("Cantidad");
 		modelPedidos.addColumn("Precio");
-		
+
 		JButton btnBorrar = new JButton("Borrar");
 		btnBorrar.setVisible(false);
 		btnBorrar.addActionListener(new ActionListener() {
@@ -1622,39 +1528,31 @@ static double DevolverPrecioOriginal(Producto producto)
 					int idProducto = (int) tableProductos.getValueAt(filaSeleccionada, 0);
 
 					productoDAO.deleteProducto(idProducto);
-					
-					
-					
-					
 
 					modelTabla.removeRow(filaSeleccionada);
-					
+
 					JOptionPane.showMessageDialog(null, "Producto borrado correctamente");
 					txtNombre.setText("");
 					txtPrecio.setText("");
 					txtStock.setText("");
 					txtId.setText("");
 					modelPedidos.setRowCount(0);
-					
+
 					comboBoxPedido.removeAllItems();
 					List<Producto> selectProductos = productoDAO.selectAllProductos();
-					
 
 					for (Producto pr : selectProductos) {
 						comboBoxPedido.addItem(pr.getIdProducto());
-						
 
 					}
-					
+
 					List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
 					for (DetalleVenta dv : pedidoSelect) {
-						
-						
-						
-						
-					    Object[] fila = {dv.getPedidoVenta().getIdpedidoVenta(), dv.getProveedor(), dv.getProducto().getIdProducto(),dv.getCantidad(),dv.getPrecio()};
-					    modelPedidos.addRow(fila);
-						
+
+						Object[] fila = { dv.getPedidoVenta().getIdpedidoVenta(), dv.getProveedor(),
+								dv.getProducto().getIdProducto(), dv.getCantidad(), dv.getPrecio() };
+						modelPedidos.addRow(fila);
+
 					}
 				} catch (ArrayIndexOutOfBoundsException e1) {
 					JOptionPane.showMessageDialog(null, "No hay ningun producto o no se ha seleccionado ninguno");
@@ -1663,7 +1561,7 @@ static double DevolverPrecioOriginal(Producto producto)
 		});
 		btnBorrar.setBackground(new Color(245, 222, 179));
 		btnBorrar.setBounds(555, 633, 121, 25);
-		
+
 		/**
 		 * Esta funcion actualiza un pedido tras seleccionarlo, cambiar un valor de un
 		 * textField o del comboBox y despues se le da al boton Actualizar, si los datos
@@ -1673,165 +1571,156 @@ static double DevolverPrecioOriginal(Producto producto)
 		JButton btnActualizarPedido = new JButton("Actualizar");
 		btnActualizarPedido.setBackground(new Color(245, 222, 179));
 		btnActualizarPedido.addActionListener(new ActionListener() {
-			 public void actionPerformed(ActionEvent e) {
-			        int selectedRow = tablePedidos.getSelectedRow();
-			 
-			        try {
-			        	
-			        	if(textFieldNombrePedido.getText().isEmpty() || comboBoxPedido.getSelectedItem() == null ||  textFieldCantidad.getText().isEmpty()) {
-							JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
-							
-						}else {
-			            int id = (int) tablePedidos.getValueAt(selectedRow, 0);
+			public void actionPerformed(ActionEvent e) {
+				int selectedRow = tablePedidos.getSelectedRow();
 
-			            String nombre = textFieldNombrePedido.getText();
-			            String indice = comboBoxPedido.getSelectedItem().toString();
-			            int numeroSeleccionado = Integer.parseInt(indice);
-			            int cantidad = Integer.parseInt(textFieldCantidad.getText());
-			            
-			            Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
-			            double precio = producto.getPrecio()*cantidad;
-			            int stockProducto= producto.getExistencias()-cantidad;
-			            if(cantidad> producto.getExistencias())
-			            {
-			            	 JOptionPane.showMessageDialog(null, "Hay menos stock del que pide ");
-			            }
-			            else {
-			            	producto.setExistencias(stockProducto);
-			            	productoDAO.updateProducto(producto);
-			            PedidoVenta pedidoVenta = new PedidoVenta();
-			            pedidoDAO.insertPedidoVenta(pedidoVenta);
+				try {
 
-			            DetalleVenta pedido = new DetalleVenta(pedidoVenta, nombre, producto, cantidad, precio);
-			            detalleDAO.insertDetalleVenta(pedido);
+					if (textFieldNombrePedido.getText().isEmpty() || comboBoxPedido.getSelectedItem() == null
+							|| textFieldCantidad.getText().isEmpty()) {
+						JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
 
-			            JOptionPane.showMessageDialog(null, "Producto actualizado correctamente");
+					} else {
+						int id = (int) tablePedidos.getValueAt(selectedRow, 0);
 
-			            pedido.setProveedor(nombre);
-			            pedido.setProducto(producto);
-			            pedido.setCantidad(cantidad);
-			            pedido.setPrecio(precio);
+						String nombre = textFieldNombrePedido.getText();
+						String indice = comboBoxPedido.getSelectedItem().toString();
+						int numeroSeleccionado = Integer.parseInt(indice);
+						int cantidad = Integer.parseInt(textFieldCantidad.getText());
 
-			            int idOferta = MostrarIdOferta(producto);
-			            Oferta oferta = ofertaDAO.selectOfertaId(idOferta);
-			            double precioOferta = CalcularOferta(producto);
+						Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
+						double precio = producto.getPrecio() * cantidad;
+						int stockProducto = producto.getExistencias() - cantidad;
+						if (cantidad > producto.getExistencias()) {
+							JOptionPane.showMessageDialog(null, "Hay menos stock del que pide ");
+						} else {
+							producto.setExistencias(stockProducto);
+							productoDAO.updateProducto(producto);
+							PedidoVenta pedidoVenta = new PedidoVenta();
+							pedidoDAO.insertPedidoVenta(pedidoVenta);
 
-			            productoDAO.updateProducto(producto);
+							DetalleVenta pedido = new DetalleVenta(pedidoVenta, nombre, producto, cantidad, precio);
+							detalleDAO.insertDetalleVenta(pedido);
 
-			            DefaultTableModel modelPedidos = (DefaultTableModel) tablePedidos.getModel();
-			            modelPedidos.setValueAt(nombre, selectedRow, 1);
-			            modelPedidos.setValueAt(producto.getIdProducto(), selectedRow, 2);
-			            modelPedidos.setValueAt(cantidad, selectedRow, 3);
-			            modelPedidos.setValueAt(precio, selectedRow, 4);
-			        	List<Producto> productoSelect = productoDAO.selectAllProductos();
-			        	modelTabla.setRowCount(0);
-			            for (Producto pr : productoSelect) {
+							JOptionPane.showMessageDialog(null, "Producto actualizado correctamente");
 
-							Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-									pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta()};
+							pedido.setProveedor(nombre);
+							pedido.setProducto(producto);
+							pedido.setCantidad(cantidad);
+							pedido.setPrecio(precio);
 
-							modelTabla.addRow(fila);
+							int idOferta = MostrarIdOferta(producto);
+							Oferta oferta = ofertaDAO.selectOfertaId(idOferta);
+							double precioOferta = CalcularOferta(producto);
+
+							productoDAO.updateProducto(producto);
+
+							DefaultTableModel modelPedidos = (DefaultTableModel) tablePedidos.getModel();
+							modelPedidos.setValueAt(nombre, selectedRow, 1);
+							modelPedidos.setValueAt(producto.getIdProducto(), selectedRow, 2);
+							modelPedidos.setValueAt(cantidad, selectedRow, 3);
+							modelPedidos.setValueAt(precio, selectedRow, 4);
+							List<Producto> productoSelect = productoDAO.selectAllProductos();
+							modelTabla.setRowCount(0);
+							for (Producto pr : productoSelect) {
+
+								Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(),
+										pr.getExistencias(), pr.getCategoria().getIdCategoria(),
+										pr.getFecha_caducidad(), pr.getOferta().getIdOferta() };
+
+								modelTabla.addRow(fila);
+							}
+
+							textFieldNombrePedido.setText("");
+							textFieldPrecioPedido.setText("");
+							textFieldCantidad.setText("");
 						}
+					}
+				} catch (ArrayIndexOutOfBoundsException e1) {
+					JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna casilla o no hay ningún pedido");
+				} catch (NumberFormatException e1) {
+					JOptionPane.showMessageDialog(null, "¡Error! Hay casillas vacías o datos mal introducidos.");
+				}
+			}
+		});
 
-			            textFieldNombrePedido.setText("");
-			            textFieldPrecioPedido.setText("");
-			            textFieldCantidad.setText("");
-			            }
-						}
-			        } catch (ArrayIndexOutOfBoundsException e1) {
-			            JOptionPane.showMessageDialog(null, "No se ha seleccionado ninguna casilla o no hay ningún pedido");
-			        } catch (NumberFormatException e1) {
-			            JOptionPane.showMessageDialog(null, "¡Error! Hay casillas vacías o datos mal introducidos.");
-			        }
-			    }
-			});
-	
 		ImageIcon imagenActualizarPedido = new ImageIcon(App.class.getResource("/imagenes/actualizar.png"));
 		Image imagenRedimensionada5 = imagenActualizarPedido.getImage().getScaledInstance(LONGITUD_BTN_ACTUALIZAR,
 				ALTURA_BTN_ACTUALIZAR, java.awt.Image.SCALE_SMOOTH);
 		btnActualizarPedido.setIcon(new ImageIcon(imagenRedimensionada5));
-		
+
 		btnActualizarPedido.setBounds(941, 633, 151, 25);
 		frameAlmacen.getContentPane().add(btnActualizarPedido);
-		
-	
-		
+
 		List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
 		for (DetalleVenta dv : pedidoSelect) {
-		 
 
-		    Object[] fila = {dv.getPedidoVenta().getIdpedidoVenta(),dv.getProveedor() , dv.getProducto().getIdProducto(),dv.getCantidad(),dv.getProducto().getPrecio()};
-		    modelPedidos.addRow(fila);
-		
+			Object[] fila = { dv.getPedidoVenta().getIdpedidoVenta(), dv.getProveedor(),
+					dv.getProducto().getIdProducto(), dv.getCantidad(), dv.getProducto().getPrecio() };
+			modelPedidos.addRow(fila);
+
 		}
 
 		tablePedidos = new JTable(modelPedidos);
 		tablePedidos.setVisible(false);
 		tablePedidos.setBounds(26, 251, 489, -159);
 		frameAlmacen.getContentPane().add(tablePedidos);
-		
+
 		JScrollPane scrollPanePedidos = new JScrollPane(tablePedidos);
 		scrollPanePedidos.setBounds(707, 43, 619, 220);
 		frameAlmacen.getContentPane().add(scrollPanePedidos);
 		scrollPanePedidos.setVisible(false);
-	
-		
+
 		/**
 		 * Este evento borra el pedido seleccionando cuando le das al boton de borrar
 		 * 
 		 */
-		
+
 		JButton btnBorrarPedido = new JButton("Borrar");
 		btnBorrarPedido.setBackground(new Color(245, 222, 179));
 		btnBorrarPedido.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			
 
-					try {
+				try {
 
-						int filaSeleccionada = tablePedidos.getSelectedRow();
-						int idPedido = (int) tablePedidos.getValueAt(filaSeleccionada, 0);
+					int filaSeleccionada = tablePedidos.getSelectedRow();
+					int idPedido = (int) tablePedidos.getValueAt(filaSeleccionada, 0);
 
-						detalleDAO.deleteDetalleVenta(idPedido);
-		
-						modelPedidos.removeRow(filaSeleccionada);
-						JOptionPane.showMessageDialog(null, "Pedido borrado correctamente");
-						textFieldNombrePedido.setText("");
-						textFieldCantidad.setText("");
-						textFieldPrecioPedido.setText("");
-						
+					detalleDAO.deleteDetalleVenta(idPedido);
 
-					} catch (ArrayIndexOutOfBoundsException e1) {
-						JOptionPane.showMessageDialog(null, "No hay ningun pedido o no se ha seleccionado ninguno");
-					}
+					modelPedidos.removeRow(filaSeleccionada);
+					JOptionPane.showMessageDialog(null, "Pedido borrado correctamente");
+					textFieldNombrePedido.setText("");
+					textFieldCantidad.setText("");
+					textFieldPrecioPedido.setText("");
+
+				} catch (ArrayIndexOutOfBoundsException e1) {
+					JOptionPane.showMessageDialog(null, "No hay ningun pedido o no se ha seleccionado ninguno");
 				}
-			});
-				
-		
+			}
+		});
+
 		btnBorrarPedido.setVisible(false);
 		btnBorrarPedido.setBounds(1209, 633, 121, 25);
 		frameAlmacen.getContentPane().add(btnBorrarPedido);
 		ImageIcon imagenBorrarPedido = new ImageIcon(App.class.getResource("/imagenes/borrar.png"));
-		Image imagenRedimensionada6 = imagenBorrarPedido.getImage().getScaledInstance(LONGITUD_BTN_BORRAR, ALTURA_BTN_BORRAR,
-				java.awt.Image.SCALE_SMOOTH);
+		Image imagenRedimensionada6 = imagenBorrarPedido.getImage().getScaledInstance(LONGITUD_BTN_BORRAR,
+				ALTURA_BTN_BORRAR, java.awt.Image.SCALE_SMOOTH);
 		btnBorrarPedido.setIcon(new ImageIcon(imagenRedimensionada6));
-		
-		
+
 		btnActualizarPedido.setVisible(false);
 		ImageIcon imagenBorrar = new ImageIcon(App.class.getResource("/imagenes/borrar.png"));
 		Image imagenRedimensionada3 = imagenBorrar.getImage().getScaledInstance(LONGITUD_BTN_BORRAR, ALTURA_BTN_BORRAR,
 				java.awt.Image.SCALE_SMOOTH);
 		btnBorrar.setIcon(new ImageIcon(imagenRedimensionada3));
 		frameAlmacen.getContentPane().add(btnBorrar);
-	
-		
-		
+
 		textFieldNombrePedido = new JTextField();
 		textFieldNombrePedido.setBounds(901, 301, 215, 19);
 		frameAlmacen.getContentPane().add(textFieldNombrePedido);
 		textFieldNombrePedido.setColumns(10);
 		textFieldNombrePedido.setVisible(false);
-	
+
 		lblPrecioPedido.setVisible(false);
 		textFieldPrecioPedido = new JTextField();
 		textFieldPrecioPedido.setEnabled(false);
@@ -1839,42 +1728,36 @@ static double DevolverPrecioOriginal(Producto producto)
 		frameAlmacen.getContentPane().add(textFieldPrecioPedido);
 		textFieldPrecioPedido.setColumns(10);
 		textFieldPrecioPedido.setVisible(false);
-		
+
 		textFieldCantidad = new JTextField();
 		textFieldCantidad.setBounds(901, 353, 215, 19);
 		textFieldCantidad.setVisible(false);
 		frameAlmacen.getContentPane().add(textFieldCantidad);
 		textFieldCantidad.setColumns(10);
-		
+
 		JLabel lblMostrarDatos = new JLabel("MOSTRAR DATOS");
 		lblMostrarDatos.setVisible(false);
 		lblMostrarDatos.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblMostrarDatos.setBounds(10, 435, 284, 31);
 		frameAlmacen.getContentPane().add(lblMostrarDatos);
-		
+
 		JLabel lblRegistro_1 = new JLabel("Registro de Usuario");
 		lblRegistro_1.setFont(new Font("Dialog", Font.BOLD, 20));
 		lblRegistro_1.setBounds(371, 53, 256, 54);
 		frameAlmacen.getContentPane().add(lblRegistro_1);
-		
-		
-				
+
 		comboBoxPedido.removeAllItems();
-				List<Producto> selectProductos = productoDAO.selectAllProductos();
-				
+		List<Producto> selectProductos = productoDAO.selectAllProductos();
 
-				for (Producto pr : selectProductos) {
-					comboBoxPedido.addItem(pr.getIdProducto());
-					
+		for (Producto pr : selectProductos) {
+			comboBoxPedido.addItem(pr.getIdProducto());
 
-				}
-				
-			
-	
+		}
+
 		comboBoxPedido.setBounds(901, 327, 215, 19);
 		comboBoxPedido.setVisible(false);
 		frameAlmacen.getContentPane().add(comboBoxPedido);
-		
+
 		btnGuardarPedido = new JButton("Guardar");
 		btnGuardarPedido.setBackground(new Color(245, 222, 179));
 		btnGuardarPedido.addActionListener(new ActionListener() {
@@ -1884,78 +1767,62 @@ static double DevolverPrecioOriginal(Producto producto)
 			 * 
 			 */
 			public void actionPerformed(ActionEvent e) {
-				
+
 				try {
-				String nombre = textFieldNombrePedido.getText();
-				String indice = comboBoxPedido.getSelectedItem().toString();
-				int numeroSeleccionado = Integer.parseInt(indice);
-				int cantidad = Integer.parseInt(textFieldCantidad.getText());
-			  
-				
-				Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
-				double precio = producto.getPrecio()*cantidad;
-				
-				
-               
-                
-                
-				
-				 if( producto.getExistencias() < cantidad)
-				 {
-					 JOptionPane.showMessageDialog(null, "No hay stock suficiente");
-				 }
-				 else if( cantidad == 0)
-				 {
-					 JOptionPane.showMessageDialog(null, "Error: la cantidad no puede ser 0");
-				 }
-				 else
-				 {
-					 int stockProductos= producto.getExistencias()-cantidad;
-					 producto.setExistencias(stockProductos);
-					 productoDAO.updateProducto(producto);
-					 PedidoVenta pedidoVenta = new PedidoVenta();
-		                pedidoDAO.insertPedidoVenta(pedidoVenta);
-					 DetalleVenta pedido = new DetalleVenta( pedidoVenta, nombre, producto,cantidad ,  precio);
-				detalleDAO.insertDetalleVenta(pedido);
-				List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
-				List<Producto> productoSelect = productoDAO.selectAllProductos();
-				
-				modelPedidos.setRowCount(0);
-				modelTabla.setRowCount(0);
-				for (DetalleVenta dv : pedidoSelect) {
-					
-					
-					
-					
-				    Object[] fila = {dv.getPedidoVenta().getIdpedidoVenta(), dv.getProveedor(), dv.getProducto().getIdProducto(),dv.getCantidad(),dv.getPrecio()};
-				    modelPedidos.addRow(fila);
-					
+					String nombre = textFieldNombrePedido.getText();
+					String indice = comboBoxPedido.getSelectedItem().toString();
+					int numeroSeleccionado = Integer.parseInt(indice);
+					int cantidad = Integer.parseInt(textFieldCantidad.getText());
+
+					Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
+					double precio = producto.getPrecio() * cantidad;
+
+					if (producto.getExistencias() < cantidad) {
+						JOptionPane.showMessageDialog(null, "No hay stock suficiente");
+					} else if (cantidad == 0) {
+						JOptionPane.showMessageDialog(null, "Error: la cantidad no puede ser 0");
+					} else {
+						int stockProductos = producto.getExistencias() - cantidad;
+						producto.setExistencias(stockProductos);
+						productoDAO.updateProducto(producto);
+						PedidoVenta pedidoVenta = new PedidoVenta();
+						pedidoDAO.insertPedidoVenta(pedidoVenta);
+						DetalleVenta pedido = new DetalleVenta(pedidoVenta, nombre, producto, cantidad, precio);
+						detalleDAO.insertDetalleVenta(pedido);
+						List<DetalleVenta> pedidoSelect = detalleDAO.selectAllPedidos();
+						List<Producto> productoSelect = productoDAO.selectAllProductos();
+
+						modelPedidos.setRowCount(0);
+						modelTabla.setRowCount(0);
+						for (DetalleVenta dv : pedidoSelect) {
+
+							Object[] fila = { dv.getPedidoVenta().getIdpedidoVenta(), dv.getProveedor(),
+									dv.getProducto().getIdProducto(), dv.getCantidad(), dv.getPrecio() };
+							modelPedidos.addRow(fila);
+
+						}
+						for (Producto pr : productoSelect) {
+
+							Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
+									pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),
+									pr.getOferta().getIdOferta() };
+
+							modelTabla.addRow(fila);
+						}
+
+						JOptionPane.showMessageDialog(null, "Pedido añadido");
+						textFieldNombrePedido.setText("");
+						textFieldCantidad.setText("");
+						textFieldPrecioPedido.setText("");
+					}
+
+				} catch (NumberFormatException e1) {
+					JOptionPane.showMessageDialog(null, "¡Error hay casillas vacías o datos mal introducidos!");
+				} catch (NullPointerException e2) {
+
+					JOptionPane.showMessageDialog(null, "¡Error hay casillas vacías o datos mal introducidos!");
 				}
-				for (Producto pr : productoSelect) {
 
-					Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(), pr.getExistencias(),
-							pr.getCategoria().getIdCategoria(), pr.getFecha_caducidad(),pr.getOferta().getIdOferta()};
-
-					modelTabla.addRow(fila);
-				}
-
-				JOptionPane.showMessageDialog(null, "Pedido añadido");
-				textFieldNombrePedido.setText("");
-				textFieldCantidad.setText("");
-				textFieldPrecioPedido.setText("");
-				 }
-				
-				
-				
-			} catch (NumberFormatException e1) {
-				JOptionPane.showMessageDialog(null, "¡Error hay casillas vacías o datos mal introducidos!");
-			}catch(NullPointerException e2) {
-				
-				JOptionPane.showMessageDialog(null, "¡Error hay casillas vacías o datos mal introducidos!");	
-			}
-				
-
-				
 			}
 		});
 		btnGuardarPedido.setBounds(707, 633, 117, 25);
@@ -1964,17 +1831,17 @@ static double DevolverPrecioOriginal(Producto producto)
 		Image imagenRedimensionada4 = imagenGuardarPedido.getImage().getScaledInstance(LONGITUD_BTN_GUARDAR,
 				ALTURA_BTN_GUARDAR, java.awt.Image.SCALE_SMOOTH);
 		btnGuardarPedido.setIcon(new ImageIcon(imagenRedimensionada4));
-		frameAlmacen.getContentPane().add(btnGuardar);frameAlmacen.getContentPane().add(btnGuardarPedido);
+		frameAlmacen.getContentPane().add(btnGuardar);
+		frameAlmacen.getContentPane().add(btnGuardarPedido);
 		List<Categoria> Categoria = categoriaDAO.selectAllCategoria();
 		for (Categoria cg : Categoria) {
 			comboBoxEscogerCategoria.addItem(cg.getNombreCategoria());
 		}
 		comboBoxEscogerCategoria.setBounds(137, 353, 215, 19);
 		frameAlmacen.getContentPane().add(comboBoxEscogerCategoria);
-		
-		
+
 		/**
-		 * Este boton oculta los elementos del programa principal y muestra el login 
+		 * Este boton oculta los elementos del programa principal y muestra el login
 		 */
 		JButton btnCerrarSesion = new JButton("Cerrar Sesion");
 		btnCerrarSesion.setBackground(new Color(245, 222, 179));
@@ -1988,19 +1855,19 @@ static double DevolverPrecioOriginal(Producto producto)
 				btnGuardarPedido.setVisible(false);
 				textFieldNombrePedido.setVisible(false);
 				textFieldNombreLogin.setVisible(true);
-            	textFieldCorreoLogin.setVisible(true);
-            	lblCorreoRegistroUsuario.setVisible(true);
-            	lblLogin.setVisible(true);
-            	scrollPanePedidos.setVisible(false);
-            	lblCantidadPedido.setVisible(false);
-            	lblPrecioPedido.setVisible(false);
-            	
-            	textFieldNombrePedido.setVisible(false);
-            	btnBorrarPedido.setVisible(false);
-            	lblPrecioPedido.setVisible(false);
-            	lblNombreLogin.setVisible(true);
-            	comboBoxPedido.setVisible(false);
-            	textFieldCantidad.setVisible(false);
+				textFieldCorreoLogin.setVisible(true);
+				lblCorreoRegistroUsuario.setVisible(true);
+				lblLogin.setVisible(true);
+				scrollPanePedidos.setVisible(false);
+				lblCantidadPedido.setVisible(false);
+				lblPrecioPedido.setVisible(false);
+
+				textFieldNombrePedido.setVisible(false);
+				btnBorrarPedido.setVisible(false);
+				lblPrecioPedido.setVisible(false);
+				lblNombreLogin.setVisible(true);
+				comboBoxPedido.setVisible(false);
+				textFieldCantidad.setVisible(false);
 				textFieldNombre.setVisible(true);
 				textFieldCorreo.setVisible(true);
 				textFieldTelefono.setVisible(true);
@@ -2024,7 +1891,7 @@ static double DevolverPrecioOriginal(Producto producto)
 				lblNombrePedido.setVisible(false);
 				lblProductoPedido.setVisible(false);
 				lblProductoPedido.setVisible(false);
-				
+
 				txtId.setVisible(false);
 				txtNombre.setVisible(false);
 				txtPrecio.setVisible(false);
@@ -2048,17 +1915,16 @@ static double DevolverPrecioOriginal(Producto producto)
 				btnActualizar.setVisible(false);
 				btnBorrar.setVisible(false);
 				scrollPaneProductos.setVisible(false);
-				
-				
+
 				textFieldNombreLogin.setText("");
-            	textFieldCorreoLogin.setText("");
-            	textFieldNombre.setText("");
+				textFieldCorreoLogin.setText("");
+				textFieldNombre.setText("");
 				textFieldCorreo.setText("");
 				textFieldTelefono.setText("");
 				textFieldLocalizacion.setText("");
 				textFieldFechaNac.setText("");
 				textFieldFechaInicio.setText("");
-            	
+
 			}
 		});
 		btnCerrarSesion.setBounds(220, 697, 188, 23);
@@ -2067,279 +1933,255 @@ static double DevolverPrecioOriginal(Producto producto)
 		Image imagenRedimensionada9 = imagenCerrarSesion.getImage().getScaledInstance(LONGITUD_BTN_GUARDAR,
 				ALTURA_BTN_GUARDAR, java.awt.Image.SCALE_SMOOTH);
 		btnCerrarSesion.setIcon(new ImageIcon(imagenRedimensionada9));
-		
-		
-		
-		
-		
-		
-	
-		
-	
-		
-		
-		 textFieldNombre.addFocusListener(new FocusAdapter() {
-			 /*
-			  * Este evento se inicia cuando se pierde el foco al  textFieldNombre 
-			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
-			  */
-	        	@Override
-	        	public void focusLost(FocusEvent e) {
-	        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
-					Matcher mat = pat.matcher(textFieldNombre.getText());
-					if (!mat.matches()) {
-						textFieldNombre.setText("Error");
-		
+
+		textFieldNombre.addFocusListener(new FocusAdapter() {
+			/*
+			 * Este evento se inicia cuando se pierde el foco al textFieldNombre comprueba
+			 * que esta bien introducido y si esta mal establece "Error" al textField
+			 */
+			@Override
+			public void focusLost(FocusEvent e) {
+				Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
+				Matcher mat = pat.matcher(textFieldNombre.getText());
+				if (!mat.matches()) {
+					textFieldNombre.setText("Error");
+
+				}
+			}
+
+		});
+
+		/*
+		 * Este evento se inicia cuando se pierde el foco al textFieldNombreLogin
+		 * comprueba que esta bien introducido y si esta mal establece "Error" al
+		 * textField
+		 */
+
+		textFieldNombreLogin.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
+				Matcher mat = pat.matcher(textFieldNombreLogin.getText());
+				if (!mat.matches()) {
+					textFieldNombreLogin.setText("Error");
+
+				}
+			}
+
+		});
+
+		/*
+		 * Este evento se inicia cuando se pierde el foco al textFieldCorreo comprueba
+		 * que esta bien introducido y si esta mal establece "Error" al textField
+		 */
+		textFieldCorreo.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				String correo = textFieldCorreo.getText();
+				String regex = "^\\w+@\\w+\\.[a-z]{2,3}$";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(correo);
+				if (!matcher.matches()) {
+
+					textFieldCorreo.setText("Error");
+				}
+			}
+
+		});
+		/*
+		 * Este evento se inicia cuando se pierde el foco al textFieldCorreoLogin
+		 * comprueba que esta bien introducido y si esta mal establece "Error" al
+		 * textField
+		 */
+
+		textFieldCorreoLogin.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				String correo = textFieldCorreoLogin.getText();
+				String regex = "^\\w+@\\w+\\.[a-z]{2,3}$";
+				Pattern pattern = Pattern.compile(regex);
+				Matcher matcher = pattern.matcher(correo);
+				if (!matcher.matches()) {
+
+					textFieldCorreoLogin.setText("Error");
+				}
+			}
+
+		});
+		/*
+		 * Este evento se inicia cuando se pierde el foco al textFieldTelefono comprueba
+		 * que esta bien introducido y si esta mal establece "Error" al textField
+		 */
+		textFieldTelefono.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				Pattern pat = Pattern.compile("^[67]\\d{8}$");
+				Matcher mat = pat.matcher(textFieldTelefono.getText());
+				if (!mat.matches()) {
+					textFieldTelefono.setText("Error");
+
+				}
+
+			}
+
+		});
+		/*
+		 * Este evento se inicia cuando se pierde el foco al textFieldLocalizacion
+		 * comprueba que esta bien introducido y si esta mal establece "Error" al
+		 * textField
+		 */
+		textFieldLocalizacion.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
+				Matcher mat = pat.matcher(textFieldLocalizacion.getText());
+				if (!mat.matches()) {
+					textFieldLocalizacion.setText("Error");
+
+				}
+
+			}
+
+		});
+		/*
+		 * Este evento se inicia cuando se pierde el foco al textFieldFechaNac comprueba
+		 * que esta bien introducido y si esta mal establece "Error" al textField
+		 */
+		textFieldFechaNac.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				String fechaNacimiento = textFieldFechaNac.getText();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				try {
+					LocalDate.parse(fechaNacimiento, formatter);
+				} catch (DateTimeParseException ex) {
+
+					textFieldFechaNac.setText("Error");
+				}
+			}
+
+		});
+		/*
+		 * Este evento se inicia cuando se pierde el foco al textFieldFechaInicio
+		 * comprueba que esta bien introducido y si esta mal establece "Error" al
+		 * textField
+		 */
+		textFieldFechaInicio.addFocusListener(new FocusAdapter() {
+			@Override
+			public void focusLost(FocusEvent e) {
+				String fechaInicio = textFieldFechaInicio.getText();
+				DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+				try {
+					LocalDate.parse(fechaInicio, formatter);
+				} catch (DateTimeParseException ex) {
+
+					textFieldFechaInicio.setText("Error");
+				}
+			}
+
+		});
+
+		btnEntrar.addActionListener(new ActionListener() {
+			/**
+			 * Este evento hace que cuando se le da al boton entrar, si estan bien los datos
+			 * introducidos, se oculta el login y se muestra el programa principal
+			 * 
+			 */
+			public void actionPerformed(ActionEvent e) {
+
+				List<Usuario> selectUsuarios = usuarioDao.selectAllUsuarios();
+				boolean usuarioEncontrado = false;
+
+				if (selectUsuarios.isEmpty()) {
+					JOptionPane.showMessageDialog(null, "No hay ningun usuario creado");
+				} else
+					for (Usuario u : selectUsuarios) {
+						String nombreBD = u.getNombre();
+						String correoBD = u.getCorreoElectronico();
+
+						String nombre = textFieldNombreLogin.getText();
+						String correo = textFieldCorreoLogin.getText();
+
+						if (nombreBD.equals(nombre) && correoBD.equals(correo)) {
+							usuarioEncontrado = true;
+							break;
+						}
 					}
-	        	}
-	        	
-	        	
-	        });
+				if (usuarioEncontrado) {
+					lblDatos.setVisible(true);
+					textFieldPrecioPedido.setVisible(true);
+					textFieldCantidad.setVisible(true);
+					textFieldNombreLogin.setVisible(false);
+					textFieldCorreoLogin.setVisible(false);
+					lblCorreoRegistroUsuario.setVisible(false);
+					lblLogin.setVisible(false);
+					btnGuardarPedido.setVisible(true);
+					btnActualizarPedido.setVisible(true);
+					lblNombreLogin.setVisible(false);
+					textFieldNombre.setVisible(false);
+					textFieldCorreo.setVisible(false);
+					textFieldTelefono.setVisible(false);
+					textFieldLocalizacion.setVisible(false);
+					textFieldFechaNac.setVisible(false);
+					textFieldFechaInicio.setVisible(false);
+					btnEntrar.setVisible(false);
+					btnBorrarPedido.setVisible(true);
+					textFieldNombrePedido.setVisible(true);
+					lblNombreRegistro.setVisible(false);
+					lblCorreoRegistro.setVisible(false);
+					lblTelfono.setVisible(false);
+					lblLocalizacin.setVisible(false);
+					lblFechaInicio.setVisible(false);
+					lblFechaNacimiento.setVisible(false);
+					btnRegistrarse.setVisible(false);
+					scrollPanePedidos.setVisible(true);
+					lblRegistro_1.setVisible(false);
+					lblDatosPedido.setVisible(true);
+					frameAlmacen.setVisible(true);
+					tableProductos.setVisible(true);
+					tablePedidos.setVisible(true);
+					btnCerrarSesion.setVisible(true);
+					txtId.setVisible(true);
+					txtNombre.setVisible(true);
+					txtPrecio.setVisible(true);
+					txtStock.setVisible(true);
+					comboBoxPedido.setVisible(true);
+					comboBoxSeleccionarCategoria.setVisible(true);
+					lblTitulo.setVisible(true);
+					lblNombre.setVisible(true);
+					lblCategoria.setVisible(true);
+					lblPrecio.setVisible(true);
+					lblStock.setVisible(true);
+					lblMostrarDatos.setVisible(true);
+					lblSeleccionarPeriodoDe.setVisible(true);
+					lblSeleccionarCategoria.setVisible(true);
+					comboBoxEscogerCategoria.setVisible(true);
+					comboBoxSeleccionarTiempo.setVisible(true);
+					rdbtnMostrarTodos.setVisible(true);
+					rdbtnMostrarProductosCategoria.setVisible(true);
+					rdbtnMostrarProductosSinUnidades.setVisible(true);
+					rdbtnMostrarProductosCaducados.setVisible(true);
+					btnGuardar.setVisible(true);
+					btnActualizar.setVisible(true);
+					btnBorrar.setVisible(true);
+					scrollPaneProductos.setVisible(true);
+					lblNombrePedido.setVisible(true);
+					lblCantidadPedido.setVisible(true);
+					lblPrecioPedido.setVisible(true);
+					lblProductoPedido.setVisible(true);
+					lblDatosPedido.setVisible(true);
+					lblId.setVisible(true);
+				} else {
+					JOptionPane.showMessageDialog(null, "Hay datos incorrectos o casillas vacias");
+				}
 
-	     
-		 /*
-		  * Este evento se inicia cuando se pierde el foco al  textFieldNombreLogin 
-		  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
-		  */
-	        
-	        textFieldNombreLogin.addFocusListener(new FocusAdapter() {
-	        	@Override
-	        	public void focusLost(FocusEvent e) {
-	        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
-					Matcher mat = pat.matcher(textFieldNombreLogin.getText());
-					if (!mat.matches()) {
-						textFieldNombreLogin.setText("Error");
-		
-					}
-	        	}
-	        	
-	        	
-	        });
+			}
+		});
+		ImageIcon imagenEntrar = new ImageIcon(App.class.getResource("/imagenes/autenticarse.png"));
+		Image imagenRedimensionada8 = imagenEntrar.getImage().getScaledInstance(LONGITUD_BTN_CERRAR_SESION,
+				ALTURA_BTN_CERRAR_SESION, java.awt.Image.SCALE_SMOOTH);
+		btnEntrar.setIcon(new ImageIcon(imagenRedimensionada8));
 
-	
-	        /*
-			  * Este evento se inicia cuando se pierde el foco al  textFieldCorreo
-			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
-			  */
-	        textFieldCorreo.addFocusListener(new FocusAdapter() {
-	            @Override
-	            public void focusLost(FocusEvent e) {
-	                String correo = textFieldCorreo.getText();
-	                String regex = "^\\w+@\\w+\\.[a-z]{2,3}$";
-	                Pattern pattern = Pattern.compile(regex);
-	                Matcher matcher = pattern.matcher(correo);
-	                if (!matcher.matches()) {
-	               
-	                	textFieldCorreo.setText("Error");
-	                }
-	            }
-
-	          
-	        });
-	        /*
-			  * Este evento se inicia cuando se pierde el foco al  textFieldCorreoLogin
-			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
-			  */
-	        
-	        textFieldCorreoLogin.addFocusListener(new FocusAdapter() {
-	            @Override
-	            public void focusLost(FocusEvent e) {
-	                String correo = textFieldCorreoLogin.getText();
-	                String regex = "^\\w+@\\w+\\.[a-z]{2,3}$";
-	                Pattern pattern = Pattern.compile(regex);
-	                Matcher matcher = pattern.matcher(correo);
-	                if (!matcher.matches()) {
-	               
-	                	textFieldCorreoLogin.setText("Error");
-	                }
-	            }
-
-	        });
-	        /*
-			  * Este evento se inicia cuando se pierde el foco al     textFieldTelefono
-			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
-			  */
-	        textFieldTelefono.addFocusListener(new FocusAdapter() {
-	        	@Override
-	        	public void focusLost(FocusEvent e) {
-	        		Pattern pat = Pattern.compile("^[67]\\d{8}$");
-					Matcher mat = pat.matcher(textFieldTelefono.getText());
-					if (!mat.matches()) {
-						textFieldTelefono.setText("Error");
-					
-	        	}
-	        		
-	        	}
-	        
-	       
-	    });
-	        /*
-			  * Este evento se inicia cuando se pierde el foco al     textFieldLocalizacion
-			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
-			  */
-	        textFieldLocalizacion.addFocusListener(new FocusAdapter() {
-	        	@Override
-	        	public void focusLost(FocusEvent e) {
-	        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
-					Matcher mat = pat.matcher(textFieldLocalizacion.getText());
-					if (!mat.matches()) {
-						textFieldLocalizacion.setText("Error");
-					
-	        	}
-	        		
-	        	}
-	        
-	        
-
-	 
-	    });
-	        /*
-			  * Este evento se inicia cuando se pierde el foco al     textFieldFechaNac
-			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
-			  */
-	        textFieldFechaNac.addFocusListener(new FocusAdapter() {
-	            @Override
-	            public void focusLost(FocusEvent e) {
-	                String fechaNacimiento = textFieldFechaNac.getText();
-	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	                try {
-	                    LocalDate.parse(fechaNacimiento, formatter);
-	                } catch (DateTimeParseException ex) {
-	                 
-	                	textFieldFechaNac.setText("Error");
-	                }
-	            }
-
-	        });
-	        /*
-			  * Este evento se inicia cuando se pierde el foco al    textFieldFechaInicio
-			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
-			  */
-	        textFieldFechaInicio.addFocusListener(new FocusAdapter() {
-	            @Override
-	            public void focusLost(FocusEvent e) {
-	                String fechaInicio = textFieldFechaInicio.getText();
-	                DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
-	                try {
-	                    LocalDate.parse(fechaInicio, formatter);
-	                } catch (DateTimeParseException ex) {
-	                  
-	                    textFieldFechaInicio.setText("Error");
-	                }
-	            }
-
-	        });
-
-	       
-	        btnEntrar.addActionListener(new ActionListener() {
-	        	/**
-	        	 * Este evento hace que cuando se le da al boton entrar, si estan bien los datos introducidos,  se oculta el login y se 
-	        	 * muestra el programa principal 
-	        	 * 
-	        	 */
-	            public void actionPerformed(ActionEvent e) {
-	            
-	            	List<Usuario> selectUsuarios = usuarioDao.selectAllUsuarios();
-	            	boolean usuarioEncontrado = false;
-
-	            	if(selectUsuarios.isEmpty())
-	            	{
-	            		JOptionPane.showMessageDialog(null, "No hay ningun usuario creado");
-	            	}
-	            	else 
-	            		for (Usuario u :selectUsuarios)
-	            		{
-	            			String nombreBD = u.getNombre();
-		                    String correoBD = u.getCorreoElectronico() ;
-		                   
-		                    String nombre = textFieldNombreLogin.getText();
-		                    String correo = textFieldCorreoLogin.getText();
-		                  
-		                    if(nombreBD.equals(nombre) && correoBD.equals(correo))
-		                    {
-		                    	usuarioEncontrado = true;
-		                    	break;
-		                    }
-	            		}
-	            	if (usuarioEncontrado) {
-	            		lblDatos.setVisible(true);
-	            		textFieldPrecioPedido.setVisible(true);
-	            		textFieldCantidad.setVisible(true);
-		                    	textFieldNombreLogin.setVisible(false);
-		                    	textFieldCorreoLogin.setVisible(false);
-		                    	lblCorreoRegistroUsuario.setVisible(false);
-		                    	lblLogin.setVisible(false);
-		                    	btnGuardarPedido.setVisible(true);
-		                    	btnActualizarPedido.setVisible(true);
-		                    	lblNombreLogin.setVisible(false);
-			            	textFieldNombre.setVisible(false);
-		              	  textFieldCorreo.setVisible(false);
-		              	  textFieldTelefono.setVisible(false);
-		              	  textFieldLocalizacion.setVisible(false);
-		              	  textFieldFechaNac.setVisible(false);
-		              	  textFieldFechaInicio.setVisible(false);
-		              	 btnEntrar.setVisible(false);
-		              	 btnBorrarPedido.setVisible(true);
-		              	textFieldNombrePedido.setVisible(true);
-		              		  lblNombreRegistro.setVisible(false);
-		              		  lblCorreoRegistro.setVisible(false);
-		              		  lblTelfono.setVisible(false);
-		              		  lblLocalizacin.setVisible(false);
-		              		  lblFechaInicio.setVisible(false);
-		              		  lblFechaNacimiento.setVisible(false);
-		              		  btnRegistrarse.setVisible(false);
-		              		scrollPanePedidos.setVisible(true);
-		              		lblRegistro_1.setVisible(false);
-		              		lblDatosPedido.setVisible(true);
-		                  frameAlmacen.setVisible(true);
-		                  tableProductos.setVisible(true);
-		                  tablePedidos.setVisible(true);
-		                  btnCerrarSesion.setVisible(true);
-		                  txtId.setVisible(true);
-		                  txtNombre.setVisible(true);
-		                  txtPrecio.setVisible(true);
-		                  txtStock.setVisible(true);
-		          		comboBoxPedido.setVisible(true);
-		                  comboBoxSeleccionarCategoria.setVisible(true);
-		                  lblTitulo.setVisible(true);
-		                  lblNombre.setVisible(true);
-		                  lblCategoria.setVisible(true);
-		                  lblPrecio.setVisible(true);
-		                  lblStock.setVisible(true);
-		                  lblMostrarDatos.setVisible(true);
-		          	  lblSeleccionarPeriodoDe.setVisible(true);
-		          	  lblSeleccionarCategoria.setVisible(true);
-		          	  comboBoxEscogerCategoria.setVisible(true);
-		          	  comboBoxSeleccionarTiempo.setVisible(true);
-		          	  rdbtnMostrarTodos.setVisible(true);
-		          	  rdbtnMostrarProductosCategoria.setVisible(true);
-		          	  rdbtnMostrarProductosSinUnidades.setVisible(true);
-		          	  rdbtnMostrarProductosCaducados.setVisible(true);
-		          	  btnGuardar.setVisible(true);
-		          	  btnActualizar.setVisible(true);
-		          	  btnBorrar.setVisible(true);
-		          	  scrollPaneProductos.setVisible(true);
-		          	lblNombrePedido.setVisible(true);
-		          	lblCantidadPedido.setVisible(true);
-		          	lblPrecioPedido.setVisible(true);
-		          	lblProductoPedido.setVisible(true);
-		          	lblDatosPedido.setVisible(true);
-		          	lblId.setVisible(true);
-	            		}
-		                    else
-		                    {
-		                    	JOptionPane.showMessageDialog(null, "Hay datos incorrectos o casillas vacias");
-		                    }
-	            	
-	            }
-	        });
-	        ImageIcon imagenEntrar = new ImageIcon(App.class.getResource("/imagenes/autenticarse.png"));
-			Image imagenRedimensionada8 = imagenEntrar.getImage().getScaledInstance(LONGITUD_BTN_CERRAR_SESION,
-					ALTURA_BTN_CERRAR_SESION, java.awt.Image.SCALE_SMOOTH);
-			btnEntrar.setIcon(new ImageIcon(imagenRedimensionada8));
-	      
-		
-		
 		tableProductos.addMouseListener(new MouseAdapter() {
 			@Override
 			/**
@@ -2357,12 +2199,10 @@ static double DevolverPrecioOriginal(Producto producto)
 				Object valorSeleccionado = model.getValueAt(índice, 4); // obtiene el valor de la columna de la
 																		// categoría
 				comboBoxEscogerCategoria.setSelectedIndex((int) valorSeleccionado - 1);
-				
-			
+
 			}
 		});
-		
-		
+
 		tablePedidos.addMouseListener(new MouseAdapter() {
 			@Override
 			/**
@@ -2375,17 +2215,13 @@ static double DevolverPrecioOriginal(Producto producto)
 				TableModel model = tablePedidos.getModel();
 				textFieldNombrePedido.setText(model.getValueAt(índice, 1).toString());
 				Object valorSeleccionado = model.getValueAt(índice, 2); // obtiene el valor de la columna de la producto
-				 comboBoxPedido.setSelectedItem(valorSeleccionado.toString());
-                textFieldCantidad.setText(model.getValueAt(índice, 3).toString());
-                textFieldPrecioPedido.setText(model.getValueAt(índice, 4).toString());
+				comboBoxPedido.setSelectedItem(valorSeleccionado.toString());
+				textFieldCantidad.setText(model.getValueAt(índice, 3).toString());
+				textFieldPrecioPedido.setText(model.getValueAt(índice, 4).toString());
 				;
-				
-				
-			
+
 			}
 		});
-		
-		 
-	
+
 	}
-	}
+}

@@ -26,7 +26,7 @@
 			return o;
 		}
 		
-		
+		//Seleccion simple de la oferta con la id 
 		    public double selectOfertaById(int id) {
 		        Transaction transaction = null;
 		        double value = 0.0;
