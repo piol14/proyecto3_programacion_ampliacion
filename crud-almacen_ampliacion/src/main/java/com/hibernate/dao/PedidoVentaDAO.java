@@ -9,7 +9,7 @@ import com.hibernate.model.Producto;
 import com.hibernate.util.HibernateUtil;
 
 public class PedidoVentaDAO {
-	
+	//Inserccion
 	public void insertPedidoVenta(PedidoVenta pv) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {

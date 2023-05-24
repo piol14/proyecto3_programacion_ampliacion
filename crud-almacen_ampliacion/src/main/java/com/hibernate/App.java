@@ -107,7 +107,12 @@ public class App {
     private JTextField textFieldPrecioPedido;
     private JTextField textFieldCantidad;
     private JButton btnGuardarPedido;
-	
+	/**
+	 * Este método se ejecuta al iniciar el programa y devuelve o pone en oferta los productos 
+	 * según la categoria y el dia de la semana 
+	 * @param producto: el producto a modificar o no 
+	 * @return devuelve el precio del producto
+	 */
 	 static double ComprobarOferta (Producto producto)
 	 {
 		 LocalDate hoy = LocalDate.now();
@@ -295,7 +300,12 @@ public class App {
 	}  
 		    
 		    
-		  
+		 /**
+		  * Esta función se llama en ComprobarOferta y se encarga de devolver al precio original los productos
+		  * que estaban en oferta cuando ya no les toca estar en oferta
+		  * @param producto
+		  * @return el precio del producto 
+		  */
 		 
 static double DevolverPrecioOriginal(Producto producto)
 {
@@ -311,8 +321,8 @@ static double DevolverPrecioOriginal(Producto producto)
     }
 
 /**
- * Esta funcion establece la id de la oferta a los productos segun su categoria y dia de la semana
- * @param producto1 pasamos el producto a modificar 
+ * Esta función establece la id de la oferta a los productos según su categoría y dia de la semana
+ * @param producto1 : pasamos el producto a modificar 
  * @return devuelve la id de la oferta 
  */
 	static int MostrarIdOferta(Producto producto1)
@@ -430,6 +440,11 @@ static double DevolverPrecioOriginal(Producto producto)
 		    return producto1.getOferta().getIdOferta();
 		}
 		
+	/**
+	 * Esta función calcula la oferta de un producto segun su categoría y el dia de la semana 
+	 * @param producto: este producto es el recién insertado
+	 * @return
+	 */
 	static double CalcularOferta(Producto producto) {
 	      LocalDate hoy = LocalDate.now();
 	    DayOfWeek semana = hoy.getDayOfWeek();
@@ -437,7 +452,7 @@ static double DevolverPrecioOriginal(Producto producto)
 
 	    
 
-	    // Aplicar las ofertas en función del día de la semana
+	    
 	    switch (numeroSemana) {
 	       
 	        case 1:
@@ -610,7 +625,10 @@ static double DevolverPrecioOriginal(Producto producto)
 	 * Método borrarProductosCaducados de tipo void, es decir no devuelve nada,
 	 * utilizado para borrar los productos en función de su fecha de caducidad.
 	 */
-
+/**
+ * Esta función recorre los productos al ejecutar el programa y si hay algun producto caducado
+ * lo borra
+ */
 	static void borrarProductosCaducados() {
 
 		LocalDate hoy = LocalDate.now();
@@ -624,6 +642,10 @@ static double DevolverPrecioOriginal(Producto producto)
 
 		}
 	}
+	/*
+	 * Esta función aplica las ofertas a los productos y revisa el dia y la categoría para aplicarle la oferta o devolver el 
+	 * producto a su precio original
+	 */
 	static void aplicarOfertasProductos() {
 	    List<Producto> productos = productoDAO.selectAllProductos();
 	    
@@ -885,7 +907,12 @@ static double DevolverPrecioOriginal(Producto producto)
 		lblFechaInicio.setBounds(272, 279, 185, 17);
 		frameAlmacen.getContentPane().add(lblFechaInicio);
 		
-		
+		/**
+		 * Esta funcion se ejecuta cuando se da click al boton registrarse 
+		 * este crea un usuario en la base de datos si esta bien introducido 
+		 *y guarda el nombre, el correo electronico, el telefono, la fecha de nacimiento, fecha de inicio
+		 *y la localizacion
+		 */
 		JButton btnRegistrarse = new JButton("Registrarse");
 		btnRegistrarse.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -1299,7 +1326,7 @@ static double DevolverPrecioOriginal(Producto producto)
 			public void actionPerformed(ActionEvent e) {
 
 				modelTabla.setRowCount(0);
-				List<Producto> selectProducto = productoDAO.selectProductosSinStock();
+				List<Producto> selectProducto = productoDAO.selectProductosSinExistencias();
 				if (selectProducto.isEmpty()) {
 					JOptionPane.showMessageDialog(null, "No hay productos sin stock.");
 				}
@@ -1394,7 +1421,7 @@ static double DevolverPrecioOriginal(Producto producto)
 
 					if (rdbtnMostrarProductosSinUnidades.isSelected()) {
 						modelTabla.setRowCount(0);
-						List<Producto> selectProducto = productoDAO.selectProductosSinStock();
+						List<Producto> selectProducto = productoDAO.selectProductosSinExistencias();
 						if (selectProducto.isEmpty()) {
 							JOptionPane.showMessageDialog(null, "No hay productos sin  stock");
 						}
@@ -1637,7 +1664,12 @@ static double DevolverPrecioOriginal(Producto producto)
 		btnBorrar.setBackground(new Color(245, 222, 179));
 		btnBorrar.setBounds(555, 633, 121, 25);
 		
-		
+		/**
+		 * Esta funcion actualiza un pedido tras seleccionarlo, cambiar un valor de un
+		 * textField o del comboBox y despues se le da al boton Actualizar, si los datos
+		 * estan introducidos correctamente se actualiza, sino, sale un mensaje de
+		 * error.
+		 */
 		JButton btnActualizarPedido = new JButton("Actualizar");
 		btnActualizarPedido.setBackground(new Color(245, 222, 179));
 		btnActualizarPedido.addActionListener(new ActionListener() {
@@ -1744,7 +1776,10 @@ static double DevolverPrecioOriginal(Producto producto)
 		scrollPanePedidos.setVisible(false);
 	
 		
-		
+		/**
+		 * Este evento borra el pedido seleccionando cuando le das al boton de borrar
+		 * 
+		 */
 		
 		JButton btnBorrarPedido = new JButton("Borrar");
 		btnBorrarPedido.setBackground(new Color(245, 222, 179));
@@ -1843,6 +1878,11 @@ static double DevolverPrecioOriginal(Producto producto)
 		btnGuardarPedido = new JButton("Guardar");
 		btnGuardarPedido.setBackground(new Color(245, 222, 179));
 		btnGuardarPedido.addActionListener(new ActionListener() {
+			/**
+			 * Esta funcion inserta un producto cuando los datos están introducidos
+			 * correctamente, tras darle al boton guardar
+			 * 
+			 */
 			public void actionPerformed(ActionEvent e) {
 				
 				try {
@@ -1933,7 +1973,9 @@ static double DevolverPrecioOriginal(Producto producto)
 		frameAlmacen.getContentPane().add(comboBoxEscogerCategoria);
 		
 		
-		
+		/**
+		 * Este boton oculta los elementos del programa principal y muestra el login 
+		 */
 		JButton btnCerrarSesion = new JButton("Cerrar Sesion");
 		btnCerrarSesion.setBackground(new Color(245, 222, 179));
 		btnCerrarSesion.setVisible(false);
@@ -2037,6 +2079,10 @@ static double DevolverPrecioOriginal(Producto producto)
 		
 		
 		 textFieldNombre.addFocusListener(new FocusAdapter() {
+			 /*
+			  * Este evento se inicia cuando se pierde el foco al  textFieldNombre 
+			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
+			  */
 	        	@Override
 	        	public void focusLost(FocusEvent e) {
 	        		Pattern pat = Pattern.compile("^[A-Za-zÑñÁáÉéÍíÓóÚúÜü ]{1,50}$");
@@ -2051,7 +2097,10 @@ static double DevolverPrecioOriginal(Producto producto)
 	        });
 
 	     
-	        
+		 /*
+		  * Este evento se inicia cuando se pierde el foco al  textFieldNombreLogin 
+		  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
+		  */
 	        
 	        textFieldNombreLogin.addFocusListener(new FocusAdapter() {
 	        	@Override
@@ -2068,7 +2117,10 @@ static double DevolverPrecioOriginal(Producto producto)
 	        });
 
 	
-
+	        /*
+			  * Este evento se inicia cuando se pierde el foco al  textFieldCorreo
+			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
+			  */
 	        textFieldCorreo.addFocusListener(new FocusAdapter() {
 	            @Override
 	            public void focusLost(FocusEvent e) {
@@ -2084,6 +2136,10 @@ static double DevolverPrecioOriginal(Producto producto)
 
 	          
 	        });
+	        /*
+			  * Este evento se inicia cuando se pierde el foco al  textFieldCorreoLogin
+			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
+			  */
 	        
 	        textFieldCorreoLogin.addFocusListener(new FocusAdapter() {
 	            @Override
@@ -2099,7 +2155,10 @@ static double DevolverPrecioOriginal(Producto producto)
 	            }
 
 	        });
-	        
+	        /*
+			  * Este evento se inicia cuando se pierde el foco al     textFieldTelefono
+			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
+			  */
 	        textFieldTelefono.addFocusListener(new FocusAdapter() {
 	        	@Override
 	        	public void focusLost(FocusEvent e) {
@@ -2114,7 +2173,10 @@ static double DevolverPrecioOriginal(Producto producto)
 	        
 	       
 	    });
-	        
+	        /*
+			  * Este evento se inicia cuando se pierde el foco al     textFieldLocalizacion
+			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
+			  */
 	        textFieldLocalizacion.addFocusListener(new FocusAdapter() {
 	        	@Override
 	        	public void focusLost(FocusEvent e) {
@@ -2131,7 +2193,10 @@ static double DevolverPrecioOriginal(Producto producto)
 
 	 
 	    });
-
+	        /*
+			  * Este evento se inicia cuando se pierde el foco al     textFieldFechaNac
+			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
+			  */
 	        textFieldFechaNac.addFocusListener(new FocusAdapter() {
 	            @Override
 	            public void focusLost(FocusEvent e) {
@@ -2146,7 +2211,10 @@ static double DevolverPrecioOriginal(Producto producto)
 	            }
 
 	        });
-
+	        /*
+			  * Este evento se inicia cuando se pierde el foco al    textFieldFechaInicio
+			  * comprueba que esta bien introducido y si esta mal establece "Error" al textField
+			  */
 	        textFieldFechaInicio.addFocusListener(new FocusAdapter() {
 	            @Override
 	            public void focusLost(FocusEvent e) {
@@ -2164,6 +2232,11 @@ static double DevolverPrecioOriginal(Producto producto)
 
 	       
 	        btnEntrar.addActionListener(new ActionListener() {
+	        	/**
+	        	 * Este evento hace que cuando se le da al boton entrar, si estan bien los datos introducidos,  se oculta el login y se 
+	        	 * muestra el programa principal 
+	        	 * 
+	        	 */
 	            public void actionPerformed(ActionEvent e) {
 	            
 	            	List<Usuario> selectUsuarios = usuarioDao.selectAllUsuarios();

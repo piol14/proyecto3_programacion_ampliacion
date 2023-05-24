@@ -40,9 +40,12 @@ public class Producto {
 	@Column(name ="fecha_caducidad")
 	private LocalDate fecha_caducidad;
 	
+	//Relacion muchos a uno con la tabla categoria 
+	
 	@ManyToOne
 	@JoinColumn(name = "categoria_id")
 	private Categoria categoria;
+	//Relacion muchos a uno con la tabla oferta
 	
 	@ManyToOne
 	@JoinColumn(name = "oferta_idoferta")

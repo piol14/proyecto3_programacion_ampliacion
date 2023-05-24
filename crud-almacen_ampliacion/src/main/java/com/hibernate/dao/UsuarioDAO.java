@@ -12,7 +12,7 @@ import com.hibernate.util.HibernateUtil;
 
 public class UsuarioDAO {
 	
-	
+	//Inserccion
 	public void insertUsuario(Usuario us) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -25,6 +25,7 @@ public class UsuarioDAO {
 			}
 		}
 	}
+	//Seleccion multiple 
 	public List<Usuario> selectAllUsuarios() {
 		Transaction transaction = null;
 		List<Usuario> usuarios = null;
@@ -39,7 +40,7 @@ public class UsuarioDAO {
 		}
 		return usuarios ;
 	}
-	
+	//Actualizar
 	public void updateUsuario(Usuario u) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -52,7 +53,7 @@ public class UsuarioDAO {
 			}
 		}
 	}
-	
+	//Seleccion simple por id 
 	public Usuario selectUsuarioByID(int id) {
 		Transaction transaction = null;
 		Usuario u = null;
@@ -67,7 +68,7 @@ public class UsuarioDAO {
 		}
 		return u;
 	}
-	
+	//Borrar 
 	public void deleteUsuario(int id) {
 		Transaction transaction = null;
 		Usuario u = null;

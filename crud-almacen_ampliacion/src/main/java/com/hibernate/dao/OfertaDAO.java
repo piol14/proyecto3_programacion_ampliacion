@@ -10,7 +10,7 @@
 
 	public class OfertaDAO {
 		
-		
+		//Seleccion simple por id
 		public Oferta selectOfertaId(int id) {
 			Transaction transaction = null;
 		Oferta o = null;

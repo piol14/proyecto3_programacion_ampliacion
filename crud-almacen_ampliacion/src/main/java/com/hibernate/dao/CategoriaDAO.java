@@ -26,6 +26,7 @@ public class CategoriaDAO {
 				}
 				return categorias;
 			}
+			//Seleccion por id de categoria
 			public Categoria selectCategoriaById(int id) {
 				Transaction transaction = null;
 			Categoria cg = null;

@@ -23,11 +23,12 @@ public class DetalleVenta {
 
 	@Column(name = "cantidad")
 	private int cantidad;
-
+	//Relacion muchos a uno con la tabla producto
 	@ManyToOne
 	@JoinColumn(name = "producto_idproducto")
 	private Producto producto;
 	
+	//Relacion muchos a uno con la tabla pedido venta 
 	@ManyToOne
 	@JoinColumn(name = "pedidoVenta_idpedidoVenta")
 	private PedidoVenta PedidoVenta;

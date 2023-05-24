@@ -72,7 +72,7 @@ public class DetalleVentaDAO {
 			}
 			return pedidos;
 		}
-
+//Seleccion simple id 
 		public DetalleVenta selectDetalleVentaById(int idDealleVenta) {
 			Transaction transaction = null;
 			DetalleVenta dv = null;

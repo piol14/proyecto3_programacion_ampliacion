@@ -93,7 +93,7 @@ public class ProductoDAO {
 			}
 			return productos;
 		}
-		
+		//Seleccion multiple de productos por categoria , el resultado es la id 
 		public List<Producto> selectProductoByCategoria (Categoria categoria) {
 			Transaction transaction = null;
 			List<Producto> productos= null;
@@ -109,8 +109,8 @@ public class ProductoDAO {
 			}
 			return productos;
 		}
-
-		public List<Producto> selectProductosSinStock() {
+//Seleccion multiple 
+		public List<Producto> selectProductosSinExistencias() {
 		    Transaction transaction = null;
 		    List<Producto> productos = null;
 		    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -124,7 +124,7 @@ public class ProductoDAO {
 		    }
 		    return productos;
 		}
-		
+		//Seleccion multiple de productos por la fecha 
 		public List<Producto> selectProductoByfecha(Period periodo) {
 		    Transaction transaction = null;
 		    List<Producto> productos = null;
@@ -140,7 +140,8 @@ public class ProductoDAO {
 		        }
 		    }
 		    return productos;
-		}
+		} 
+		//Seleccion de productos por categoria, este saca el nombre 
 		public List<Producto> selectProductosPorCategoria(String nombreCategoria) {
 		    Transaction transaction = null;
 		    List<Producto> productos = null;
@@ -160,6 +161,7 @@ public class ProductoDAO {
 
 		    return productos;
 		}
+		//Selecion productos segun su categoria_id
 		public List<Producto> selectProductosPorCategoriaID (int id) {
 		    Transaction transaction = null;
 		    List<Producto> productos = null;
@@ -179,7 +181,7 @@ public class ProductoDAO {
 
 		    return productos;
 		}
-		
+		//Selecciona los productos segun la oferta 
 		public List<Producto> selectProductoByOfertaByID (int id) {
 			Transaction transaction = null;
 			List<Producto> productos= null;
