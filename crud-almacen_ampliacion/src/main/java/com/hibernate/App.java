@@ -1878,6 +1878,8 @@ public class App {
 				scrollPanePedidos.setVisible(false);
 				lblCantidadPedido.setVisible(false);
 				lblPrecioPedido.setVisible(false);
+				lblDatosProductos.setVisible(false);
+				lblId.setVisible(false);
 
 				textFieldNombrePedido.setVisible(false);
 				btnBorrarPedido.setVisible(false);
