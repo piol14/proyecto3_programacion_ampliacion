@@ -173,6 +173,10 @@ INSERT INTO `categoria` (`id`, `nombre`) VALUES
 (9, 'Congelados'),
 (10, 'Limpieza');
 
+INSERT INTO `Usuario`(`idUsuario`, `nombre`, `correo`,  `telefono`, `localizacion` ,`fecha_nacimiento` , `fecha_inicio`) VALUES
+(1, 'MoiJava', 'moijava@gmail.com', '711111111', 'Valencia', '10/10/2000', '24/05/2025');
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
