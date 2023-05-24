@@ -1,9 +1,8 @@
-         //Monica Alcañiz y Elena Ortega
+    //Monica Alcañiz y Elena Ortega
 
 package com.hibernate;
 
 import java.awt.EventQueue;
-
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -56,7 +55,17 @@ import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import javax.swing.DefaultComboBoxModel;
 
+/**
+ * 
+ * @author Mónica Alcañiz y Elena Ortega
+ * Clase App: donde se ejecuta la ventana de gestión de un almacén y el login
+ * @version 24 de mayo de 2023
+ *
+ */
+
 public class App {
+	
+	
 
 	static final int LONGITUD_BTN_GUARDAR = 18;
 	static final int ALTURA_BTN_GUARDAR = 18;
@@ -69,6 +78,12 @@ public class App {
 
 	static final int LONGITUD_BTN_CERRAR_SESION = 18;
 	static final int ALTURA_BTN_CERRAR_SESION = 18;
+	
+	static final int LONGITUD_BTN_REGISTRARSE = 18;
+	static final int ALTURA_BTN_REGISTRARSE = 18;
+	
+	static final int LONGITUD_BTN_ENTRAR = 18;
+	static final int ALTURA_BTN_ENTRAR = 18;
 
 	static ProductoDAO productoDAO = new ProductoDAO();
 	CategoriaDAO categoriaDAO = new CategoriaDAO();
@@ -79,10 +94,10 @@ public class App {
 	private JFrame frameAlmacen;
 	private JTable tableProductos;
 
-	private JTextField txtId;
-	private JTextField txtNombre;
-	private JTextField txtPrecio;
-	private JTextField txtStock;
+	private JTextField txtIdProducto;
+	private JTextField txtNombreProducto;
+	private JTextField txtPrecioProducto;
+	private JTextField txtStockProducto;
 	static LocalDate ultimaFechaEjecucion;
 
 	private JTextField textFieldNombre;
@@ -104,9 +119,8 @@ public class App {
 	private JButton btnGuardarPedido;
 
 	/**
-	 * Este método se ejecuta al iniciar el programa y devuelve o pone en oferta los
-	 * productos según la categoria y el dia de la semana
-	 * 
+	 * Este método se ejecuta al iniciar el programa y devuelve el precio original  o cambia el precio de los
+	 * productos según su oferta.
 	 * @param producto: el producto a modificar o no
 	 * @return devuelve el precio del producto
 	 */
@@ -268,7 +282,7 @@ public class App {
 	}
 
 	/**
-	 * Esta función se llama en ComprobarOferta y se encarga de devolver al precio
+	 * Esta función se llama ComprobarOferta y se encarga de devolver al precio
 	 * original los productos que estaban en oferta cuando ya no les toca estar en
 	 * oferta
 	 * 
@@ -388,7 +402,7 @@ public class App {
 	 * la semana
 	 * 
 	 * @param producto: este producto es el recién insertado
-	 * @return
+	 * @return devuelve el precio con la oferta
 	 */
 	static double CalcularOferta(Producto producto) {
 		LocalDate hoy = LocalDate.now();
@@ -571,7 +585,7 @@ public class App {
 		}
 	}
 
-	/*
+	/**
 	 * Esta función aplica las ofertas a los productos y revisa el dia y la
 	 * categoría para aplicarle la oferta o devolver el producto a su precio
 	 * original
@@ -610,7 +624,9 @@ public class App {
 	}
 
 	/**
-	 * Create the application. Borrar productos automáticamente
+	 * Create the application. 
+	 * Borrar productos automáticamente
+	 * Aplicar ofertas automáticamente
 	 */
 	public App() {
 
@@ -682,31 +698,31 @@ public class App {
 		lblCorreoRegistro.setBounds(272, 155, 185, 14);
 		frameAlmacen.getContentPane().add(lblCorreoRegistro);
 
-		JLabel lblTelfono = new JLabel("Teléfono:");
-		lblTelfono.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblTelfono.setBounds(272, 186, 154, 14);
-		frameAlmacen.getContentPane().add(lblTelfono);
+		JLabel lblTeléfono = new JLabel("Teléfono:");
+		lblTeléfono.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblTeléfono.setBounds(272, 186, 154, 14);
+		frameAlmacen.getContentPane().add(lblTeléfono);
 
 		JLabel lblNombreLogin = new JLabel("Nombre:");
 		lblNombreLogin.setFont(new Font("Dialog", Font.BOLD, 14));
 		lblNombreLogin.setBounds(272, 487, 71, 14);
 		frameAlmacen.getContentPane().add(lblNombreLogin);
 
-		JLabel lblCorreoRegistroUsuario = new JLabel("Correo Electrónico:");
-		lblCorreoRegistroUsuario.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblCorreoRegistroUsuario.setBounds(272, 513, 185, 14);
-		frameAlmacen.getContentPane().add(lblCorreoRegistroUsuario);
+		JLabel lblCorreoLogin = new JLabel("Correo Electrónico:");
+		lblCorreoLogin.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblCorreoLogin.setBounds(272, 513, 185, 14);
+		frameAlmacen.getContentPane().add(lblCorreoLogin);
 
 		textFieldNombreLogin = new JTextField();
 		textFieldNombreLogin.setColumns(10);
 		textFieldNombreLogin.setBounds(512, 481, 164, 20);
 		frameAlmacen.getContentPane().add(textFieldNombreLogin);
 
-		JLabel lblDatos = new JLabel("INTRODUCIR DATOS");
-		lblDatos.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblDatos.setBounds(10, 263, 284, 31);
-		frameAlmacen.getContentPane().add(lblDatos);
-		lblDatos.setVisible(false);
+		JLabel lblDatosProductos = new JLabel("INTRODUCIR DATOS");
+		lblDatosProductos.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblDatosProductos.setBounds(10, 263, 284, 31);
+		frameAlmacen.getContentPane().add(lblDatosProductos);
+		lblDatosProductos.setVisible(false);
 
 		JLabel lblDatosPedido = new JLabel("INTRODUCIR DATOS");
 		lblDatosPedido.setFont(new Font("Dialog", Font.BOLD, 20));
@@ -769,31 +785,31 @@ public class App {
 		frameAlmacen.getContentPane().add(lblStock);
 		lblStock.setVisible(false);
 
-		txtId = new JTextField();
-		txtId.setEnabled(false);
-		txtId.setBounds(137, 301, 151, 19);
-		frameAlmacen.getContentPane().add(txtId);
-		txtId.setColumns(10);
-		txtId.setVisible(false);
+		txtIdProducto = new JTextField();
+		txtIdProducto.setEnabled(false);
+		txtIdProducto.setBounds(137, 301, 151, 19);
+		frameAlmacen.getContentPane().add(txtIdProducto);
+		txtIdProducto.setColumns(10);
+		txtIdProducto.setVisible(false);
 
-		txtNombre = new JTextField();
-		txtNombre.setBounds(137, 327, 215, 19);
-		frameAlmacen.getContentPane().add(txtNombre);
-		txtNombre.setColumns(10);
-		txtNombre.setVisible(false);
+		txtNombreProducto = new JTextField();
+		txtNombreProducto.setBounds(137, 327, 215, 19);
+		frameAlmacen.getContentPane().add(txtNombreProducto);
+		txtNombreProducto.setColumns(10);
+		txtNombreProducto.setVisible(false);
 
-		txtPrecio = new JTextField();
-		txtPrecio.setText("");
-		txtPrecio.setBounds(137, 379, 151, 19);
-		frameAlmacen.getContentPane().add(txtPrecio);
-		txtPrecio.setColumns(10);
-		txtPrecio.setVisible(false);
+		txtPrecioProducto = new JTextField();
+		txtPrecioProducto.setText("");
+		txtPrecioProducto.setBounds(137, 379, 151, 19);
+		frameAlmacen.getContentPane().add(txtPrecioProducto);
+		txtPrecioProducto.setColumns(10);
+		txtPrecioProducto.setVisible(false);
 
-		txtStock = new JTextField();
-		txtStock.setBounds(137, 405, 151, 19);
-		frameAlmacen.getContentPane().add(txtStock);
-		txtStock.setColumns(10);
-		txtStock.setVisible(false);
+		txtStockProducto = new JTextField();
+		txtStockProducto.setBounds(137, 405, 151, 19);
+		frameAlmacen.getContentPane().add(txtStockProducto);
+		txtStockProducto.setColumns(10);
+		txtStockProducto.setVisible(false);
 
 		textFieldCorreoLogin = new JTextField();
 		textFieldCorreoLogin.setColumns(10);
@@ -807,10 +823,10 @@ public class App {
 		lblLogin.setBounds(397, 435, 79, 31);
 		frameAlmacen.getContentPane().add(lblLogin);
 
-		JLabel lblLocalizacin = new JLabel("Localización:");
-		lblLocalizacin.setFont(new Font("Dialog", Font.BOLD, 14));
-		lblLocalizacin.setBounds(272, 217, 154, 14);
-		frameAlmacen.getContentPane().add(lblLocalizacin);
+		JLabel lblLocalización = new JLabel("Localización:");
+		lblLocalización.setFont(new Font("Dialog", Font.BOLD, 14));
+		lblLocalización.setBounds(272, 217, 154, 14);
+		frameAlmacen.getContentPane().add(lblLocalización);
 
 		JLabel lblFechaNacimiento = new JLabel("Fecha de Nacimiento:");
 		lblFechaNacimiento.setFont(new Font("Dialog", Font.BOLD, 14));
@@ -884,8 +900,8 @@ public class App {
 		btnRegistrarse.setBackground(new Color(245, 222, 179));
 		btnRegistrarse.setBounds(336, 348, 164, 25);
 		ImageIcon imagenRegistrarse = new ImageIcon(App.class.getResource("/imagenes/registrarse.png"));
-		Image imagenRedimensionada7 = imagenRegistrarse.getImage().getScaledInstance(LONGITUD_BTN_GUARDAR,
-				ALTURA_BTN_GUARDAR, java.awt.Image.SCALE_SMOOTH);
+		Image imagenRedimensionada7 = imagenRegistrarse.getImage().getScaledInstance( LONGITUD_BTN_ENTRAR ,
+				 ALTURA_BTN_ENTRAR , java.awt.Image.SCALE_SMOOTH);
 		btnRegistrarse.setIcon(new ImageIcon(imagenRedimensionada7));
 
 		frameAlmacen.getContentPane().add(btnRegistrarse);
@@ -894,6 +910,8 @@ public class App {
 		btnEntrar.setBackground(new Color(245, 222, 179));
 		btnEntrar.setBounds(336, 594, 164, 25);
 		frameAlmacen.getContentPane().add(btnEntrar);
+		
+		
 
 		DefaultTableModel modelTabla = new DefaultTableModel() {
 
@@ -909,6 +927,7 @@ public class App {
 				return false;
 			}
 		};
+		
 		// Añadir las columnas a la tabla Productos
 
 		modelTabla.addColumn("Producto");
@@ -942,7 +961,7 @@ public class App {
 		JComboBox comboBoxSeleccionarTiempo = new JComboBox();
 		comboBoxSeleccionarTiempo.setVisible(false);
 		/**
-		 * Evento sobre el comboBoxSeleccionarPeriodo utilizado seleccionar el periodo
+		 * Evento sobre el comboBoxSeleccionarTiempo utilizado seleccionar el periodo
 		 * de tiempo para saber los productos que caducarán en 1 dia, 1 año, 1 mes o 4
 		 * años
 		 */
@@ -1051,7 +1070,7 @@ public class App {
 		/**
 		 * Evento sobre el rdbtnMostrarProductosCaducados utilizado para mostrar los
 		 * productos caducados según el periodo de tiempo seleccionado en el
-		 * comboBoxSeleccionarPeriodo
+		 * comboBoxSeleccionarTiempo
 		 */
 		rdbtnMostrarProductosCaducados.addItemListener(new ItemListener() {
 			public void itemStateChanged(ItemEvent arg0) {
@@ -1282,12 +1301,12 @@ public class App {
 
 				try {
 
-					String nombre = txtNombre.getText();
+					String nombre = txtNombreProducto.getText();
 
 					int indice = comboBoxEscogerCategoria.getSelectedIndex() + 1;
 					Categoria categoria = categoriaDAO.selectCategoriaById(indice);
-					double precio = Double.parseDouble(txtPrecio.getText());
-					int existencias = Integer.parseInt(txtStock.getText());
+					double precio = Double.parseDouble(txtPrecioProducto.getText());
+					int existencias = Integer.parseInt(txtStockProducto.getText());
 					Oferta oferta = null;
 
 					LocalDate hoy = LocalDate.now();
@@ -1326,10 +1345,10 @@ public class App {
 					}
 
 					JOptionPane.showMessageDialog(null, "Producto añadido");
-					txtNombre.setText("");
-					txtPrecio.setText("");
-					txtStock.setText("");
-					txtId.setText("");
+					txtNombreProducto.setText("");
+					txtPrecioProducto.setText("");
+					txtStockProducto.setText("");
+					txtIdProducto.setText("");
 
 					if (rdbtnMostrarProductosSinUnidades.isSelected()) {
 						modelTabla.setRowCount(0);
@@ -1433,24 +1452,22 @@ public class App {
 
 				try {
 
-					if (txtNombre.getText().isEmpty() || comboBoxEscogerCategoria.getSelectedItem() == null
-							|| txtPrecio.getText().isEmpty() || txtStock.getText().isEmpty()) {
+					if (txtNombreProducto.getText().isEmpty() || comboBoxEscogerCategoria.getSelectedItem() == null
+							|| txtPrecioProducto.getText().isEmpty() || txtStockProducto.getText().isEmpty()) {
 						JOptionPane.showMessageDialog(null, "Debe completar todos los campos");
 
 					} else {
 						int id = (int) tableProductos.getValueAt(selectedRow, 0);
 
-						String nombre = txtNombre.getText();
+						String nombre = txtNombreProducto.getText();
 						int indice = comboBoxEscogerCategoria.getSelectedIndex() + 1;
 						Categoria categoria = categoriaDAO.selectCategoriaById(indice);
-						double precio = Double.parseDouble(txtPrecio.getText());
-						// double precioOriginal = productoOriginal.getPrecio();
-						// pedido.getProducto().setPrecio(precioOriginal);
+						double precio = Double.parseDouble(txtPrecioProducto.getText());
 						Oferta oferta = null;
 
 						// Actualizar el precio si hay una oferta disponible
 
-						int existencias = Integer.parseInt(txtStock.getText());
+						int existencias = Integer.parseInt(txtStockProducto.getText());
 						Producto producto = productoDAO.selectProductoById(id);
 
 						JOptionPane.showMessageDialog(null, "Producto actualizado correctamente");
@@ -1470,10 +1487,10 @@ public class App {
 						tableProductos.setValueAt(existencias, selectedRow, 3);
 						tableProductos.setValueAt(indice, selectedRow, 4);
 
-						txtNombre.setText("");
-						txtPrecio.setText("");
-						txtStock.setText("");
-						txtId.setText("");
+						txtNombreProducto.setText("");
+						txtPrecioProducto.setText("");
+						txtStockProducto.setText("");
+						txtIdProducto.setText("");
 					}
 				} catch (ArrayIndexOutOfBoundsException e1) {
 					JOptionPane.showMessageDialog(null,
@@ -1505,7 +1522,7 @@ public class App {
 				return false;
 			}
 		};
-		// Añadir las columnas a la tabla Productos
+		// Añadir las columnas a la tabla Pedidos
 
 		modelPedidos.addColumn("Pedido");
 		modelPedidos.addColumn("Proveedor");
@@ -1532,10 +1549,10 @@ public class App {
 					modelTabla.removeRow(filaSeleccionada);
 
 					JOptionPane.showMessageDialog(null, "Producto borrado correctamente");
-					txtNombre.setText("");
-					txtPrecio.setText("");
-					txtStock.setText("");
-					txtId.setText("");
+					txtNombreProducto.setText("");
+					txtPrecioProducto.setText("");
+					txtStockProducto.setText("");
+					txtIdProducto.setText("");
 					modelPedidos.setRowCount(0);
 
 					comboBoxPedido.removeAllItems();
@@ -1735,16 +1752,16 @@ public class App {
 		frameAlmacen.getContentPane().add(textFieldCantidad);
 		textFieldCantidad.setColumns(10);
 
-		JLabel lblMostrarDatos = new JLabel("MOSTRAR DATOS");
-		lblMostrarDatos.setVisible(false);
-		lblMostrarDatos.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblMostrarDatos.setBounds(10, 435, 284, 31);
-		frameAlmacen.getContentPane().add(lblMostrarDatos);
+		JLabel lblMostrarDatosPedido = new JLabel("MOSTRAR DATOS");
+		lblMostrarDatosPedido.setVisible(false);
+		lblMostrarDatosPedido.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblMostrarDatosPedido.setBounds(10, 435, 284, 31);
+		frameAlmacen.getContentPane().add(lblMostrarDatosPedido);
 
-		JLabel lblRegistro_1 = new JLabel("Registro de Usuario");
-		lblRegistro_1.setFont(new Font("Dialog", Font.BOLD, 20));
-		lblRegistro_1.setBounds(371, 53, 256, 54);
-		frameAlmacen.getContentPane().add(lblRegistro_1);
+		JLabel lblRegistro = new JLabel("Registro de Usuario");
+		lblRegistro.setFont(new Font("Dialog", Font.BOLD, 20));
+		lblRegistro.setBounds(371, 53, 256, 54);
+		frameAlmacen.getContentPane().add(lblRegistro);
 
 		comboBoxPedido.removeAllItems();
 		List<Producto> selectProductos = productoDAO.selectAllProductos();
@@ -1856,7 +1873,7 @@ public class App {
 				textFieldNombrePedido.setVisible(false);
 				textFieldNombreLogin.setVisible(true);
 				textFieldCorreoLogin.setVisible(true);
-				lblCorreoRegistroUsuario.setVisible(true);
+				lblCorreoLogin.setVisible(true);
 				lblLogin.setVisible(true);
 				scrollPanePedidos.setVisible(false);
 				lblCantidadPedido.setVisible(false);
@@ -1877,13 +1894,13 @@ public class App {
 				btnEntrar.setVisible(true);
 				lblNombreRegistro.setVisible(true);
 				lblCorreoRegistro.setVisible(true);
-				lblTelfono.setVisible(true);
-				lblLocalizacin.setVisible(true);
+				lblTeléfono.setVisible(true);
+				lblLocalización.setVisible(true);
 				lblFechaInicio.setVisible(true);
 				lblFechaNacimiento.setVisible(true);
 				btnRegistrarse.setVisible(true);
 				btnGuardarPedido.setVisible(false);
-				lblRegistro_1.setVisible(true);
+				lblRegistro.setVisible(true);
 				btnCerrarSesion.setVisible(false);
 				lblProductoPedido.setVisible(false);
 				tableProductos.setVisible(false);
@@ -1892,17 +1909,17 @@ public class App {
 				lblProductoPedido.setVisible(false);
 				lblProductoPedido.setVisible(false);
 
-				txtId.setVisible(false);
-				txtNombre.setVisible(false);
-				txtPrecio.setVisible(false);
-				txtStock.setVisible(false);
+				txtIdProducto.setVisible(false);
+				txtNombreProducto.setVisible(false);
+				txtPrecioProducto.setVisible(false);
+				txtStockProducto.setVisible(false);
 				comboBoxSeleccionarCategoria.setVisible(false);
 				lblTitulo.setVisible(false);
 				lblNombre.setVisible(false);
 				lblCategoria.setVisible(false);
 				lblPrecio.setVisible(false);
 				lblStock.setVisible(false);
-				lblMostrarDatos.setVisible(false);
+				lblMostrarDatosPedido.setVisible(false);
 				lblSeleccionarPeriodoDe.setVisible(false);
 				lblSeleccionarCategoria.setVisible(false);
 				comboBoxEscogerCategoria.setVisible(false);
@@ -2108,12 +2125,12 @@ public class App {
 						}
 					}
 				if (usuarioEncontrado) {
-					lblDatos.setVisible(true);
+					lblDatosProductos.setVisible(true);
 					textFieldPrecioPedido.setVisible(true);
 					textFieldCantidad.setVisible(true);
 					textFieldNombreLogin.setVisible(false);
 					textFieldCorreoLogin.setVisible(false);
-					lblCorreoRegistroUsuario.setVisible(false);
+					lblCorreoLogin.setVisible(false);
 					lblLogin.setVisible(false);
 					btnGuardarPedido.setVisible(true);
 					btnActualizarPedido.setVisible(true);
@@ -2129,22 +2146,22 @@ public class App {
 					textFieldNombrePedido.setVisible(true);
 					lblNombreRegistro.setVisible(false);
 					lblCorreoRegistro.setVisible(false);
-					lblTelfono.setVisible(false);
-					lblLocalizacin.setVisible(false);
+					lblTeléfono.setVisible(false);
+					lblLocalización.setVisible(false);
 					lblFechaInicio.setVisible(false);
 					lblFechaNacimiento.setVisible(false);
 					btnRegistrarse.setVisible(false);
 					scrollPanePedidos.setVisible(true);
-					lblRegistro_1.setVisible(false);
+					lblRegistro.setVisible(false);
 					lblDatosPedido.setVisible(true);
 					frameAlmacen.setVisible(true);
 					tableProductos.setVisible(true);
 					tablePedidos.setVisible(true);
 					btnCerrarSesion.setVisible(true);
-					txtId.setVisible(true);
-					txtNombre.setVisible(true);
-					txtPrecio.setVisible(true);
-					txtStock.setVisible(true);
+					txtIdProducto.setVisible(true);
+					txtNombreProducto.setVisible(true);
+					txtPrecioProducto.setVisible(true);
+					txtStockProducto.setVisible(true);
 					comboBoxPedido.setVisible(true);
 					comboBoxSeleccionarCategoria.setVisible(true);
 					lblTitulo.setVisible(true);
@@ -2152,7 +2169,7 @@ public class App {
 					lblCategoria.setVisible(true);
 					lblPrecio.setVisible(true);
 					lblStock.setVisible(true);
-					lblMostrarDatos.setVisible(true);
+					lblMostrarDatosPedido.setVisible(true);
 					lblSeleccionarPeriodoDe.setVisible(true);
 					lblSeleccionarCategoria.setVisible(true);
 					comboBoxEscogerCategoria.setVisible(true);
@@ -2185,17 +2202,17 @@ public class App {
 		tableProductos.addMouseListener(new MouseAdapter() {
 			@Override
 			/**
-			 * Este evento sirve para que cuando el usuario le de a una fila de la tabla se
+			 * Este evento sirve para que cuando el usuario le de a una fila de la tabla Producto se
 			 * muestre en los text field
 			 * 
 			 */
 			public void mouseClicked(MouseEvent e) {
 				int índice = tableProductos.getSelectedRow();
 				TableModel model = tableProductos.getModel();
-				txtId.setText(model.getValueAt(índice, 0).toString());
-				txtNombre.setText(model.getValueAt(índice, 1).toString());
-				txtPrecio.setText(model.getValueAt(índice, 2).toString());
-				txtStock.setText(model.getValueAt(índice, 3).toString());
+				txtIdProducto.setText(model.getValueAt(índice, 0).toString());
+				txtNombreProducto.setText(model.getValueAt(índice, 1).toString());
+				txtPrecioProducto.setText(model.getValueAt(índice, 2).toString());
+				txtStockProducto.setText(model.getValueAt(índice, 3).toString());
 				Object valorSeleccionado = model.getValueAt(índice, 4); // obtiene el valor de la columna de la
 																		// categoría
 				comboBoxEscogerCategoria.setSelectedIndex((int) valorSeleccionado - 1);
@@ -2206,7 +2223,7 @@ public class App {
 		tablePedidos.addMouseListener(new MouseAdapter() {
 			@Override
 			/**
-			 * Este evento sirve para que cuando el usuario le de a una fila de la tabla se
+			 * Este evento sirve para que cuando el usuario le de a una fila de la tabla Pedido se
 			 * muestre en los text field
 			 * 
 			 */
