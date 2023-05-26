@@ -6,7 +6,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
+/**
+ * Clase oferta: clase para definir los atributos de la oferta (idoferta,nombre),
+ *  el constructor y los getters y los setters 
+ * 
+ *
+ */
 @Entity
 @Table(name = "oferta")
 

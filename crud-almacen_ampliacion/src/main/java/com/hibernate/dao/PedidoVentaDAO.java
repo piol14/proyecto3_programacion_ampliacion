@@ -5,11 +5,25 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import com.hibernate.model.PedidoVenta;
-import com.hibernate.model.Producto;
 import com.hibernate.util.HibernateUtil;
 
+/***
+ *
+ * Clase PedidoVentaDAO utilizado para realizar distintas acciones con la clase
+ * PedidoVenta
+ * 
+ * @author Mónica Alcañiz y Elena Ortega
+ *
+ */
+
 public class PedidoVentaDAO {
-	//Inserccion
+
+	/**
+	 * Método público insertPedidoVenta de tipo void utilizado para insertar pedidos
+	 * 
+	 * @param pv objeto utilizado para poder insertar un pedido
+	 */
+
 	public void insertPedidoVenta(PedidoVenta pv) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -22,69 +36,8 @@ public class PedidoVentaDAO {
 			}
 		}
 	}
-//Actualizacion
-	
-	public void updatePedidoVenta(PedidoVenta pv) {
-		Transaction transaction = null;
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			transaction = session.beginTransaction();
-			session.merge(pv);
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
-		}
-	}
 
-	//Eliminar
-	public void deletePedidoVenta(int id) {
-		Transaction transaction = null;
-		PedidoVenta pv = null;
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			transaction = session.beginTransaction();
-			pv = session.get(PedidoVenta.class, id);
-			session.remove(pv);
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
-		}
-	}
-	
-	//Seleccion multiple
-	public List<PedidoVenta> selectAllPedidos() {
-		Transaction transaction = null;
-		List<PedidoVenta> pedidos = null;
-		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-			transaction = session.beginTransaction();
-			pedidos = session.createQuery("FROM PedidoVenta", PedidoVenta.class).getResultList();
-			transaction.commit();
-		} catch (Exception e) {
-			if (transaction != null) {
-				transaction.rollback();
-			}
-		}
-		return pedidos;
-	}
 	
 
-	// Selección simple
-			public PedidoVenta selectPedidoVentaById(int id) {
-				Transaction transaction = null;
-				PedidoVenta pv = null;
-				try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-					transaction = session.beginTransaction();
-					pv = session.get(PedidoVenta.class, id);
-					transaction.commit();
-				} catch (Exception e) {
-					if (transaction != null) {
-						transaction.rollback();
-					}
-				}
-				return pv;
-			}
-	
 
 }

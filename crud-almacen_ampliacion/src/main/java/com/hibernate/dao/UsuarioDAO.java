@@ -12,7 +12,10 @@ import com.hibernate.util.HibernateUtil;
 
 public class UsuarioDAO {
 	
-	//Inserccion
+/**
+ * Método público insertUsuario de tipo void utilizado para insertar un Usuario
+ * @param us parámetro pasado desde la clase App para poder insertar el usuario
+ */
 	public void insertUsuario(Usuario us) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -25,7 +28,11 @@ public class UsuarioDAO {
 			}
 		}
 	}
-	//Seleccion multiple 
+	
+	/**
+	 * Método público List<Usuario> selectAllUsuarios utilizado para seleccionar todos los usuarios de la base de datos
+	 * @return usuarios que es una lista con todos los usuarios creados en la base de datos
+	 */
 	public List<Usuario> selectAllUsuarios() {
 		Transaction transaction = null;
 		List<Usuario> usuarios = null;
@@ -40,7 +47,12 @@ public class UsuarioDAO {
 		}
 		return usuarios ;
 	}
-	//Actualizar
+	
+	/**
+	 * Método público updateUsuario de tipo void 
+	 * @param u objeto pasado desde la calse producto que representa al usuario seleccionado
+	 */
+
 	public void updateUsuario(Usuario u) {
 		Transaction transaction = null;
 		try (Session session = HibernateUtil.getSessionFactory().openSession()) {
@@ -53,7 +65,11 @@ public class UsuarioDAO {
 			}
 		}
 	}
-	//Seleccion simple por id 
+	/**
+	 * Método público Usuario selectUsuarioById utilizado para seleccionar un usuario según su id
+	 * @param id parámetro utilizado para seleccionar un usuario
+	 * @return u un objeto de usuario
+	 */
 	public Usuario selectUsuarioByID(int id) {
 		Transaction transaction = null;
 		Usuario u = null;
@@ -68,7 +84,10 @@ public class UsuarioDAO {
 		}
 		return u;
 	}
-	//Borrar 
+	 /**
+	  * Método público deleteUsuario de tipo void utilizado para borrar un usuario por su id
+	  * @param id parámetro id utilizado para seleccionar un usuario
+	  */
 	public void deleteUsuario(int id) {
 		Transaction transaction = null;
 		Usuario u = null;

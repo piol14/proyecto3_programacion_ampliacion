@@ -1485,6 +1485,7 @@ public class App {
 						tableProductos.setValueAt(precioOferta, selectedRow, 2);
 						tableProductos.setValueAt(existencias, selectedRow, 3);
 						tableProductos.setValueAt(indice, selectedRow, 4);
+						tableProductos.setValueAt(idOferta,selectedRow, 6);
 
 						txtNombreProducto.setText("");
 						txtPrecioProducto.setText("");

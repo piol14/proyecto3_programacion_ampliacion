@@ -8,7 +8,11 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
+/**
+ * Clase pedidoventa: clase para definir los atributos de pedidoventa (idPedidoVenta) el constructor y los getters y los setters 
+ * 
+ *
+ */
 @Entity
 @Table(name = "pedidoVenta")
 

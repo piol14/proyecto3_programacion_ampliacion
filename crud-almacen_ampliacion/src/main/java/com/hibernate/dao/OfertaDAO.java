@@ -10,7 +10,11 @@
 
 	public class OfertaDAO {
 		
-		//Seleccion simple por id
+		/**
+		 * Método público Oferta selectOfertaId utilizado para seleccionar las ofertas según su id
+		 * @param id parámetro utilizado para seleccionar una oferta en concreto
+		 * @return o
+		 */
 		public Oferta selectOfertaId(int id) {
 			Transaction transaction = null;
 		Oferta o = null;
@@ -26,7 +30,11 @@
 			return o;
 		}
 		
-		//Seleccion simple de la oferta con la id 
+		/**
+		 * Método público selectOfertaById de tipo double  utilizado para seleccionar la oferta por su id y además devolver la oferta
+		 * @param id parámetro utilizado para seleccionar una oferta  en concreto
+		 * @return value
+		 */
 		    public double selectOfertaById(int id) {
 		        Transaction transaction = null;
 		        double value = 0.0;

@@ -8,7 +8,13 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-
+/**
+ * Clase detalle_venta: clase para definir los atributos del detalle_venta (idetalle_venta,precio,cantidad, nombreproveedor y 2 foreign key con la tabla producto 
+ * y la tabla pedidoventa ),
+ * el constructor y los getters y los setters 
+ * 
+ *
+ */
 @Entity
 @Table(name = "detalle_venta")
 public class DetalleVenta {

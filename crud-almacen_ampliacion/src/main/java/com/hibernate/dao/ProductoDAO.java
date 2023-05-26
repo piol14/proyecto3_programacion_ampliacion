@@ -14,10 +14,18 @@ import com.hibernate.model.Oferta;
 import com.hibernate.model.Producto;
 import com.hibernate.util.HibernateUtil;
 
+/**
+ * Clase ProductoDAO utilizada para poder realizar distintas acciones en la clase producto
+ * @author Mónica Alcañiz y Elena Ortega
+ *
+ */
 public class ProductoDAO {
 
-	
-	// Selección simple
+	/**
+	 * Método público Producto selectProductoById utilizado para selccionar los productos según su id
+	 * @param id utilizado para seleccionar un producto en concreto
+	 * @return pr
+	 */
 		public Producto selectProductoById(int id) {
 			Transaction transaction = null;
 			Producto pr = null;
@@ -33,7 +41,10 @@ public class ProductoDAO {
 			return pr;
 		}
 
-		//Insercion
+/**
+ * Método público insertProducto de tipo void utilizado para insertar un producto
+ * @param pr representa el objeto que se va a insertar
+ */
 		
 		public void insertProducto(Producto pr) {
 			Transaction transaction = null;
@@ -47,7 +58,11 @@ public class ProductoDAO {
 				}
 			}
 		}
-	//Actualizacion
+
+	/**
+	 * Método público updateProducto de tipo void utilizado para actualizar los productos
+	 * @param pr representa el objeto que se va a actualizar
+	 */
 		
 		public void updateProducto(Producto pr) {
 			Transaction transaction = null;
@@ -62,7 +77,10 @@ public class ProductoDAO {
 			}
 		}
 
-		//Eliminar
+	/**
+	 * Método público deleteProducto de tipo void utilizado para borrar un producto según su id
+	 * @param id utilizado para seleccionar un producto en concreto
+	 */
 		public void deleteProducto(int id) {
 			Transaction transaction = null;
 			Producto pr = null;
@@ -78,7 +96,10 @@ public class ProductoDAO {
 			}
 		}
 		
-		//Seleccion multiple
+	/**
+	 * Método público List<Producto> selectAllProductos utilizado para seleccionar todos los productos de la base de datos
+	 * @return productos
+	 */
 		public List<Producto> selectAllProductos() {
 			Transaction transaction = null;
 			List<Producto> productos = null;
@@ -93,7 +114,12 @@ public class ProductoDAO {
 			}
 			return productos;
 		}
-		//Seleccion multiple de productos por categoria , el resultado es la id 
+		
+		/**
+		 * Método público List<Producto> selectProductosByCategoria utilizado para seleccionar los productos según la categoria
+		 * @param categoria objeto de la clase Categoria que representa la categoria seleccionada
+		 * @return productos
+		 */
 		public List<Producto> selectProductoByCategoria (Categoria categoria) {
 			Transaction transaction = null;
 			List<Producto> productos= null;
@@ -109,7 +135,10 @@ public class ProductoDAO {
 			}
 			return productos;
 		}
-//Seleccion multiple 
+/**
+ * Método público List<Producto> selectProductosSinExistencias utilizado para seleccionar los productos de los que no quedan existencias
+ * @return productos
+ */
 		public List<Producto> selectProductosSinExistencias() {
 		    Transaction transaction = null;
 		    List<Producto> productos = null;
@@ -124,7 +153,13 @@ public class ProductoDAO {
 		    }
 		    return productos;
 		}
-		//Seleccion multiple de productos por la fecha 
+		
+		
+		/**
+		 * Método List<Producto> selectProductoByfecha utilizado para selccionar un producto según su fecha de caducidad
+		 * @param periodo objeto que representa el tiempo selecionado
+		 * @return productos
+		 */
 		public List<Producto> selectProductoByfecha(Period periodo) {
 		    Transaction transaction = null;
 		    List<Producto> productos = null;
@@ -141,27 +176,13 @@ public class ProductoDAO {
 		    }
 		    return productos;
 		} 
-		//Seleccion de productos por categoria, este saca el nombre 
-		public List<Producto> selectProductosPorCategoria(String nombreCategoria) {
-		    Transaction transaction = null;
-		    List<Producto> productos = null;
-
-		    try (Session session = HibernateUtil.getSessionFactory().openSession()) {
-		        transaction = session.beginTransaction();
-		        Query<Producto> query = session.createQuery("FROM Producto p JOIN p.categoria c WHERE c.nombre = :nombreCategoria", Producto.class);
-		        query.setParameter("nombreCategoria", nombreCategoria);
-		        productos = query.getResultList();
-		        transaction.commit();
-		    } catch (Exception e) {
-		        if (transaction != null) {
-		            transaction.rollback();
-		        }
-		        e.printStackTrace();
-		    }
-
-		    return productos;
-		}
-		//Selecion productos segun su categoria_id
+		
+		
+/**
+ * Metodo publico de la clase producto que selecciona los productos por su categoria y devuelve la lista de productos con esa categoria_id
+ * @param id la id que selecciona el usuario
+ * @return  productos
+ */
 		public List<Producto> selectProductosPorCategoriaID (int id) {
 		    Transaction transaction = null;
 		    List<Producto> productos = null;
@@ -181,7 +202,11 @@ public class ProductoDAO {
 
 		    return productos;
 		}
-		//Selecciona los productos segun la oferta 
+	/**
+	 * Metodo publico de la clase producto que selecciona los productos con una id, devuelve los productos con esa id 
+	 * @param id la id que selecciona el usuario
+	 * @return productos
+	 */
 		public List<Producto> selectProductoByOfertaByID (int id) {
 			Transaction transaction = null;
 			List<Producto> productos= null;

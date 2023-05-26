@@ -7,7 +7,12 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-
+/**
+ * Clase Usuario : clase para definir los atributos del usuario (idUsuario,nombre,correo,telefono
+ * localizacion,fecha_nacimiento y fecha_inicio) el constructor y los getters y los setters .
+ * 
+ *
+ */
 @Entity
 	@Table(name = "Usuario")
 	public class Usuario {
