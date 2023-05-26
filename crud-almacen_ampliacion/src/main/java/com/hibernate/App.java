@@ -859,8 +859,7 @@ public class App {
 					DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 					LocalDate fechaNacimientoFormateada = LocalDate.parse(fechaNacimiento, formatter);
 					LocalDate fechaInicioFormateada = LocalDate.parse(fechaInicio, formatter);
-					Period edad = Period.between(LocalDate.parse(fechaNacimiento, formatter),
-							LocalDate.parse(fechaInicio, formatter));
+					
 
 					if (fechaInicioFormateada.isBefore(fechaNacimientoFormateada)) {
 						JOptionPane.showMessageDialog(null,
@@ -1606,6 +1605,7 @@ public class App {
 						int cantidad = Integer.parseInt(textFieldCantidad.getText());
 
 						Producto producto = productoDAO.selectProductoById(numeroSeleccionado);
+						
 						double precio = producto.getPrecio() * cantidad;
 						double precioOriginalRedondeado = Math.round(precio * 100.0) / 100.0;
 					
@@ -1618,29 +1618,33 @@ public class App {
 							PedidoVenta pedidoVenta = new PedidoVenta();
 						
 
-							DetalleVenta pedido = new DetalleVenta(pedidoVenta, nombre, producto, cantidad, precioOriginalRedondeado);
+							DetalleVenta pedido =detalleDAO.selectDetalleVentaById(id);
 							
-
-							JOptionPane.showMessageDialog(null, "Producto actualizado correctamente");
-
 							pedido.setProveedor(nombre);
 							pedido.setProducto(producto);
 							pedido.setCantidad(cantidad);
-							pedido.setPrecio(precio);
+							pedido.setPrecio(precioOriginalRedondeado);
+							
+							
+							JOptionPane.showMessageDialog(null, "Pedido actualizado correctamente");
+							detalleDAO.updateDetalleVenta(pedido);
+
+							
 
 							int idOferta = MostrarIdOferta(producto);
 							Oferta oferta = ofertaDAO.selectOfertaId(idOferta);
 							double precioOferta = CalcularOferta(producto);
 
 							productoDAO.updateProducto(producto);
-
-							DefaultTableModel modelPedidos = (DefaultTableModel) tablePedidos.getModel();
-							modelPedidos.setValueAt(nombre, selectedRow, 1);
-							modelPedidos.setValueAt(producto.getIdProducto(), selectedRow, 2);
-							modelPedidos.setValueAt(cantidad, selectedRow, 3);
-							modelPedidos.setValueAt(precio, selectedRow, 4);
+							
+							tablePedidos.setValueAt(nombre, selectedRow, 1);
+							tablePedidos.setValueAt(producto.getIdProducto(), selectedRow, 2);
+							tablePedidos.setValueAt(cantidad, selectedRow, 3);
+							tablePedidos.setValueAt(precioOriginalRedondeado, selectedRow, 4);
+							
 							List<Producto> productoSelect = productoDAO.selectAllProductos();
 							modelTabla.setRowCount(0);
+							
 							for (Producto pr : productoSelect) {
 
 								Object[] fila = { pr.getIdProducto(), pr.getNombre(), pr.getPrecio(),
@@ -1675,7 +1679,7 @@ public class App {
 		for (DetalleVenta dv : pedidoSelect) {
 
 			Object[] fila = { dv.getPedidoVenta().getIdpedidoVenta(), dv.getProveedor(),
-					dv.getProducto().getIdProducto(), dv.getCantidad(), dv.getProducto().getPrecio() };
+					dv.getProducto().getIdProducto(), dv.getCantidad(), dv.getPrecio()};
 			modelPedidos.addRow(fila);
 
 		}
